@@ -30,20 +30,20 @@ export const smallAdsArr = [
 
 ]
 
-
-const userDocument = {
+export const userDocument = {
     "_id": 1,
-    "fname": "M",
-    "lname": "K",
+    "fname": "Rony",
+    "lname": "Kordahi",
     "email": "q@w.com",
     "googleId": "",
+    "avatar": "/assets/avatar.jpg",
     "ads": [
         "adId-1",
         "adId-2"
     ]
 }
 
-const adDocument = {
+export const adDocument = {
     "_id": "adId-1",
     "name": "Red shoes size 10",
     "authorId": 1,

@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-const SmallItem = ({name, price, address, picSrc}) => {
+const SmallItem = ({name, price, address, picSrc, _id}) => {
     return (
-        <Wrapper>
+        <Wrapper to={`/item/${_id}`}>
             <img src={picSrc} alt={name}/>
             <h4>{name}</h4>
             <span>${price}</span>
@@ -13,15 +13,19 @@ const SmallItem = ({name, price, address, picSrc}) => {
 }
 
 const Wrapper = styled(Link)`
-    width: 200px;
+    width: 190px;
     display: flex;
     flex-direction: column;
     border-radius: 10px;
-    box-shadow: 0px 0px 24px -10px #000000;
+    border: 1px solid var(--color-tertiary);
     text-decoration: none;
     margin-bottom: 20px;
+    transition: 0.3s all;
+    &:hover {
+        transform: scale(1.03);
+    }
     img {
-        width: 180px;
+        width: 170px;
         height: auto;
         border-radius: 5px;
         margin: 10px;

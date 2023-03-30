@@ -81,7 +81,7 @@ const Anchor = styled(Link)`
     svg {
         color: var(--color-background);
         &:hover {
-            color: var(--color-button);
+            color: var(--color-button-hover);
         }
     }
 `

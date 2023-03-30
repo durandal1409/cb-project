@@ -29,6 +29,7 @@ const Home = () => {
                                 price={ad.price}
                                 address={ad.address}
                                 picSrc={ad.pic}
+                                _id={ad._id}
                             />
                 })}
             </AdsWrapper>

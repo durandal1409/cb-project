@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
-const Button = ({children, type}) => {
+const Button = ({children, type, width}) => {
     return (
-        <StyledButton type={type}>{children}</StyledButton>
+        <StyledButton type={type} width={width}>{children}</StyledButton>
     )
 }
 
 const StyledButton = styled.button`
     background-color: var(--color-button);
-    width: 100px;
+    width: ${props => props.width ?? "100px"};
     height: 35px;
     border-radius: 7px;
     border: none;
