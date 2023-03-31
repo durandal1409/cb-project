@@ -55,7 +55,8 @@ const ListWrapper = styled.div`
     width: var(--content-width);
     display: flex;
     justify-content: space-between;
-    margin: 30px auto;
+    margin: 0 auto;
+    padding-top: 30px;
 `
 const Filters = styled.div`
     width: var(--small-block-width);

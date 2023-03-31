@@ -44,7 +44,6 @@ const Header = () => {
 
 const WrapperFullWidth = styled.div`
     width: 100%;
-    background-color: var(--color-header);
 `
 const Wrapper = styled.div`
     display: flex;
@@ -60,7 +59,7 @@ const LogoWrapper = styled.div`
 const LogoText = styled(Link)`
     text-decoration: none;
     font-size: 35px;
-    color: var(--color-background);
+    color: var(--color-button);
 `
 const Form = styled.form`
     display: flex;
@@ -79,7 +78,7 @@ const Dropdown = styled.select`
 const Anchor = styled(Link)`
     text-decoration: none;
     svg {
-        color: var(--color-background);
+        color: var(--color-button);
         &:hover {
             color: var(--color-button-hover);
         }

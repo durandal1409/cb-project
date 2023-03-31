@@ -16,17 +16,23 @@ const App = () => {
     <BrowserRouter>
             <GlobalStyles />
             <Header />
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/search" element={<Search />} />
-                <Route path="/item/:itemId" element={<Item />} />
-                <Route path="/profile/:userId" element={<Profile />} />
-                <Route path="/post-ad" element={<CreateAd />} />
-                <Route path="" element={<h1>404: Oops!</h1>} />
-            </Routes>
+            <Wrapper>
+              <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/search" element={<Search />} />
+                  <Route path="/item/:itemId" element={<Item />} />
+                  <Route path="/profile/:userId" element={<Profile />} />
+                  <Route path="/post-ad" element={<CreateAd />} />
+                  <Route path="" element={<h1>404: Oops!</h1>} />
+              </Routes>
+            </Wrapper>
             <Footer />
-        </BrowserRouter>
+    </BrowserRouter>
   );
 }
+
+const Wrapper = styled.div`
+  background-color: var(--color-background);
+`
 
 export default App;

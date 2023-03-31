@@ -2,14 +2,13 @@ import { createGlobalStyle } from "styled-components";
 
 export default createGlobalStyle`
   :root {
-    --color-background: #fffffe;
-    --color-header: #00ebc7;
+    --color-background: #F9F5EB;
+	--color-background-dark: #E4DCCF;
     --color-headline: #00214d;
-    --color-paragraph: #1b2d45;
-    --color-button: #ff5470;
-	--color-button-hover: #ff2145;
-	--color-button-disable: #ffa1b0;
-    --color-tertiary: #fde24f;
+    --color-paragraph: #002B5B;
+    --color-button: #002B5B;
+	--color-button-hover: #EA5455;
+	--color-button-disable: #7f95ad;
 
     --font-heading: 'Poppins', sans-serif;
     --font-body: 'Roboto', sans-serif;

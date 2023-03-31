@@ -77,7 +77,8 @@ const Item = () => {
 
 const Wrapper = styled.div`
     width: var(--content-width);
-    margin: 30px auto;
+    margin: 0 auto;
+    padding-top: 30px;
     display: flex;
     flex-direction: column;
 `

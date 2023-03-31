@@ -54,6 +54,7 @@ export const adDocument = {
     "categoriesIds": [
         1, 4, 5, 6, 9
     ],
+    "categories": ["women", "bottoms", "pants", "L", "black"],
     "location": {
         "type": "Point",
         "coordinates": [-73.856077, 40.848447]
@@ -137,3 +138,40 @@ const taxonomy = {
         }
     ]
 }
+
+
+const women = {
+    "jackets and vests": {
+        "parkas": "",
+        "insulated & down": "",
+        "vests": "",
+        "rain jackets": "",
+        "windbreakers": ""
+    },
+    "tops": {
+        "long sleeve": "",
+        "short sleeve": "",
+        "t-shirts": "",
+        "sweatshirts and hoodies": ""
+    },
+    "bottoms": {
+        "pants": "",
+        "shorts": "",
+        "skirts": "",
+        "leggins": "",
+
+    },
+    "dresses": "",
+    "accessories": {
+        "hats": "",
+        "gloves": "",
+        "bags": ""
+    }
+}
+
+const womenSizes = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
+const menSizes = ["S", "M", "L", "XL", "XXL", "XXXL"];
+const kidsSizes = ["XS", "S", "M", "L", "XL"];
+const toddlersSizes = ["2T", "3T", "4T"];
+const babySizes = ["0-3m", "3-6m", "6-12m", "12-18m", "18-24m"];
+const colors = [];

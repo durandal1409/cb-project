@@ -1,19 +1,24 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "This is the backend app for cb-project",
-  "main": "server.js",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon index.js"
   },
-  "packageManager": "yarn@3.3.1",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "dotenv": "^16.0.3",
-    "express": "^4.18.2",
+    "express": "^4.17.1",
+    "moment": "^2.29.4",
     "mongodb": "^5.1.0",
     "morgan": "^1.10.0",
-    "node": "^19.8.1",
-    "nodemon": "^2.0.22",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "nodemon": "^2.0.2"
   }
 }

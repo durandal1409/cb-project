@@ -17,10 +17,10 @@ const Wrapper = styled(Link)`
     display: flex;
     flex-direction: column;
     border-radius: 10px;
-    border: 1px solid var(--color-tertiary);
     text-decoration: none;
     margin-bottom: 20px;
     transition: 0.3s all;
+    background-color: #fff;
     &:hover {
         transform: scale(1.03);
     }
@@ -33,7 +33,7 @@ const Wrapper = styled(Link)`
     h4 {
         font-size: 1.2rem;
         padding: 10px;
-        background-color: var(--color-tertiary);
+        /* background-color: var(--color-tertiary); */
     }
     span {
         font-weight: bold;

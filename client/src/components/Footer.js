@@ -14,11 +14,10 @@ const FooterDiv = styled.div`
     position: relative;
     bottom: 0;
     width: 100%;
-    background-color: var(--color-header);
     text-align: center;
     padding: 20px 0;
     h2 {
-        color: var(--color-background);
+        color: var(--color-button);
         a {
             color: var(--color-button);
         }

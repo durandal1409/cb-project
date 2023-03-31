@@ -14,12 +14,15 @@ const Home = () => {
         setLatestAds(smallAdsArr);
     }, []);
     return (
-        <HomeWrapper>
+            <>
             <CategoriesWrapper>
-                <Category to={"/"}>Men</Category>
-                <Category to={"/"}>Women</Category>
-                <Category to={"/"}>Kids</Category>
+                <CategoriesInnerWrapper>
+                    <Category to={"/"}>Men</Category>
+                    <Category to={"/"}>Women</Category>
+                    <Category to={"/"}>Kids</Category>
+                </CategoriesInnerWrapper>
             </CategoriesWrapper>
+        <HomeWrapper>
             <h3>Recommended for you</h3>
             <AdsWrapper>
                 {recommendedAds && recommendedAds.map(ad => {
@@ -46,6 +49,7 @@ const Home = () => {
                 })}
             </AdsWrapper>
         </HomeWrapper>
+        </>
     )
 }
 
@@ -57,18 +61,23 @@ const HomeWrapper = styled.div`
 `
 const CategoriesWrapper = styled.div`
     width: 100%;
+    padding: 30px 0;
+    background-color: var(--color-background-dark);
+`
+const CategoriesInnerWrapper = styled.div`
+    width: var(--content-width);
+    margin: auto;
     display: flex;
     justify-content: space-between;
-    margin: 20px 0;
 `
 const Category = styled(Link)`
     padding: 70px;
     border-radius: 20px;
     font-size: 2rem;
-    box-shadow: 0px 0px 24px -10px #000000;
     text-decoration: none;
+    background-color: #fff;
     &:hover {
-        background-color: var(--color-tertiary);
+        background-color: var(--color-background);
     }
 `
 const AdsWrapper = styled.div`

@@ -105,4 +105,7 @@ dist
 
 
 yarn.lock
-.yarn
+.DS_Store
+
+.yarn/
+.yarnrc.yml
