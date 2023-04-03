@@ -36,7 +36,7 @@ const User = () => {
 const Wrapper = styled.div`
     position: relative;
     padding-top: 9px;
-    
+    z-index: 2;
 `
 const Dropdown = styled.ul`
     position: absolute;

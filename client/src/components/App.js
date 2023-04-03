@@ -20,7 +20,7 @@ const App = () => {
             <Wrapper>
               <Routes>
                   <Route path="/" element={<Home />} />
-                  <Route path="/search" element={<Search />} />
+                  <Route path="/search/:bigCategory/:subcategory" element={<Search />} />
                   <Route path="/item/:itemId" element={<Item />} />
                   <Route path="/user/:userId" element={<Profile />} />
                   <Route path="/profile" element={<Profile />} />

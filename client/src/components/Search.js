@@ -7,6 +7,7 @@ import { smallAdsArr } from "../data";
 
 import SmallItem from "./shared/SmallItem";
 import Map from "./Map";
+import Filters from "./Filters";
 
 const Search = () => {
     // TODO:
@@ -24,6 +25,9 @@ const Search = () => {
             ?   !isLoaded
                     ?   <div>Loading...</div>
                     :   <MapWrapper>
+                            <Filters>
+
+                            </Filters>
                             <IconWrapper>
                                 <BsListUl onClick={() => setMapMode(false)} size={"2em"} />
                             </IconWrapper>
@@ -57,7 +61,7 @@ const Search = () => {
 
 const MapWrapper = styled.div`
     width: 100%;
-    
+    display: flex;
 `
 const ListWrapper = styled.div`
     width: var(--content-width);
@@ -65,10 +69,6 @@ const ListWrapper = styled.div`
     justify-content: space-between;
     margin: 0 auto;
     padding-top: 30px;
-`
-const Filters = styled.div`
-    width: var(--small-block-width);
-    border: 1px solid black;
 `
 const AdsWrapper = styled.div`
     margin-top: 35px;

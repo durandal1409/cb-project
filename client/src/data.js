@@ -267,3 +267,32 @@ const kidsSizes = ["XS", "S", "M", "L", "XL"];
 const toddlersSizes = ["2T", "3T", "4T"];
 const babySizes = ["0-3m", "3-6m", "6-12m", "12-18m", "18-24m"];
 const colors = [];
+export const mainCategories = ["Women", "Men", "Kids"];
+export const smallCategories = {
+    "jackets and vests": {
+        "parkas": {},
+        "insulated & down": {},
+        "vests": {},
+        "rain jackets": {},
+        "windbreakers": {}
+    },
+    "tops": {
+        "long sleeve": {},
+        "short sleeve": {},
+        "t-shirts": {},
+        "sweatshirts and hoodies": {}
+    },
+    "bottoms": {
+        "pants": {},
+        "shorts": {},
+        "skirts": {},
+        "leggins": {},
+
+    },
+    "dresses": "",
+    "accessories": {
+        "hats": {},
+        "gloves": {},
+        "bags": {}
+    }
+}

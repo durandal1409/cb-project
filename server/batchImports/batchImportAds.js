@@ -37,6 +37,8 @@ const batchImport = async () =>{
                 _id: uuidv4(),
                 timestamp: faker.date.recent(30),
                 name: faker.commerce.productName(),
+                brand: faker.company.name,
+                color: faker.color.human,
                 authorId: "",
                 price: faker.commerce.price(1, 200),
                 description: faker.commerce.productDescription(),
