@@ -1,14 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { useLoadScript } from "@react-google-maps/api";
 import styled from "styled-components";
 import { GrMapLocation } from "react-icons/gr";
 import { BsListUl } from "react-icons/bs";
 import { smallAdsArr } from "../data";
 
 import SmallItem from "./shared/SmallItem";
+import Map from "./Map";
 
 const Search = () => {
-    const [mapMode, setMapMode] = useState(false);
+    // TODO:
+    // change mapMode to false
+    const [mapMode, setMapMode] = useState(true);
     const [filteredAds, setFilteredAds] = useState(null);
+    const {isLoaded} = useLoadScript({googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY});
 
     useEffect(() => {
         setFilteredAds(smallAdsArr);
@@ -16,11 +21,14 @@ const Search = () => {
 
     return (
         mapMode
-            ?   <MapWrapper>
-                    <IconWrapper>
-                        <BsListUl onClick={() => setMapMode(false)} size={"2em"} />
-                    </IconWrapper>
-                </MapWrapper>
+            ?   !isLoaded
+                    ?   <div>Loading...</div>
+                    :   <MapWrapper>
+                            <IconWrapper>
+                                <BsListUl onClick={() => setMapMode(false)} size={"2em"} />
+                            </IconWrapper>
+                            <Map />
+                        </MapWrapper>
             :   <ListWrapper>
                     <Filters>
 

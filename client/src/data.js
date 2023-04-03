@@ -1,32 +1,124 @@
 export const smallAdsArr = [
     {
-        _id: 1,
-        pic: "/assets/red-shoes.jpg",
-        price: 5,
-        name: "Red shoes like new",
-        address: "13 Rue des Oblats, LaSalle, QC H8R 3K9"
+        "_id": "823d0733-9383-4121-bd81-d9786f13e672",
+        "timestamp": "2023-03-13T21:08:58.605Z",
+        "name": "Licensed Granite Chips",
+        "authorId": "",
+        "price": "4.00",
+        "description": "The beautiful range of Apple Naturalé that has an exciting mix of natural ingredients. With the Goodness of 100% Natural Ingredients",
+        "pics": [
+            "https://loremflickr.com/640/480/fashion?lock=86761",
+            "https://loremflickr.com/640/480/fashion?lock=71482"
+        ],
+        "address": "690 Arlie Ferry",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                "45.54420",
+                "-73.55862"
+            ]
+        }
     },
     {
-        _id: 2,
-        pic: "/assets/red-shoes.jpg",
-        price: 5,
-        name: "Red shoes like new",
-        address: "13 Rue des Oblats, LaSalle, QC H8R 3K9"
+        "_id": "94d7a0c3-780c-4ffa-a3b5-f93ec087b589",
+        "timestamp": "2023-03-09T13:04:58.168Z",
+        "name": "Licensed Granite Chicken",
+        "authorId": "",
+        "price": "75.00",
+        "description": "The Nagasaki Lander is the trademarked name of several series of Nagasaki sport bikes, that started with the 1984 ABC800J",
+        "pics": [
+            "https://loremflickr.com/640/480/fashion?lock=7880"
+        ],
+        "address": "79611 Bahringer Mission",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                "45.62698",
+                "-73.57537"
+            ]
+        }
     },
     {
-        _id: 3,
-        pic: "/assets/red-shoes.jpg",
-        price: 5,
-        name: "Red shoes like new",
-        address: "13 Rue des Oblats, LaSalle, QC H8R 3K9"
+        "_id": "c0070ac4-2e3e-4b45-b278-33591031e938",
+        "timestamp": "2023-03-31T10:05:23.191Z",
+        "name": "Ergonomic Wooden Bacon",
+        "authorId": "",
+        "price": "61.00",
+        "description": "New range of formal shirts are designed keeping you in mind. With fits and styling that will make you stand apart",
+        "pics": [],
+        "address": "30915 Austin Common",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                "45.64015",
+                "-73.56977"
+            ]
+        }
     },
     {
-        _id: 4,
-        pic: "/assets/red-shoes.jpg",
-        price: 5,
-        name: "Red shoes like new",
-        address: "13 Rue des Oblats, LaSalle, QC H8R 3K9"
+        "_id": "d375d0fa-daa1-45ee-9571-a23566f2ae45",
+        "timestamp": "2023-03-31T02:22:41.341Z",
+        "name": "Oriental Fresh Salad",
+        "authorId": "",
+        "price": "138.00",
+        "description": "Boston's most advanced compression wear technology increases muscle oxygenation, stabilizes active muscles",
+        "pics": [
+            "https://loremflickr.com/640/480/fashion?lock=72772",
+            "https://loremflickr.com/640/480/fashion?lock=13131",
+            "https://loremflickr.com/640/480/fashion?lock=67195",
+            "https://loremflickr.com/640/480/fashion?lock=72216"
+        ],
+        "address": "45940 Mekhi Road",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                "45.65078",
+                "-73.56329"
+            ]
+        }
+    },
+    {
+        "_id": "bf46aea8-ce09-48a5-b2b4-181ba02f85a1",
+        "timestamp": "2023-03-30T21:45:01.971Z",
+        "name": "Refined Bronze Soap",
+        "authorId": "",
+        "price": "18.00",
+        "description": "Carbonite web goalkeeper gloves are ergonomically designed to give easy fit",
+        "pics": [
+            "https://loremflickr.com/640/480/fashion?lock=45632",
+            "https://loremflickr.com/640/480/fashion?lock=98580",
+            "https://loremflickr.com/640/480/fashion?lock=87495"
+        ],
+        "address": "469 Cleta Cliffs",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                "45.54913",
+                "-73.57033"
+            ]
+        }
+    },
+    {
+        "_id": "836cdc64-48c2-45a0-9a35-74400c7cdb38",
+        "timestamp": "2023-03-30T10:08:43.801Z",
+        "name": "Unbranded Bronze Hat",
+        "authorId": "",
+        "price": "65.00",
+        "description": "The slim & simple Maple Gaming Keyboard from Dev Byte comes with a sleek body and 7- Color RGB LED Back-lighting for smart functionality",
+        "pics": [
+            "https://loremflickr.com/640/480/fashion?lock=69036",
+            "https://loremflickr.com/640/480/fashion?lock=95315"
+        ],
+        "address": "7694 Rath Loop",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                "45.55934",
+                "-73.56723"
+            ]
+        }
     }
+
 
 ]
 

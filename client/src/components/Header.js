@@ -1,11 +1,15 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { AiOutlineUser, AiOutlineHeart } from "react-icons/ai";
+import { AiOutlineHeart } from "react-icons/ai";
+import { useAuth0 } from "@auth0/auth0-react";
+import LoginBtn from "./LoginBtn";
+import UserInHeader from "./UserInHeader";
 
 import Button from "./shared/Button";
 
 const Header = () => {
+    const { isLoading, error } = useAuth0();
     const [inputValue, setInputValue] = useState('');
 
     const handleInputSubmit = () => {
@@ -31,11 +35,14 @@ const Header = () => {
                     <Button type={"submit"}>Search</Button>
                 </Form>
                 <Anchor to={"/favourites"}>
-                    <AiOutlineHeart size={'2em'}/>
+                    <AiOutlineHeart size={'2rem'}/>
                 </Anchor>
-                <Anchor to={"/my-profile"} >
-                    <AiOutlineUser size={'2em'}/>
-                </Anchor>
+                {!error && !isLoading && 
+                    <>
+                        <LoginBtn />
+                        <UserInHeader />
+                    </>
+                }
                 <Button type={"button"}>Post ad</Button>
             </Wrapper>
         </WrapperFullWidth>

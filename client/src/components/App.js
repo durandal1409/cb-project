@@ -12,6 +12,7 @@ import Profile from "./Profile";
 import CreateAd from "./CreateAd";
 
 const App = () => {
+  
   return (
     <BrowserRouter>
             <GlobalStyles />
@@ -21,7 +22,8 @@ const App = () => {
                   <Route path="/" element={<Home />} />
                   <Route path="/search" element={<Search />} />
                   <Route path="/item/:itemId" element={<Item />} />
-                  <Route path="/profile/:userId" element={<Profile />} />
+                  <Route path="/user/:userId" element={<Profile />} />
+                  <Route path="/profile" element={<Profile />} />
                   <Route path="/post-ad" element={<CreateAd />} />
                   <Route path="" element={<h1>404: Oops!</h1>} />
               </Routes>

@@ -2,7 +2,7 @@ const { MongoClient } = require("mongodb");
 const { faker } = require('@faker-js/faker/locale/en_CA');
 const { v4: uuidv4 } = require("uuid");
 
-require("dotenv").config();
+require("dotenv").config({ path: path.join(__dirname, "../.env") });
 const { MONGO_URI } = process.env;
 
 const options = {

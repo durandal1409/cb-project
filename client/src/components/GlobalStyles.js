@@ -6,6 +6,7 @@ export default createGlobalStyle`
 	--color-background-dark: #E4DCCF;
     --color-headline: #00214d;
     --color-paragraph: #002B5B;
+	--color-text: #342c1d;
     --color-button: #002B5B;
 	--color-button-hover: #EA5455;
 	--color-button-disable: #7f95ad;
@@ -72,7 +73,7 @@ h1, h2, h3, h4, h5, h6 {
 	font-family: var(--font-heading);
 	color: var(--color-headline);
 }
-body, p, div, a {
+body, p, div, a, button {
 	font-family: var(--font-body);
 	color: var(--color-paragraph);
 }

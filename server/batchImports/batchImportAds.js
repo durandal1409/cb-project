@@ -2,7 +2,7 @@ const { MongoClient } = require("mongodb");
 const { faker } = require('@faker-js/faker/locale/en_CA');
 const { v4: uuidv4 } = require("uuid");
 
-require("dotenv").config();
+require("dotenv").config({ path: path.join(__dirname, "../.env") });
 const { MONGO_URI } = process.env;
 
 const options = {
@@ -13,7 +13,7 @@ const options = {
 const NEW_ADS_NUM = 100;
 
 const LAT_BOUNDARIES = [45.50, 45.67];
-const LNG_BOUNDARIES = [73.5586, 73.5778];
+const LNG_BOUNDARIES = [-73.5586, -73.5778];
 const MAX_PICS_NUM = 6;
 
 // This function takes the objects from both companies.json and items.json and sends them to the Mongodb GroupProject database in their respective collection
