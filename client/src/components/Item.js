@@ -6,6 +6,7 @@ import { adDocument, userDocument, smallAdsArr } from "../data";
 
 import SmallItem from "./shared/SmallItem";
 import ContactForm from "./shared/ContactForm";
+import PicsCarousel from "./Carousel";
 
 const Item = () => {
     const { itemId } = useParams();
@@ -32,13 +33,7 @@ const Item = () => {
                     <AdTitle>{adData.name}</AdTitle>
                     <AdActions>Add to my favorites/update/delete</AdActions>
                     <PicWrapper>
-                        <BigPic></BigPic>
-                        <SmallPics>
-                            <SmallPic></SmallPic>
-                            <SmallPic></SmallPic>
-                            <SmallPic></SmallPic>
-                            <SmallPic></SmallPic>
-                        </SmallPics>
+                        <PicsCarousel />
                     </PicWrapper>
                     <Description>
                         <h4>Description:</h4>
@@ -114,22 +109,22 @@ const AdTitle = styled.div`
     font-size: 2rem;
     padding: 10px 0;
 `
-const BigPic = styled.div`
-    width: 100%;
-    height: 500px;
-    border: 1px solid black;
-    margin: 10px 0;
-`
-const SmallPics = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-`
-const SmallPic = styled.div`
-    width: 70px;
-    height: 70px;
-    border: 1px solid black;
-`
+// const BigPic = styled.div`
+//     width: 100%;
+//     height: 500px;
+//     border: 1px solid black;
+//     margin: 10px 0;
+// `
+// const SmallPics = styled.div`
+//     width: 100%;
+//     display: flex;
+//     justify-content: space-around;
+// `
+// const SmallPic = styled.div`
+//     width: 70px;
+//     height: 70px;
+//     border: 1px solid black;
+// `
 const AdActions = styled.div`
 `
 const Description = styled.div`
