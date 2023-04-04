@@ -27,8 +27,8 @@ const batchImport = async () =>{
         const db = client.db("cb-project");
         
         // dropping old ads and users collection
-        await db.collection("ads").drop();
-        await db.collection("users").drop();
+        await db.collection('ads').deleteMany({});
+        await db.collection('users').deleteMany({});
 
         const users = [];
         // creating new user objects and pushing them to users array
@@ -53,7 +53,7 @@ const batchImport = async () =>{
         const ads = [];
         // creating new ad objects and pushing them to ads array
         for (let i = 0; i < NEW_ADS_NUM; i++) {
-            const picsNum = Math.floor(Math.random() * MAX_PICS_NUM);
+            const picsNum = Math.ceil(Math.random() * MAX_PICS_NUM);
             const picsArr = [...Array(picsNum)].map(pic => faker.image.fashion(640, 480, true))
             const randomUserId = users[Math.floor(Math.random() * users.length)]._id;
             const newAd = {

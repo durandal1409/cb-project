@@ -10,7 +10,19 @@ const Home = () => {
     const [latestAds, setLatestAds] = useState(null);
     const { user } = useAuth0();
     useEffect(() => {
-        setRecommendedAds(smallAdsArr);
+        fetch(`/api/ads/recommended/${user?._id}`)
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.status === 200) {
+                    setRecommendedAds(data.data);
+                } else {
+                    window.alert(data.message);
+                    throw new Error(data.message);
+                }
+            })
+            .catch((error) => {
+                window.alert(error);
+            })
     }, []);
     useEffect(() => {
         setLatestAds(smallAdsArr);
@@ -19,9 +31,9 @@ const Home = () => {
             <>
             <CategoriesWrapper>
                 <CategoriesInnerWrapper>
-                    <Category to={"/"}>Men</Category>
-                    <Category to={"/"}>Women</Category>
-                    <Category to={"/"}>Kids</Category>
+                    <Category to={"/search/men"}>Men</Category>
+                    <Category to={"/search/women"}>Women</Category>
+                    <Category to={"/search/kids"}>Kids</Category>
                 </CategoriesInnerWrapper>
             </CategoriesWrapper>
         <HomeWrapper>

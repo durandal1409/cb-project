@@ -106,9 +106,7 @@ const getSearchedAds = async (req, res) => {
         }
     
         // find ads according to the search
-        const ads = [];
-        let cursor = await db.collection(adsCollection).aggregate(agg);
-        await cursor.forEach((doc) => ads.push(doc));
+        const ads = await db.collection(adsCollection).aggregate(agg).toArray();
     
         client.close();
         if (ads.length) {
@@ -125,7 +123,7 @@ const getSearchedAds = async (req, res) => {
     }
 }
 const getRecommended = async (req, res) => {
-    // if uses is logged in and user ID has been passed
+    // if user is logged in and user ID has been passed
     // return ads according to the last search
     // else return 4 random ads
     try {
@@ -155,12 +153,11 @@ const getRecommended = async (req, res) => {
                 },
                 {
                     '$limit': 4
+                },
+                { 
+                    $project : { _id : 1, name: 1, price: 1, address: 1, pic: {$first: "$pics"}} 
                 }
-                // { 
-                //     $project : { _id : 1, name: 1, price: 1, address: 1, pic: {$first: "$pics"}} 
-                // }
             ];
-            console.log("agg: ", agg);
             ads = await db.collection(adsCollection).aggregate(agg).toArray();
         // if no user or no last search
         // then return 4 random ads
@@ -188,10 +185,7 @@ const getLatest = async (req, res) => {
         await client.connect();
         const db = client.db(dbName);
     
-        const ads = [];
-
-        let cursor = await db.collection(adsCollection).find().sort({"timestamp": -1}).limit(4);
-        await cursor.forEach((doc) => ads.push(doc));
+        const ads = await db.collection(adsCollection).find().sort({"timestamp": -1}).limit(4).toArray();
 
         client.close();
         if (ads.length) {
@@ -217,20 +211,26 @@ const getSimilar = async (req, res) => {
     const agg = [
         {
             "$search": {
-                "compound":{
-                    "must":[{
+                // "compound":{
+                //     "should":[{
                         "moreLikeThis": {
-                            "like": {name: title}
+                            "like": {name: "Soft"}
                         }
-                    }],
-                    "mustNot":[{
-                        "equals": {
-                            "path": "_id",
-                            "value": adId
-                        }
-                    }]
-                }
+                //     }],
+                //     "mustNot":[{
+                //         "equals": {
+                //             "path": "_id",
+                //             "value": adId
+                //         }
+                //     }]
+                // }
             }
+        },
+        { 
+            "$limit": 4
+        },
+        { 
+            $project : { _id : 1, name: 1, price: 1, address: 1, pic: {$first: "$pics"}} 
         }
     ];
 
