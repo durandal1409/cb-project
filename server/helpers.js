@@ -133,7 +133,7 @@ const getRecommended = async (req, res) => {
         await client.connect();
         const db = client.db(dbName);
 
-        const ads = [];
+        let ads = [];
         let lastSearch;
 
         // looking for the last search phrase of user
@@ -156,14 +156,16 @@ const getRecommended = async (req, res) => {
                 {
                     '$limit': 4
                 }
+                // { 
+                //     $project : { _id : 1, name: 1, price: 1, address: 1, pic: {$first: "$pics"}} 
+                // }
             ];
-            let cursor = await db.collection(adsCollection).aggregate(agg);
-            await cursor.forEach((doc) => ads.push(doc));
+            console.log("agg: ", agg);
+            ads = await db.collection(adsCollection).aggregate(agg).toArray();
         // if no user or no last search
         // then return 4 random ads
         } else {
-            let cursor = await db.collection(adsCollection).aggregate([{ $sample: { size: 4 } }])
-            await cursor.forEach((doc) => ads.push(doc));
+            ads = await db.collection(adsCollection).aggregate([{ $sample: { size: 4 } }, { $project : { _id : 1, name: 1, price: 1, address: 1, pic: {$first: "$pics"}} } ]).toArray();
         }
     
         client.close();
