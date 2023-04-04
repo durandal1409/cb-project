@@ -2,10 +2,10 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { adDocument, userDocument, smallAdsArr } from "../data";
+import { adDocument, userDocument, smallAdsArr } from "../../data";
 
-import SmallItem from "./shared/SmallItem";
-import ContactForm from "./shared/ContactForm";
+import SmallItem from "../shared/SmallItem";
+import ContactForm from "../shared/ContactForm";
 import PicsCarousel from "./Carousel";
 
 const Item = () => {
@@ -102,6 +102,7 @@ const AdsWrapper = styled.div`
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    gap: 10px;
 `
 const PicWrapper = styled.div`
 `
@@ -109,22 +110,6 @@ const AdTitle = styled.div`
     font-size: 2rem;
     padding: 10px 0;
 `
-// const BigPic = styled.div`
-//     width: 100%;
-//     height: 500px;
-//     border: 1px solid black;
-//     margin: 10px 0;
-// `
-// const SmallPics = styled.div`
-//     width: 100%;
-//     display: flex;
-//     justify-content: space-around;
-// `
-// const SmallPic = styled.div`
-//     width: 70px;
-//     height: 70px;
-//     border: 1px solid black;
-// `
 const AdActions = styled.div`
 `
 const Description = styled.div`

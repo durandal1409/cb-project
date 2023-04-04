@@ -6,7 +6,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import LoginBtn from "./LoginBtn";
 import UserInHeader from "./UserInHeader";
 
-import Button from "./shared/Button";
+import Button from "../shared/Button";
 
 const Header = () => {
     const { isLoading, error } = useAuth0();

@@ -1,6 +1,7 @@
 const { MongoClient } = require("mongodb");
 const { faker } = require('@faker-js/faker/locale/en_CA');
 const { v4: uuidv4 } = require("uuid");
+const path = require("path");
 
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
 const { MONGO_URI } = process.env;
@@ -10,7 +11,7 @@ const options = {
     useUnifiedTopology: true,
   };
 
-const NEW_USERS_NUM = 100;
+const NEW_USERS_NUM = 10;
 
 // This function takes the objects from both companies.json and items.json and sends them to the Mongodb GroupProject database in their respective collection
 const batchImport = async () =>{
@@ -33,7 +34,7 @@ const batchImport = async () =>{
                 fname,
                 lname,
                 email,
-                googleId: "",
+                // googleId: "",
                 avatar: faker.internet.avatar(),
                 ads: [
                     

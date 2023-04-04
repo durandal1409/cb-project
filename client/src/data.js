@@ -99,7 +99,49 @@ export const smallAdsArr = [
         }
     },
     {
-        "_id": "836cdc64-48c2-45a0-9a35-74400c7cdb38",
+        "_id": "bf46aea8-ce09-48a5-b2b4-181ba02f85a2",
+        "timestamp": "2023-03-30T21:45:01.971Z",
+        "name": "Refined Bronze Soap",
+        "authorId": "",
+        "price": "18.00",
+        "description": "Carbonite web goalkeeper gloves are ergonomically designed to give easy fit",
+        "pics": [
+            "https://loremflickr.com/640/480/fashion?lock=45632",
+            "https://loremflickr.com/640/480/fashion?lock=98580",
+            "https://loremflickr.com/640/480/fashion?lock=87495"
+        ],
+        "address": "469 Cleta Cliffs",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                "45.54913",
+                "-73.57033"
+            ]
+        }
+    },
+    {
+        "_id": "bf46aea8-ce09-48a5-b2b4-181ba02f85a3",
+        "timestamp": "2023-03-30T21:45:01.971Z",
+        "name": "Refined Bronze Soap",
+        "authorId": "",
+        "price": "18.00",
+        "description": "Carbonite web goalkeeper gloves are ergonomically designed to give easy fit",
+        "pics": [
+            "https://loremflickr.com/640/480/fashion?lock=45632",
+            "https://loremflickr.com/640/480/fashion?lock=98580",
+            "https://loremflickr.com/640/480/fashion?lock=87495"
+        ],
+        "address": "469 Cleta Cliffs",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                "45.54913",
+                "-73.57033"
+            ]
+        }
+    },
+    {
+        "_id": "836cdc64-48c2-45a0-9a35-74400c7cdb384",
         "timestamp": "2023-03-30T10:08:43.801Z",
         "name": "Unbranded Bronze Hat",
         "authorId": "",

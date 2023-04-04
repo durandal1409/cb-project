@@ -3,11 +3,11 @@ import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import GlobalStyles from "./GlobalStyles";
-import Header from "./Header";
+import Header from "./Header/Header";
 import Footer from "./Footer";
 import Home from "./Home";
 import Search from "./Search/Search";
-import Item from "./Item";
+import Item from "./Item/Item";
 import Profile from "./Profile";
 import CreateAd from "./CreateAd";
 

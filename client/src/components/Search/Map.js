@@ -1,13 +1,17 @@
 import styled from "styled-components";
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
-import { GoogleMap, Marker, MarkerClusterer} from "@react-google-maps/api";
+import { GoogleMap, Marker, MarkerClusterer, InfoWindow} from "@react-google-maps/api";
 import { smallAdsArr } from "../../data";
+
+import SmallItem from "../shared/SmallItem";
 
 const Map = () => {
     const center = useMemo(() => ({lat: 45.5, lng: -73.5}), []);
     const options = useMemo(() => ({disableDefaultUI: true, clickableIcons: false}), []);
     const mapRef = useRef();
     const [ads, setAds] = useState(null);
+    const [selected, setSelected] = useState(null);
+    console.log("sel: ", selected);
 
     const onLoad = useCallback((map) => (mapRef.current = map), []);
 
@@ -15,10 +19,6 @@ const Map = () => {
         setAds(smallAdsArr);
     }, []);
 
-    const handleMarkerClick = (adId) => {
-        const clickedAd = ads.find(ad => ad._id === adId);
-        console.log("marker: ", clickedAd);
-    }
     return (
         <Wrapper>
             <GoogleMap 
@@ -34,11 +34,24 @@ const Map = () => {
                                     key={ad._id}
                                     position={{lat: Number(ad.location.coordinates[0]), lng: Number(ad.location.coordinates[1])}}
                                     clusterer={clusterer}
-                                    onClick={() => handleMarkerClick(ad._id)}
+                                    onClick={() => setSelected(ad)}
                                 />
                     })}
 
                 </MarkerClusterer>}
+                {selected 
+                    ?   <InfoWindow 
+                            position={{lat: Number(selected.location.coordinates[0]), lng: Number(selected.location.coordinates[1])}}
+                            onCloseClick={() => setSelected(null)}
+                        >
+                            <SmallItem 
+                                name={selected.name}
+                                price={selected.price}
+                                picSrc={selected.picSrc}
+                                _id={selected._id}
+                            />
+                        </InfoWindow>
+                    :   null}
             </GoogleMap>
         </Wrapper>
     )
