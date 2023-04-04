@@ -6,7 +6,7 @@ import GlobalStyles from "./GlobalStyles";
 import Header from "./Header";
 import Footer from "./Footer";
 import Home from "./Home";
-import Search from "./Search";
+import Search from "./Search/Search";
 import Item from "./Item";
 import Profile from "./Profile";
 import CreateAd from "./CreateAd";
@@ -20,7 +20,7 @@ const App = () => {
             <Wrapper>
               <Routes>
                   <Route path="/" element={<Home />} />
-                  <Route path="/search/:bigCategory/:subcategory" element={<Search />} />
+                  <Route path="/search/*" element={<Search />} />
                   <Route path="/item/:itemId" element={<Item />} />
                   <Route path="/user/:userId" element={<Profile />} />
                   <Route path="/profile" element={<Profile />} />

@@ -153,7 +153,7 @@ export const adDocument = {
     }
 }
 
-const taxonomy = {
+const taxonomy1 = {
     category: [
         {
             _id: 1,
@@ -232,32 +232,85 @@ const taxonomy = {
 }
 
 
-const women = {
-    "jackets and vests": {
-        "parkas": "",
-        "insulated & down": "",
-        "vests": "",
-        "rain jackets": "",
-        "windbreakers": ""
-    },
-    "tops": {
-        "long sleeve": "",
-        "short sleeve": "",
-        "t-shirts": "",
-        "sweatshirts and hoodies": ""
-    },
-    "bottoms": {
-        "pants": "",
-        "shorts": "",
-        "skirts": "",
-        "leggins": "",
+export const taxonomy = {
+    "Women" : {
+        "jackets and vests": {
+            "parkas": {},
+            "insulated & down": {},
+            "vests": {},
+            "rain jackets": {},
+            "windbreakers": {}
+        },
+        "tops": {
+            "long sleeve": {},
+            "short sleeve": {},
+            "t-shirts": {},
+            "sweatshirts and hoodies": {}
+        },
+        "bottoms": {
+            "pants": {},
+            "shorts": {},
+            "skirts": {},
+            "leggins": {},
 
+        },
+        "dresses": {},
+        "accessories": {
+            "hats": {},
+            "gloves": {},
+            "bags": {}
+        }
     },
-    "dresses": "",
-    "accessories": {
-        "hats": "",
-        "gloves": "",
-        "bags": ""
+    "Men" : {
+        "jackets and vests": {
+            "parkas": {},
+            "insulated & down": {},
+            "vests": {},
+            "rain jackets": {},
+            "windbreakers": {}
+        },
+        "tops": {
+            "long sleeve": {},
+            "short sleeve": {},
+            "t-shirts": {},
+            "sweatshirts and hoodies": {}
+        },
+        "bottoms": {
+            "pants": {},
+            "shorts": {}
+        },
+        "accessories": {
+            "hats": {},
+            "gloves": {},
+            "bags": {}
+        }
+    },
+    "Kids" : {
+        "jackets and vests": {
+            "parkas": {},
+            "insulated & down": {},
+            "vests": {},
+            "rain jackets": {},
+            "windbreakers": {}
+        },
+        "tops": {
+            "long sleeve": {},
+            "short sleeve": {},
+            "t-shirts": {},
+            "sweatshirts and hoodies": {}
+        },
+        "bottoms": {
+            "pants": {},
+            "shorts": {},
+            "skirts": {},
+            "leggins": {},
+        },
+        "dresses": {},
+        "accessories": {
+            "hats": {},
+            "gloves": {},
+            "bags": {}
+        }
     }
 }
 
@@ -289,7 +342,7 @@ export const smallCategories = {
         "leggins": {},
 
     },
-    "dresses": "",
+    "dresses": {},
     "accessories": {
         "hats": {},
         "gloves": {},

@@ -3,16 +3,14 @@ import { useLoadScript } from "@react-google-maps/api";
 import styled from "styled-components";
 import { GrMapLocation } from "react-icons/gr";
 import { BsListUl } from "react-icons/bs";
-import { smallAdsArr } from "../data";
+import { smallAdsArr } from "../../data";
 
-import SmallItem from "./shared/SmallItem";
+import SmallItem from "../shared/SmallItem";
 import Map from "./Map";
 import Filters from "./Filters";
 
 const Search = () => {
-    // TODO:
-    // change mapMode to false
-    const [mapMode, setMapMode] = useState(true);
+    const [mapMode, setMapMode] = useState(false);
     const [filteredAds, setFilteredAds] = useState(null);
     const {isLoaded} = useLoadScript({googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY});
 
@@ -25,22 +23,18 @@ const Search = () => {
             ?   !isLoaded
                     ?   <div>Loading...</div>
                     :   <MapWrapper>
-                            <Filters>
-
-                            </Filters>
-                            <IconWrapper>
+                            <Filters />
+                            <IconListWrapper>
                                 <BsListUl onClick={() => setMapMode(false)} size={"2em"} />
-                            </IconWrapper>
+                            </IconListWrapper>
                             <Map />
                         </MapWrapper>
             :   <ListWrapper>
-                    <Filters>
-
-                    </Filters>
+                    <Filters />
                     <List>
-                        <IconWrapper>
+                        <IconMapWrapper>
                             <GrMapLocation onClick={() => setMapMode(true)} size={"2em"} />
-                        </IconWrapper>
+                        </IconMapWrapper>
                         <AdsWrapper>
                             {filteredAds && filteredAds.map(ad => {
                                 return <SmallItem
@@ -62,6 +56,7 @@ const Search = () => {
 const MapWrapper = styled.div`
     width: 100%;
     display: flex;
+    position: relative;
 `
 const ListWrapper = styled.div`
     width: var(--content-width);
@@ -71,7 +66,7 @@ const ListWrapper = styled.div`
     padding-top: 30px;
 `
 const AdsWrapper = styled.div`
-    margin-top: 35px;
+    margin-top: 55px;
     width: var(--big-block-width);
     display: flex;
     flex-wrap: wrap;
@@ -82,20 +77,44 @@ const AdsWrapper = styled.div`
 `
 const List = styled.div`
 `
-const IconWrapper = styled.div`
-    position: fixed;
-    margin-left: 10px;
+const IconListWrapper = styled.div`
+    position: absolute;
+    left: calc(var(--small-block-width) + 20px);
+    top: 10px;
+    z-index: 2;
+    width: 30px;
+    height: 30px;
+    padding: 7px 10px;
+    background-color: var(--color-background-white);
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 2px 8px -2px #000000; 
+    box-shadow: 0px 2px 8px -2px #000000;
     svg {
         cursor: pointer;
-        color: var(--color-paragraph);
+        color: var(--color-button);
+        &:hover {
+            color: var(--color-button-hover);
+        }
+    }
+`
+const IconMapWrapper = styled.div`
+    position: fixed;
+    margin-left: 10px;
+    z-index: 2;
+    width: 30px;
+    height: 30px;
+    padding: 7px 10px;
+    background-color: var(--color-background-dark);
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 2px 8px -2px #000000; 
+    box-shadow: 0px 2px 8px -2px #000000;
+    svg {
+        cursor: pointer;
         path {
             stroke: var(--color-paragraph);
         }
         &:hover path {
             stroke: var(--color-button-hover);
-        }
-        &:hover {
-            color: var(--color-button-hover);
         }
     }
 `

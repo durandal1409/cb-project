@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { GoogleMap, Marker, MarkerClusterer} from "@react-google-maps/api";
-import { smallAdsArr } from "../data";
+import { smallAdsArr } from "../../data";
 
 const Map = () => {
     const center = useMemo(() => ({lat: 45.5, lng: -73.5}), []);
@@ -45,7 +45,7 @@ const Map = () => {
 }
 
 const Wrapper = styled.div`
-    width: 100%;
+    width: calc(100% - var(--small-block-width));
     height: 100vh;
     .map-container {
         width: 100%;
