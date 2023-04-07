@@ -3,17 +3,37 @@ import { taxonomy } from "../../data";
 import { useState } from "react";
 
 const Categories = () => {
-    const [categories, setCategories] = useState({});
+    const [categories, setCategories] = useState([]);
 
     const handleChange = (e, depth) => {
-        setCategories(prev => ({...prev, [depth]: e.target.value}));
+        setCategories(() => {
+            console.log("here: ", depth, categories[depth], categories);
+            if (categories[depth] === undefined) {
+                console.log("h1");
+                return [...categories, e.target.value];
+            } else {
+                console.log("h2");
+                return categories
+                        .filter((category, ind) => ind <= depth)
+                        .map((category, ind) => {
+                            if (ind === depth) {
+                                category = e.target.value
+                            }
+                            return category;
+                        })
+            }
+        });
+        
     }
 
     
     const recursiveCategory = (categoriesObj, depth) => {
+        // TODO:
+        // fix child dropdown keeps value when parent changes
+
         console.log("categoriesObj: ", categoriesObj, "categories:", categories, "depth: ", depth);
         if ((categoriesObj && Object.keys(categoriesObj).length === 0)) {
-            console.log("exit", categoriesObj[categories[depth]], categoriesObj, categories, depth);
+            // console.log("exit", categoriesObj[categories[depth]], categoriesObj, categories, depth);
             return 
         } else {
             return (

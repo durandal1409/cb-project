@@ -62,7 +62,7 @@ const batchImport = async () =>{
                 name: faker.commerce.productName(),
                 brand: faker.company.name(),
                 color: faker.color.human(),
-                authorId: randomUserId,
+                userId: randomUserId,
                 price: faker.commerce.price(1, 200),
                 description: faker.commerce.productDescription(),
                 pics: picsArr,

@@ -8,6 +8,9 @@ import {fill} from "@cloudinary/url-gen/actions/resize";
 import Button from "../shared/Button";
 
 const PicsUpload = ({images, setImages, setFormData}) => {
+    // TODO:
+    // do I still need images state here and in CreatAd?
+
     // Create a Cloudinary instance
     const cld = new Cloudinary({
         cloud: {

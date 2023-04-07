@@ -239,9 +239,7 @@ const getSimilar = async (req, res) => {
         await client.connect();
         const db = client.db(dbName);
     
-        const ads = [];
-        let cursor = await db.collection(adsCollection).aggregate(agg);
-        await cursor.forEach((doc) => ads.push(doc));
+        const ads = await db.collection(adsCollection).aggregate(agg).toArray();
     
         client.close();
         if (ads.length) {
@@ -310,7 +308,62 @@ const getUser = async (req, res) => {
     }
 }
 const postAd = async (req, res) => {
+    const { 
+        userId, 
+        name, 
+        // categories,
+        description, 
+        pics, 
+        price, 
+        address } = req.body;
+
+    if (!userId || !name || !description || !pics || !price || !address) {
+        console.log("dd: ", userId, name, description, pics, price, address);
+        res.status(422).json({
+            status: 422, 
+            data: req.body, 
+            message: "Please, provide name, categories, description, pics, price and address."
+        })
+        return;
+    }
     
+    try {
+        const client = new MongoClient(MONGO_URI, options);
+        await client.connect();
+        const db = client.db(dbName);
+    
+        // add only what we need for ad, exclude any other info that might be in req.body
+        const adObj = {
+                _id: uuidv4(),
+                userId, 
+                name, 
+                // categories,
+                description, 
+                pics, 
+                price, 
+                address
+            };
+        const adsRes = await db.collection(adsCollection).insertOne(adObj);
+        if (!adsRes.acknowledged) {
+            res.status(404).json({
+                status: 404,
+                message: "Ad not created.",
+            });
+        } else {
+            // adding ad id to user in users collection
+            const usersRes = await db.collection(usersCollection).updateOne({_id: adObj.userId}, {$push: {ads: adObj._id}});
+            console.log("usersRes: ", usersRes);
+            res.status(200).json({
+                status: 201,
+                data: {_id: adObj._id},
+                message: "Ad created."
+            })
+        }
+        client.close();
+    } catch(err) {
+        console.log(err.stack);
+        res.status(500).json({ status: 500, message: err.message });
+    }
 }
 const updateAd = async (req, res) => {
     
