@@ -12,8 +12,8 @@ const Header = () => {
     const { isLoading, error } = useAuth0();
     const [inputValue, setInputValue] = useState('');
 
-    const handleInputSubmit = () => {
-
+    const handleInputSubmit = (e) => {
+        e.preventDefault();
     }
 
     return (

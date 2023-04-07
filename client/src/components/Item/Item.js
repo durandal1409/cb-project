@@ -20,8 +20,8 @@ const Item = () => {
         setSimilarAds(smallAdsArr);
     }, []);
 
-    const handleMessage = () => {
-
+    const handleMessage = (e) => {
+        e.preventDefault();
     }
     return (
         adData && <Wrapper>

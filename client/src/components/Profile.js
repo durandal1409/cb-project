@@ -16,8 +16,8 @@ const Profile = () => {
         setSellerAds(smallAdsArr);
     }, []);
 
-    const handleMessage = () => {
-
+    const handleMessage = (e) => {
+        e.preventDefault();
     }
     return (
         sellerData &&

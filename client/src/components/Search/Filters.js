@@ -9,8 +9,14 @@ const Filters = ({currentCategory, currentSubcategory}) => {
     // make sure it's possible to go to a category with whitespaces
 
     const params = useParams();
+
+    // making array of chosen categories out of params
     const paramsArr = params["*"].split("/");
 
+    // function makes lists of nested categories to filter ads
+    // it recursively goes through keys of nested objects of categoriesObj
+    // making list of nested categories for each category that has been clicked
+    // it stops when category has no nested categories
     const recursiveCategory = (categoriesObj, paramsArr, depth, path) => {
         if (Object.keys(categoriesObj).length === 0) {
             return 

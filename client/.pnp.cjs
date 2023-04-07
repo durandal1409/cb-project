@@ -29,6 +29,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["@auth0/auth0-react", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:2.0.1"],\
+            ["@cloudinary/react", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:1.11.2"],\
+            ["@cloudinary/url-gen", "npm:1.9.2"],\
             ["@react-google-maps/api", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:2.18.1"],\
             ["@testing-library/jest-dom", "npm:5.16.5"],\
             ["@testing-library/react", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:13.4.0"],\
@@ -2887,6 +2889,64 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@cloudinary/html", [\
+        ["npm:1.11.2", {\
+          "packageLocation": "./.yarn/cache/@cloudinary-html-npm-1.11.2-9a0a361c27-526654cc76.zip/node_modules/@cloudinary/html/",\
+          "packageDependencies": [\
+            ["@cloudinary/html", "npm:1.11.2"],\
+            ["@types/lodash.clonedeep", "npm:4.5.7"],\
+            ["@types/lodash.debounce", "npm:4.0.7"],\
+            ["@types/node", "npm:14.18.42"],\
+            ["lodash.clonedeep", "npm:4.5.0"],\
+            ["lodash.debounce", "npm:4.0.8"],\
+            ["typescript", "patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=ad5954"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@cloudinary/react", [\
+        ["npm:1.11.2", {\
+          "packageLocation": "./.yarn/cache/@cloudinary-react-npm-1.11.2-533423de70-beea9b3a4c.zip/node_modules/@cloudinary/react/",\
+          "packageDependencies": [\
+            ["@cloudinary/react", "npm:1.11.2"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:1.11.2", {\
+          "packageLocation": "./.yarn/__virtual__/@cloudinary-react-virtual-9ebbdfa14d/0/cache/@cloudinary-react-npm-1.11.2-533423de70-beea9b3a4c.zip/node_modules/@cloudinary/react/",\
+          "packageDependencies": [\
+            ["@cloudinary/react", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:1.11.2"],\
+            ["@cloudinary/html", "npm:1.11.2"],\
+            ["@types/react", null],\
+            ["react", "npm:18.2.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/react",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@cloudinary/transformation-builder-sdk", [\
+        ["npm:1.2.7", {\
+          "packageLocation": "./.yarn/cache/@cloudinary-transformation-builder-sdk-npm-1.2.7-a25bcaee80-b1177978a4.zip/node_modules/@cloudinary/transformation-builder-sdk/",\
+          "packageDependencies": [\
+            ["@cloudinary/transformation-builder-sdk", "npm:1.2.7"],\
+            ["@cloudinary/url-gen", "npm:1.9.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@cloudinary/url-gen", [\
+        ["npm:1.9.2", {\
+          "packageLocation": "./.yarn/cache/@cloudinary-url-gen-npm-1.9.2-5cb28fe0d4-8e6c590dd4.zip/node_modules/@cloudinary/url-gen/",\
+          "packageDependencies": [\
+            ["@cloudinary/url-gen", "npm:1.9.2"],\
+            ["@cloudinary/transformation-builder-sdk", "npm:1.2.7"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@csstools/normalize.css", [\
         ["npm:12.0.0", {\
           "packageLocation": "./.yarn/cache/@csstools-normalize.css-npm-12.0.0-b25d07810f-fbef0f7fe4.zip/node_modules/@csstools/normalize.css/",\
@@ -4673,6 +4733,35 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@types/lodash", [\
+        ["npm:4.14.192", {\
+          "packageLocation": "./.yarn/cache/@types-lodash-npm-4.14.192-07db4ce649-31e1f0543a.zip/node_modules/@types/lodash/",\
+          "packageDependencies": [\
+            ["@types/lodash", "npm:4.14.192"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/lodash.clonedeep", [\
+        ["npm:4.5.7", {\
+          "packageLocation": "./.yarn/cache/@types-lodash.clonedeep-npm-4.5.7-72d9268230-20d6a20970.zip/node_modules/@types/lodash.clonedeep/",\
+          "packageDependencies": [\
+            ["@types/lodash.clonedeep", "npm:4.5.7"],\
+            ["@types/lodash", "npm:4.14.192"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/lodash.debounce", [\
+        ["npm:4.0.7", {\
+          "packageLocation": "./.yarn/cache/@types-lodash.debounce-npm-4.0.7-efe92bf273-e873b2d77f.zip/node_modules/@types/lodash.debounce/",\
+          "packageDependencies": [\
+            ["@types/lodash.debounce", "npm:4.0.7"],\
+            ["@types/lodash", "npm:4.14.192"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@types/mime", [\
         ["npm:3.0.1", {\
           "packageLocation": "./.yarn/cache/@types-mime-npm-3.0.1-dec03536dc-4040fac73f.zip/node_modules/@types/mime/",\
@@ -4683,6 +4772,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@types/node", [\
+        ["npm:14.18.42", {\
+          "packageLocation": "./.yarn/cache/@types-node-npm-14.18.42-dc88adeabc-1c92f04a48.zip/node_modules/@types/node/",\
+          "packageDependencies": [\
+            ["@types/node", "npm:14.18.42"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
         ["npm:18.15.10", {\
           "packageLocation": "./.yarn/cache/@types-node-npm-18.15.10-93118095ab-9aeae0b683.zip/node_modules/@types/node/",\
           "packageDependencies": [\
@@ -6700,6 +6796,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["client", "workspace:."],\
             ["@auth0/auth0-react", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:2.0.1"],\
+            ["@cloudinary/react", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:1.11.2"],\
+            ["@cloudinary/url-gen", "npm:1.9.2"],\
             ["@react-google-maps/api", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:2.18.1"],\
             ["@testing-library/jest-dom", "npm:5.16.5"],\
             ["@testing-library/react", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:13.4.0"],\
@@ -11700,6 +11798,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/lodash-npm-4.17.21-6382451519-eb835a2e51.zip/node_modules/lodash/",\
           "packageDependencies": [\
             ["lodash", "npm:4.17.21"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["lodash.clonedeep", [\
+        ["npm:4.5.0", {\
+          "packageLocation": "./.yarn/cache/lodash.clonedeep-npm-4.5.0-fbc3cda4e5-92c46f094b.zip/node_modules/lodash.clonedeep/",\
+          "packageDependencies": [\
+            ["lodash.clonedeep", "npm:4.5.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -16928,6 +17035,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["typedarray-to-buffer", "npm:3.1.5"],\
             ["is-typedarray", "npm:1.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["typescript", [\
+        ["patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=ad5954", {\
+          "packageLocation": "./.yarn/cache/typescript-patch-2f73799a60-8f6260acc8.zip/node_modules/typescript/",\
+          "packageDependencies": [\
+            ["typescript", "patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=ad5954"]\
           ],\
           "linkType": "HARD"\
         }]\
