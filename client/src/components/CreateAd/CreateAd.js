@@ -8,8 +8,12 @@ import Button from "../shared/Button";
 
 const CreateAd = () => {
     const { user } = useAuth0();
-    const [images, setImages] = useState([]);
-    const [formData, setFormData] = useState({pics: []});
+    const [formData, setFormData] = useState({pics: [], categories: ['']});
+    // state for chosen dropdowns categories
+    // first element in array is holding "Select category" value
+    // not using formData state because we'll need to change
+    // the format of categories from array to sting when posting formData
+    // const [categories, setCategories] = useState(['']);
 
     const handleChange = (key, value) => {
         setFormData({
@@ -20,7 +24,8 @@ const CreateAd = () => {
 
     const handleFormSubmit = (e, formData) => {
         e.preventDefault();
-        console.log("form: ", formData);
+        
+        // console.log("form: ", formData);
         fetch("/api/ads", {
             method: "POST",
             headers: {
@@ -57,19 +62,18 @@ const CreateAd = () => {
                 />
             </Label>
             
-            <Categories />
+            <Categories formData={formData} setFormData={setFormData} />
             <Label>
                 Description
                 <Description 
                     rows="7" 
-                    // cols="50"
                     required
                     onChange={(e) => handleChange("description", e.target.value)} 
                 />
             </Label>
             <PicsUpload 
-                images={images} 
-                setImages={setImages}
+                // images={images} 
+                // setImages={setImages}
                 formData={formData}
                 setFormData={setFormData}
             />

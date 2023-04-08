@@ -374,14 +374,13 @@ const postAd = async (req, res) => {
     const { 
         userId, 
         name, 
-        // categories,
+        categories,
         description, 
         pics, 
         price, 
         address } = req.body;
 
-    if (!userId || !name || !description || !pics || !price || !address) {
-        console.log("dd: ", userId, name, description, pics, price, address);
+    if (!userId || !name || !description || !pics || !price || !address || !categories) {
         res.status(422).json({
             status: 422, 
             data: req.body, 
@@ -394,13 +393,22 @@ const postAd = async (req, res) => {
         const client = new MongoClient(MONGO_URI, options);
         await client.connect();
         const db = client.db(dbName);
-    
+
+        // before sending data we need to change categories array to string
+        // according to mongo Materialized Paths (https://www.mongodb.com/docs/manual/tutorial/model-tree-structures-with-materialized-paths/)
+        // like this ["Men", "Top", "Jackets"] --> ",Men,Top,Jackets,"
+        // 1. Check if there are empty stings and remove them
+        let path = categories.filter(el => el !== "");
+        // 2. Then make it a string and add commas at the beginning and the end
+        path = "," + path.join(",") + ",";
+        // console.log("path: ", path);
+
         // add only what we need for ad, exclude any other info that might be in req.body
         const adObj = {
                 _id: uuidv4(),
                 userId, 
                 name, 
-                // categories,
+                path,
                 description, 
                 pics, 
                 price, 

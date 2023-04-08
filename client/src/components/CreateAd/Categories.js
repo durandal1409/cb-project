@@ -2,44 +2,53 @@ import styled from "styled-components";
 import { taxonomy } from "../../data";
 import { useState } from "react";
 
-const Categories = () => {
-    const [categories, setCategories] = useState([]);
+const Categories = ({formData, setFormData}) => {
+
 
     const handleChange = (e, depth) => {
-        setCategories(() => {
-            console.log("here: ", depth, categories[depth], categories);
-            if (categories[depth] === undefined) {
-                console.log("h1");
-                return [...categories, e.target.value];
+        setFormData((prevState) => {
+            // if category from current dropdown isn't in state
+            // then add value to state and assign value of "" to the next dropdown
+            if (formData.categories[depth] === undefined) {
+                return {
+                    ...prevState,
+                    categories: [...prevState.categories, e.target.value, ""]
+                }
             } else {
-                console.log("h2");
-                return categories
-                        .filter((category, ind) => ind <= depth)
+                // if category from current dropdown is in state
+                // then we need to change it with map and assign value of "" to the next dropdown
+                // and remove all child categories after "" (filter)
+                const categories = prevState.categories
+                        .filter((category, ind) => ind <= depth + 1)
                         .map((category, ind) => {
                             if (ind === depth) {
-                                category = e.target.value
+                                category = e.target.value;
+                            } else if (ind === depth + 1) {
+                                category = "";
                             }
                             return category;
                         })
+                return {...prevState, categories}
             }
         });
         
     }
 
     
+    // the function recursively creates Dropdowns with categories
+    // it exits when categoriesObj has no nested objects
+    // it also stops if no next category selected
     const recursiveCategory = (categoriesObj, depth) => {
-        // TODO:
-        // fix child dropdown keeps value when parent changes
-
-        console.log("categoriesObj: ", categoriesObj, "categories:", categories, "depth: ", depth);
-        if ((categoriesObj && Object.keys(categoriesObj).length === 0)) {
-            // console.log("exit", categoriesObj[categories[depth]], categoriesObj, categories, depth);
+        // console.log("categoriesObj: ", categoriesObj, "categories:", categories, "depth: ", depth);
+        if ((Object.keys(categoriesObj).length === 0)) {
+            // console.log("exit - no nested objects");
             return 
         } else {
+            // console.log("continue");
             return (
                 <>
-                    <Dropdown onChange={(e) => handleChange(e, depth)}>
-                        <option value="">Select category</option>
+                    <Dropdown onChange={(e) => handleChange(e, depth)} required value={formData.categories[depth]}>
+                        <option value="" >Select category</option>
                         {Object.keys(categoriesObj).map(category => {
                             return (
                                 <option 
@@ -51,7 +60,7 @@ const Categories = () => {
                             )
                         })}
                     </Dropdown>
-                    {categoriesObj[categories[depth]] && recursiveCategory(categoriesObj[categories[depth]], depth + 1)}
+                    {categoriesObj[formData.categories[depth]] && recursiveCategory(categoriesObj[formData.categories[depth]], depth + 1)}
                 </>
             )
         }
