@@ -23,9 +23,21 @@ const Home = () => {
             .catch((error) => {
                 window.alert(error);
             })
-    }, []);
+    }, [user]);
     useEffect(() => {
-        setLatestAds(smallAdsArr);
+        fetch(`/api/ads/latest`)
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.status === 200) {
+                    setLatestAds(data.data);
+                } else {
+                    window.alert(data.message);
+                    throw new Error(data.message);
+                }
+            })
+            .catch((error) => {
+                window.alert(error);
+            })
     }, []);
     return (
             <>
@@ -40,6 +52,7 @@ const Home = () => {
             <h3>Recommended for you</h3>
             <AdsWrapper>
                 {recommendedAds && recommendedAds.map(ad => {
+                    console.log("recommendedAds: ", recommendedAds);
                     return <SmallItem
                                 key={ad._id}
                                 name={ad.name}
@@ -53,8 +66,10 @@ const Home = () => {
             <h3>Latest ads</h3>
             <AdsWrapper>
                 {latestAds && latestAds.map(ad => {
+                    console.log("latestAds: ", latestAds);
                     return <SmallItem
                                 key={ad._id}
+                                _id={ad._id}
                                 name={ad.name}
                                 price={ad.price}
                                 address={ad.address}

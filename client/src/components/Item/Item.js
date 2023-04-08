@@ -14,10 +14,43 @@ const Item = () => {
     const [sellerData, setSellerData] = useState(null);
     const [similarAds, setSimilarAds] = useState(null);
 
+
+    const chainingFetches = async () => {
+        try {
+            // get ad info
+            const itemRes = await fetch(`/api/ads/${itemId}`);
+            const itemData = await itemRes.json();
+            if (itemData.status === 200) {
+                setAdData(itemData.data);
+            } else {
+                window.alert(itemData.message);
+                throw new Error(itemData.message);
+            }
+            // get seller info
+            const sellerRes = await fetch(`/api/users/${itemData.data.userId}`);
+            const sellerData = await sellerRes.json();
+            if (sellerData.status === 200) {
+                setSellerData(sellerData.data);
+            } else {
+                window.alert(sellerData.message);
+                throw new Error(sellerData.message);
+            }
+            //  get similar ads
+            const similarRes = await fetch(`/api/ads/similar/${itemData.data.name}`);
+            const similarData = await similarRes.json();
+            if (similarData.status === 200) {
+                setSimilarAds(similarData.data);
+            } else {
+                window.alert(similarData.message);
+                throw new Error(similarData.message);
+            }
+        } catch(error) {
+            window.alert(error);
+        }
+    }
+
     useEffect(() => {
-        setAdData(adDocument);
-        setSellerData(userDocument);
-        setSimilarAds(smallAdsArr);
+        chainingFetches();
     }, []);
 
     const handleMessage = (e) => {
@@ -33,7 +66,7 @@ const Item = () => {
                     <AdTitle>{adData.name}</AdTitle>
                     <AdActions>Add to my favorites/update/delete</AdActions>
                     <PicWrapper>
-                        <PicsCarousel />
+                        <PicsCarousel picsArr={adData.pics}/>
                     </PicWrapper>
                     <Description>
                         <h4>Description:</h4>
@@ -42,7 +75,7 @@ const Item = () => {
                         <p>{adData.address}</p>
                     </Description>
                     <SimilarAds>
-                        <h3>Similar ads nearby</h3>
+                        <h3>Similar ads</h3>
                         <AdsWrapper>
                             {similarAds && similarAds.map(ad => {
                                 return <SmallItem
@@ -59,11 +92,15 @@ const Item = () => {
                 </Left>
                 <Right>
                     <h2>${adData.price}</h2>
-                    <ContactForm handleMessage={handleMessage} sellerName={sellerData.fname}/>
-                    <SellerLink to={`/profile/${sellerData._id}`}>
-                        <img src={sellerData.avatar} alt="seller photo"/>
-                        <h4>{sellerData.fname} {sellerData.lname}</h4>
-                    </SellerLink>
+                    {sellerData && 
+                    <>
+                        <ContactForm handleMessage={handleMessage} sellerName={sellerData.fname}/>
+                        <SellerLink to={`/profile/${sellerData._id}`}>
+                            <img src={sellerData.avatar} alt="seller photo"/>
+                            <h4>{sellerData.fname} {sellerData.lname}</h4>
+                        </SellerLink>
+                    </>
+                    }
                 </Right>
             </Main>
         </Wrapper>

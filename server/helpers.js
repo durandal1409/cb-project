@@ -185,7 +185,7 @@ const getLatest = async (req, res) => {
         await client.connect();
         const db = client.db(dbName);
     
-        const ads = await db.collection(adsCollection).find().sort({"timestamp": -1}).limit(4).toArray();
+        const ads = await db.collection(adsCollection).find().sort({"timestamp": -1}).limit(4).project({ _id : 1, name: 1, price: 1, address: 1, pic: {$first: "$pics"}}).toArray();
 
         client.close();
         if (ads.length) {
@@ -206,7 +206,7 @@ const getFiltered = async (req, res) => {
 }
 const getSimilar = async (req, res) => {
     // search for words from current ad title
-    const { title, adId } = req.body;
+    const { title } = req.params;
     // preparing search object
     const agg = [
         {
@@ -214,7 +214,7 @@ const getSimilar = async (req, res) => {
                 // "compound":{
                 //     "should":[{
                         "moreLikeThis": {
-                            "like": {name: "Soft"}
+                            "like": {name: title}
                         }
                 //     }],
                 //     "mustNot":[{
@@ -307,6 +307,69 @@ const getUser = async (req, res) => {
         res.status(500).json({ status: 500, message: err.message });
     }
 }
+const addUser = async (req, res) => {
+    const { 
+        _id, 
+        fname, 
+        lname,
+        email, 
+        avatar, 
+        ads } = req.body;
+
+    if (!_id) {
+        res.status(422).json({
+            status: 422, 
+            data: req.body, 
+            message: "Please, provide user id."
+        })
+        return;
+    }
+    
+    try {
+        const client = new MongoClient(MONGO_URI, options);
+        await client.connect();
+        const db = client.db(dbName);
+
+        // check if user already exists
+        const userInDb = await db.collection(usersCollection).findOne({_id});
+        if (userInDb) {
+            res.status(409).json({
+                status: 409,
+                data: {_id},
+                message: "User already exists."
+            })
+            client.close();
+            return
+        }
+    
+        // add only what we need for user, exclude any other info that might be in req.body
+        const userObj = {
+                _id, 
+                fname, 
+                lname,
+                email, 
+                avatar, 
+                ads
+            };
+        const userInsertRes = await db.collection(usersCollection).insertOne(userObj);
+        if (!userInsertRes.acknowledged) {
+            res.status(404).json({
+                status: 404,
+                message: "User not created.",
+            });
+        } else {
+            res.status(201).json({
+                status: 201,
+                data: {_id},
+                message: "User created."
+            })
+        }
+        client.close();
+    } catch(err) {
+        console.log(err.stack);
+        res.status(500).json({ status: 500, message: err.message });
+    }
+}
 const postAd = async (req, res) => {
     const { 
         userId, 
@@ -353,7 +416,7 @@ const postAd = async (req, res) => {
             // adding ad id to user in users collection
             const usersRes = await db.collection(usersCollection).updateOne({_id: adObj.userId}, {$push: {ads: adObj._id}});
             console.log("usersRes: ", usersRes);
-            res.status(200).json({
+            res.status(201).json({
                 status: 201,
                 data: {_id: adObj._id},
                 message: "Ad created."
@@ -383,6 +446,7 @@ module.exports = {
     getSimilar,
     getAd,
     getUser,
+    addUser,
     postAd,
     updateAd,
     deleteAd

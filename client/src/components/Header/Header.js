@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { AiOutlineHeart } from "react-icons/ai";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -9,11 +10,51 @@ import UserInHeader from "./UserInHeader";
 import Button from "../shared/Button";
 
 const Header = () => {
-    const { isLoading, error } = useAuth0();
+    const { isLoading, error, user } = useAuth0();
     const [inputValue, setInputValue] = useState('');
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        user && fetch("/api/users", {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                _id: user.sub,
+                fname: user.given_name,
+                lname: user.family_name,
+                email: user.email,
+                avatar: user.picture,
+                ads: []
+            })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 201 || data.status === 200) {
+                    console.log(data.message);
+                } else {
+                    console.log(data.message);
+                }
+            })
+            .catch((error) => {
+                window.alert(error);
+            })
+            
+    }, [user]);
+
 
     const handleInputSubmit = (e) => {
         e.preventDefault();
+    }
+    const handlePostAdClick = () => {
+        if (user) {
+            navigate('/create-ad');
+        } else {
+            window.alert("Please, log in.");
+        }
     }
 
     return (
@@ -43,7 +84,7 @@ const Header = () => {
                         <UserInHeader />
                     </>
                 }
-                <Button type={"button"}>Post ad</Button>
+                <Button type={"button"} handleClick={handlePostAdClick}>Post ad</Button>
             </Wrapper>
         </WrapperFullWidth>
     )

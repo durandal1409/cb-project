@@ -18,13 +18,22 @@ const PicsUpload = ({images, setImages, setFormData}) => {
         }
     });
 
+    // https://res.cloudinary.com/dgll9gjpk/image/upload/c_thumb,h_150,w_150/d0lo1z870xvdl08gjzgn?_a=AJFJtWI0
+    // https://res.cloudinary.com/demo/image/upload/c_thumb,g_face,h_150,w_150/r_20/front_face
+    // https://res.cloudinary.com/dgll9gjpk/image/upload/sqhaij459zwv234bt6ob?_a=AJFJtWI0
+    // https://res.cloudinary.com/dgll9gjpk/image/upload/v1680735022/cb-project/cjwje3sniu9grrnvaexh.jpg
+    // https://res.cloudinary.com/dgll9gjpk/image/upload/c_fill,h_170,w_170/cjwje3sniu9grrnvaexh?_a=AJFJtWI0
+
+    // https://res.cloudinary.com/dgll9gjpk/image/upload/c_fill,h_170,w_170/analog-classic?_a=AJFJtWI0
+    // https://res.cloudinary.com/dgll9gjpk/image/upload/c_fill,h_170,w_170/sqhaij459zwv234bt6ob?_a=AJFJtWI0
+
     const handleOpenWidget = () => {
         // Create a Cloudinary upload widgert and open it
         var myWidget = window.cloudinary.createUploadWidget({
             cloudName: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME, 
             uploadPreset: process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET}, (error, result) => { 
                 if (!error && result && result.event === "success") { 
-                    // console.log('Done! Here is the image info: ', result.info);
+                    console.log('Done! Here is the image info: ', result.info);
                     setImages(prev => [...prev, result.info.public_id])
                     setFormData(prevState => ({
                         ...prevState,
@@ -53,7 +62,7 @@ const PicsUpload = ({images, setImages, setFormData}) => {
                     myImage.resize(fill().width(170).height(170));
                     return(
                         <div key={picId}>
-                            <AdvancedImage  cldImg={myImage} />
+                            <AdvancedImage cldImg={myImage} />
                         </div>
                     )
                 })}

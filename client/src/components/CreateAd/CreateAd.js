@@ -61,8 +61,8 @@ const CreateAd = () => {
             <Label>
                 Description
                 <Description 
-                    rows="4" 
-                    cols="50"
+                    rows="7" 
+                    // cols="50"
                     required
                     onChange={(e) => handleChange("description", e.target.value)} 
                 />
@@ -82,32 +82,45 @@ const CreateAd = () => {
                 />
             </Label>
             <Label>
-                Price
+                Price, $
                 <Input 
                     type="number" 
                     required
                     onChange={(e) => handleChange("price", e.target.value)} 
                 />
             </Label>
-            <Button type="submit">Post ad</Button>
+            <Button type="submit" width={"200px"}>Post ad</Button>
         </Form>
     )
 }
 const Form = styled.form`
-    width: var(--content-width);
+    width: var(--big-block-width);
     margin: 0 auto;
     padding-top: 30px;
     display: flex;
     flex-direction: column;
+    padding-bottom: 30px;
 `
 const Label = styled.label`
-
+    font-size: 1.5rem;
+	margin: 20px 0;
 `
 const Input = styled.input`
-
+    width: 100%;
+    border: 1px solid var(--color-button);
+    border-radius: 7px;
+    display: block;
+    line-height: 2rem;
+    margin-top: 10px;
+    font-size: 1.2rem;
 `
 const Description = styled.textarea`
-
+    display: block;
+    margin-top: 10px;
+    width: 100%;
+    border: 1px solid var(--color-button);
+    border-radius: 7px;
+    font-size: 1.2rem;
 `
 
 

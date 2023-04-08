@@ -14,6 +14,7 @@ const {
   getSimilar,
   getAd,
   getUser,
+  addUser,
   postAd,
   updateAd,
   deleteAd
@@ -48,9 +49,10 @@ express()
   .get("/api/ads/recommended/:userId", getRecommended)
   .get("/api/ads/latest", getLatest)
   .get("/api/ads/filtered", getFiltered)
-  .get("/api/ads/similar", getSimilar)
+  .get("/api/ads/similar/:title", getSimilar)
   .get("/api/ads/:adId", getAd)
-  .get("/api/users/:userI d", getUser)
+  .get("/api/users/:userId", getUser)
+  .post("/api/users", addUser)
   .post("/api/ads", postAd)
   .patch("/api/ads", updateAd)
   .delete("/api/ads", deleteAd)

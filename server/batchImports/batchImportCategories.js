@@ -10,33 +10,85 @@ const options = {
     useUnifiedTopology: true,
   };
 
-const bigCategories = ["Men", "Women", "Kids"];
-const clothingSubcategories = {
-    "jackets and vests": {
-        "parkas": {},
-        "insulated & down": {},
-        "vests": {},
-        "rain jackets": {},
-        "windbreakers": {}
-    },
-    "tops": {
-        "long sleeve": {},
-        "short sleeve": {},
-        "t-shirts": {},
-        "sweatshirts and hoodies": {}
-    },
-    "bottoms": {
-        "pants": {},
-        "shorts": {},
-        "skirts": {},
-        "leggins": {},
+const taxonomy = {
+    "Women" : {
+        "jackets and vests": {
+            "parkas": {},
+            "insulated & down": {},
+            "vests": {},
+            "rain jackets": {},
+            "windbreakers": {}
+        },
+        "tops": {
+            "long sleeve": {},
+            "short sleeve": {},
+            "t-shirts": {},
+            "sweatshirts and hoodies": {}
+        },
+        "bottoms": {
+            "pants": {},
+            "shorts": {},
+            "skirts": {},
+            "leggins": {},
 
+        },
+        "dresses": {},
+        "accessories": {
+            "hats": {},
+            "gloves": {},
+            "bags": {}
+        }
     },
-    "dresses": "",
-    "accessories": {
-        "hats": {},
-        "gloves": {},
-        "bags": {}
+    "Men" : {
+        "jackets and vests": {
+            "parkas": {},
+            "insulated & down": {},
+            "vests": {},
+            "rain jackets": {},
+            "windbreakers": {}
+        },
+        "tops": {
+            "long sleeve": {},
+            "short sleeve": {},
+            "t-shirts": {},
+            "sweatshirts and hoodies": {}
+        },
+        "bottoms": {
+            "pants": {},
+            "shorts": {}
+        },
+        "accessories": {
+            "hats": {},
+            "gloves": {},
+            "bags": {}
+        }
+    },
+    "Kids" : {
+        "jackets and vests": {
+            "parkas": {},
+            "insulated & down": {},
+            "vests": {},
+            "rain jackets": {},
+            "windbreakers": {}
+        },
+        "tops": {
+            "long sleeve": {},
+            "short sleeve": {},
+            "t-shirts": {},
+            "sweatshirts and hoodies": {}
+        },
+        "bottoms": {
+            "pants": {},
+            "shorts": {},
+            "skirts": {},
+            "leggins": {},
+        },
+        "dresses": {},
+        "accessories": {
+            "hats": {},
+            "gloves": {},
+            "bags": {}
+        }
     }
 }
 const womenSizes = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
@@ -53,16 +105,12 @@ const batchImport = async () =>{
         await client.connect();
         const db = client.db("cb-project");
         const collection = db.collection("categories");
-        await collection.drop();
+        await db.collection('categories').deleteMany({});
 
         await collection.insertMany([
             {
-                type: "bigCategories",
-                data: bigCategories
-            },
-            {
-                type: "clothingSubcategories",
-                data: clothingSubcategories
+                type: "taxonomy",
+                data: taxonomy
             },
             {
                 type: "colors",

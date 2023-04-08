@@ -69,7 +69,13 @@ const CategoriesWrapper = styled.div`
 
 `
 const Dropdown = styled.select`
-
+    font-size: 1.2rem;
+    border: 1px solid var(--color-button);
+    border-radius: 7px;
+    display: block;
+    margin-bottom: 10px;
+    width: 200px;
+    height: 36px;
 `
 
 export default Categories;

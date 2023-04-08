@@ -2,6 +2,7 @@ const { MongoClient } = require("mongodb");
 const { faker } = require('@faker-js/faker/locale/en_CA');
 const { v4: uuidv4 } = require("uuid");
 const path = require("path");
+const { cloudinaryPicsArr } = require("../cloudinaryPicsIds");
 
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
 const { MONGO_URI } = process.env;
@@ -54,7 +55,7 @@ const batchImport = async () =>{
         // creating new ad objects and pushing them to ads array
         for (let i = 0; i < NEW_ADS_NUM; i++) {
             const picsNum = Math.ceil(Math.random() * MAX_PICS_NUM);
-            const picsArr = [...Array(picsNum)].map(pic => faker.image.fashion(640, 480, true))
+            const picsArr = [...Array(picsNum)].map(pic => cloudinaryPicsArr[Math.floor(Math.random() * cloudinaryPicsArr.length)]);
             const randomUserId = users[Math.floor(Math.random() * users.length)]._id;
             const newAd = {
                 _id: uuidv4(),
@@ -70,8 +71,8 @@ const batchImport = async () =>{
                 location: {
                     type: "Point",
                     coordinates: [
-                        faker.address.latitude(LAT_BOUNDARIES[1], LAT_BOUNDARIES[0], 5), 
-                        faker.address.longitude(LNG_BOUNDARIES[1], LNG_BOUNDARIES[0], 5)
+                        Number(faker.address.latitude(LAT_BOUNDARIES[1], LAT_BOUNDARIES[0], 5)), 
+                        Number(faker.address.longitude(LNG_BOUNDARIES[1], LNG_BOUNDARIES[0], 5))
                     ]
                 }
             }
