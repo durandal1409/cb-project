@@ -29,6 +29,7 @@ const Item = () => {
             // get seller info
             const sellerRes = await fetch(`/api/users/${itemData.data.userId}`);
             const sellerData = await sellerRes.json();
+            console.log("ddd: ", sellerData);
             if (sellerData.status === 200) {
                 setSellerData(sellerData.data);
             } else {
@@ -59,7 +60,8 @@ const Item = () => {
     return (
         adData && <Wrapper>
             <CategoiesChain>
-                Shoes > sneakers > size 10
+                {/* removing commas at the beginning and the end of a string, then change commas between words to > */}
+                {adData.path.slice(1, -1).split(",").join(" > ")}
             </CategoiesChain>
             <Main>
                 <Left>
