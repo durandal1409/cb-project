@@ -3,22 +3,23 @@
 const express = require('express');
 const morgan = require('morgan');
 
+const { getCategories } = require("./helpers/helpersCategories");
 const {
-  getBigCategories,
-  getSubcategories,
   getSearchedAds,
-  getSizes,
   getRecommended,
   getLatest,
   getFiltered,
   getSimilar,
   getAd,
-  getUser,
-  addUser,
   postAd,
   updateAd,
   deleteAd
-} = require("./helpers");
+} = require("./helpers/helpersAds");
+const {
+  getUserAndAds,
+  addUser,
+  updateUser
+} = require("./helpers/helpersUsers");
 
 const PORT = 8000;
 
@@ -42,17 +43,16 @@ express()
   .use(express.urlencoded({ extended: false }))
   .use('/', express.static(__dirname + '/'))
 
-  .get("/api/big-categories", getBigCategories)
-  .get("/api/subcategories", getSubcategories)
+  .get("/api/categories", getCategories)
   .get("/api/ads/search", getSearchedAds)
-  .get("/api/sizes", getSizes)
   .get("/api/ads/recommended/:userId", getRecommended)
   .get("/api/ads/latest", getLatest)
   .get("/api/ads/filtered", getFiltered)
   .get("/api/ads/similar/:title", getSimilar)
   .get("/api/ads/:adId", getAd)
-  .get("/api/users/:userId", getUser)
+  .get("/api/users/:userId", getUserAndAds)
   .post("/api/users", addUser)
+  .patch("/api/users", updateUser)
   .post("/api/ads", postAd)
   .patch("/api/ads", updateAd)
   .delete("/api/ads", deleteAd)

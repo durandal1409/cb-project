@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { useAuth0 } from '@auth0/auth0-react';
+import { useNavigate } from "react-router-dom";
 
 import PicsUpload from "./PicsUpload";
 import Categories from "./Categories";
@@ -8,12 +9,8 @@ import Button from "../shared/Button";
 
 const CreateAd = () => {
     const { user } = useAuth0();
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({pics: [], categories: ['']});
-    // state for chosen dropdowns categories
-    // first element in array is holding "Select category" value
-    // not using formData state because we'll need to change
-    // the format of categories from array to sting when posting formData
-    // const [categories, setCategories] = useState(['']);
 
     const handleChange = (key, value) => {
         setFormData({

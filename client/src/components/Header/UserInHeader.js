@@ -8,17 +8,17 @@ const User = () => {
     return (
         isAuthenticated && (
             <Wrapper>
-                <AnchorName to={"/profile"}>
+                <AnchorName to={"/user/me"}>
                     {user.given_name}
                 </AnchorName>
                 <Dropdown>
                     <li>
-                        <AnchorOption to={"/profile"}>
+                        <AnchorOption to={"/user/me"}>
                             My profile
                         </AnchorOption>
                     </li>
                     <li>
-                        <AnchorOption to={"/profile"}>
+                        <AnchorOption to={"/"}>
                             My favourites
                         </AnchorOption>
                     </li>

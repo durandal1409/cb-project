@@ -2,7 +2,8 @@
 const { v4: uuidv4 } = require("uuid");
 
 const { MongoClient } = require("mongodb");
-require("dotenv").config();
+const path = require("path");
+require("dotenv").config({ path: path.join(__dirname, "../.env") });
 const { MONGO_URI } = process.env;
 const options = {
         useNewUrlParser: true,
@@ -12,74 +13,7 @@ const options = {
 const dbName = "cb-project";
 const adsCollection = "ads";
 const usersCollection = "users";
-const categoriesCollection = "categories";
 
-const getBigCategories = async (req, res) => {
-    try {
-        const client = new MongoClient(MONGO_URI, options);
-        await client.connect();
-        const db = client.db(dbName);
-    
-        const bigCategories = await db.collection(categoriesCollection).findOne({type: "bigCategories"});
-    
-        client.close();
-        if (bigCategories) {
-            res.status(200).json({
-                status: 200,
-                data: bigCategories.data
-            });
-        } else {
-            res.status(404).json({ status: 404, message: "Big categories not found." });
-        }
-    } catch(err) {
-        console.log(err.stack);
-        res.status(500).json({ status: 500, message: err.message });
-    }
-}
-const getSubcategories = async (req, res) => {
-    try {
-        const client = new MongoClient(MONGO_URI, options);
-        await client.connect();
-        const db = client.db(dbName);
-    
-        const subcategories = await db.collection(categoriesCollection).findOne({type: "clothingSubcategories"});
-    
-        client.close();
-        if (subcategories) {
-            res.status(200).json({
-                status: 200,
-                data: subcategories.data
-            });
-        } else {
-            res.status(404).json({ status: 404, message: "Subcategories not found." });
-        }
-    } catch(err) {
-        console.log(err.stack);
-        res.status(500).json({ status: 500, message: err.message });
-    }
-}
-const getSizes = async (req, res) => {
-    try {
-        const client = new MongoClient(MONGO_URI, options);
-        await client.connect();
-        const db = client.db(dbName);
-    
-        const sizes = await db.collection(categoriesCollection).findOne({type: "clothingSizes"});
-    
-        client.close();
-        if (sizes) {
-            res.status(200).json({
-                status: 200,
-                data: sizes.data
-            });
-        } else {
-            res.status(404).json({ status: 404, message: "Sizes not found." });
-        }
-    } catch(err) {
-        console.log(err.stack);
-        res.status(500).json({ status: 500, message: err.message });
-    }
-}
 const getSearchedAds = async (req, res) => {
     // taking searchphrase out of query
     const searchPhrase = req.query.q.split("%20").join(" ");
@@ -227,7 +161,7 @@ const getSimilar = async (req, res) => {
             }
         },
         { 
-            "$limit": 4
+            "$limit": 6
         },
         { 
             $project : { _id : 1, name: 1, price: 1, address: 1, pic: {$first: "$pics"}} 
@@ -273,95 +207,6 @@ const getAd = async (req, res) => {
             res.status(200).json({
                 status: 200,
                 data: ad
-            })
-        }
-        client.close();
-    } catch(err) {
-        console.log(err.stack);
-        res.status(500).json({ status: 500, message: err.message });
-    }
-}
-const getUser = async (req, res) => {
-    const _id = req.params.userId;
-    try {
-        const client = new MongoClient(MONGO_URI, options);
-        await client.connect();
-        const db = client.db(dbName);
-    
-        const user = await db.collection(usersCollection).findOne({ _id });
-        if (!user) {
-            res.status(404).json({
-                status: 404,
-                data: {_id},
-                message: "User with provided id not found.",
-            });
-        } else {
-            res.status(200).json({
-                status: 200,
-                data: user
-            })
-        }
-        client.close();
-    } catch(err) {
-        console.log(err.stack);
-        res.status(500).json({ status: 500, message: err.message });
-    }
-}
-const addUser = async (req, res) => {
-    const { 
-        _id, 
-        fname, 
-        lname,
-        email, 
-        avatar, 
-        ads } = req.body;
-
-    if (!_id) {
-        res.status(422).json({
-            status: 422, 
-            data: req.body, 
-            message: "Please, provide user id."
-        })
-        return;
-    }
-    
-    try {
-        const client = new MongoClient(MONGO_URI, options);
-        await client.connect();
-        const db = client.db(dbName);
-
-        // check if user already exists
-        const userInDb = await db.collection(usersCollection).findOne({_id});
-        if (userInDb) {
-            res.status(409).json({
-                status: 409,
-                data: {_id},
-                message: "User already exists."
-            })
-            client.close();
-            return
-        }
-    
-        // add only what we need for user, exclude any other info that might be in req.body
-        const userObj = {
-                _id, 
-                fname, 
-                lname,
-                email, 
-                avatar, 
-                ads
-            };
-        const userInsertRes = await db.collection(usersCollection).insertOne(userObj);
-        if (!userInsertRes.acknowledged) {
-            res.status(404).json({
-                status: 404,
-                message: "User not created.",
-            });
-        } else {
-            res.status(201).json({
-                status: 201,
-                data: {_id},
-                message: "User created."
             })
         }
         client.close();
@@ -444,17 +289,12 @@ const deleteAd = async (req, res) => {
 }
 
 module.exports = {
-    getBigCategories,
-    getSubcategories,
     getSearchedAds,
-    getSizes,
     getRecommended,
     getLatest,
     getFiltered,
     getSimilar,
     getAd,
-    getUser,
-    addUser,
     postAd,
     updateAd,
     deleteAd

@@ -8,7 +8,7 @@ import Footer from "./Footer";
 import Home from "./Home";
 import Search from "./Search/Search";
 import Item from "./Item/Item";
-import Profile from "./Profile";
+import Profile from "./Profile/Profile";
 import CreateAd from "./CreateAd/CreateAd";
 
 const App = () => {
@@ -23,7 +23,6 @@ const App = () => {
                   <Route path="/search/*" element={<Search />} />
                   <Route path="/item/:itemId" element={<Item />} />
                   <Route path="/user/:userId" element={<Profile />} />
-                  <Route path="/profile" element={<Profile />} />
                   <Route path="/create-ad" element={<CreateAd />} />
                   <Route path="" element={<h1>404: Oops!</h1>} />
               </Routes>

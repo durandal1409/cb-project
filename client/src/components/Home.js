@@ -16,7 +16,7 @@ const Home = () => {
                 if (data.status === 200) {
                     setRecommendedAds(data.data);
                 } else {
-                    window.alert(data.message);
+                    // window.alert(data.message);
                     throw new Error(data.message);
                 }
             })
@@ -31,7 +31,7 @@ const Home = () => {
                 if (data.status === 200) {
                     setLatestAds(data.data);
                 } else {
-                    window.alert(data.message);
+                    // window.alert(data.message);
                     throw new Error(data.message);
                 }
             })
@@ -51,31 +51,37 @@ const Home = () => {
         <HomeWrapper>
             <h3>Recommended for you</h3>
             <AdsWrapper>
-                {recommendedAds && recommendedAds.map(ad => {
-                    console.log("recommendedAds: ", recommendedAds);
-                    return <SmallItem
-                                key={ad._id}
-                                name={ad.name}
-                                price={ad.price}
-                                address={ad.address}
-                                picSrc={ad.pic}
-                                _id={ad._id}
-                            />
-                })}
+                {recommendedAds 
+                    ?   recommendedAds.map(ad => {
+                        {/* console.log("recommendedAds: ", recommendedAds); */}
+                        return <SmallItem
+                                    key={ad._id}
+                                    name={ad.name}
+                                    price={ad.price}
+                                    address={ad.address}
+                                    picSrc={ad.pic}
+                                    _id={ad._id}
+                                />
+                        })
+                    :   <h3>Loading...</h3>
+                }
             </AdsWrapper>
             <h3>Latest ads</h3>
             <AdsWrapper>
-                {latestAds && latestAds.map(ad => {
-                    console.log("latestAds: ", latestAds);
-                    return <SmallItem
-                                key={ad._id}
-                                _id={ad._id}
-                                name={ad.name}
-                                price={ad.price}
-                                address={ad.address}
-                                picSrc={ad.pic}
-                            />
-                })}
+                {latestAds
+                    ?   latestAds.map(ad => {
+                        {/* console.log("latestAds: ", latestAds); */}
+                        return <SmallItem
+                                    key={ad._id}
+                                    _id={ad._id}
+                                    name={ad.name}
+                                    price={ad.price}
+                                    address={ad.address}
+                                    picSrc={ad.pic}
+                                />
+                        })
+                    :   <h3>Loading...</h3>
+                }
             </AdsWrapper>
         </HomeWrapper>
         </>

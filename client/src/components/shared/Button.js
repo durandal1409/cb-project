@@ -1,8 +1,15 @@
 import styled from "styled-components";
 
-const Button = ({children, type, width, handleClick}) => {
+const Button = ({children, type, width, handleClick, className}) => {
     return (
-        <StyledButton type={type} width={width} onClick={handleClick}>{children}</StyledButton>
+        <StyledButton 
+            type={type} 
+            width={width} 
+            onClick={handleClick}
+            className={className}
+        >
+            {children}
+        </StyledButton>
     )
 }
 
@@ -16,6 +23,9 @@ const StyledButton = styled.button`
     cursor: pointer;
     &:hover {
         background-color: var(--color-button-hover);
+    }
+    &.hide {
+        display: none;
     }
 `
 export default Button;

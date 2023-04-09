@@ -34,7 +34,7 @@ const cloudinaryPicsArr = [
     "accessories-bag",
     "leather-bag-gray",
     "shoes",
-    "sqhaij459zwv234bt6ob"
+    "lm9qd0o6vloazrtkdv4t"
 ]
 
 
