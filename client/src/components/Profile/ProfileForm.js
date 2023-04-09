@@ -16,7 +16,6 @@ const ProfileForm = ({user, showProfileForm, setShowProfileForm}) => {
 
     const handleUpdateProfile = (e, formData) => {
         e.preventDefault();
-        console.log("formdata: ", {...formData, _id});
         fetch(`/api/users`, {
             method: "PATCH",
             headers: {

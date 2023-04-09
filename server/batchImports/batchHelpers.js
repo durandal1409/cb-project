@@ -37,7 +37,6 @@ const cloudinaryPicsArr = [
     "lm9qd0o6vloazrtkdv4t"
 ]
 
-
 // categories
 const taxonomy = {
     "Women" : {
@@ -128,19 +127,21 @@ const babySizes = ["0-3m", "3-6m", "6-12m", "12-18m", "18-24m"];
 const colors = ["black", "white", "red", "green", "blue", "yellow", "orange", "brown", "pink"];
 
 // function generates random categories path for ads (like ",Men,Top,jackets,")
-const makeRandomPath = (categoriesObj, path) => {
+// for each ad we need to generate categories path 
+// according to mongo Materialized Paths (https://www.mongodb.com/docs/manual/tutorial/model-tree-structures-with-materialized-paths/)
+
+const makeRandomPath = (categoriesObj) => {
     if (Object.keys(categoriesObj).length === 0) {
-        console.log("exit", path);
-        return path + ","
+        // console.log("exit");
+        return ","
     } else {
-        console.log("continue", path);
+        // console.log("continue");
         // getting random nested category
-        // and saving it in path
+        // and adding it to the path
         const objKeysArr = Object.keys(categoriesObj);
         const randomKeyNum = Math.floor(Math.random() * objKeysArr.length);
         const randomCategory = Object.keys(categoriesObj)[randomKeyNum];
-        path += (randomCategory + ",")
-        makeRandomPath(categoriesObj[randomCategory], path)
+        return "," + randomCategory + makeRandomPath(categoriesObj[randomCategory])
     }
 }
 

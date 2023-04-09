@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import SmallItem from "./shared/SmallItem";
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { smallAdsArr } from "../data";
+import { taxonomy } from "../data";
 
 const Home = () => {
     const [recommendedAds, setRecommendedAds] = useState(null);
@@ -39,6 +39,7 @@ const Home = () => {
                 window.alert(error);
             })
     }, []);
+
     return (
             <>
             <CategoriesWrapper>

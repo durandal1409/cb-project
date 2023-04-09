@@ -19,11 +19,7 @@ const LAT_BOUNDARIES = [45.50, 45.67];
 const LNG_BOUNDARIES = [-73.5778, -73.5586];
 const MAX_PICS_NUM = 6;
 
-// for each ad we need to generate categories path 
-// like ",Men,Top,jackets" (according to mongo Materialized Paths (https://www.mongodb.com/docs/manual/tutorial/model-tree-structures-with-materialized-paths/))
-const randPath = makeRandomPath(taxonomy, ",");
-console.log("rp: ", randPath);
-
+const randPath = makeRandomPath(taxonomy);
 
 const batchImport = async () =>{
     const client = new MongoClient(MONGO_URI, options);
@@ -35,8 +31,6 @@ const batchImport = async () =>{
         // dropping old ads and users collection
         await db.collection('ads').deleteMany({});
         await db.collection('users').deleteMany({});
-
-
 
         const users = [];
         // creating new user objects and pushing them to users array
@@ -75,6 +69,7 @@ const batchImport = async () =>{
                 description: faker.commerce.productDescription(),
                 pics: picsArr,
                 address: faker.address.streetAddress(),
+                path: makeRandomPath(taxonomy),
                 location: {
                     type: "Point",
                     coordinates: [
