@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { adDocument, userDocument, smallAdsArr } from "../../data";
 
 import SmallItem from "../shared/SmallItem";
 import ContactForm from "../shared/ContactForm";

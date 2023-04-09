@@ -5,19 +5,14 @@ import { smallAdsArr } from "../../data";
 
 import SmallItem from "../shared/SmallItem";
 
-const Map = () => {
+const Map = ({filteredAds}) => {
     const center = useMemo(() => ({lat: 45.5, lng: -73.5}), []);
     const options = useMemo(() => ({disableDefaultUI: true, clickableIcons: false}), []);
     const mapRef = useRef();
-    const [ads, setAds] = useState(null);
     const [selected, setSelected] = useState(null);
     console.log("sel: ", selected);
 
     const onLoad = useCallback((map) => (mapRef.current = map), []);
-
-    useEffect(() => {
-        setAds(smallAdsArr);
-    }, []);
 
     return (
         <Wrapper>

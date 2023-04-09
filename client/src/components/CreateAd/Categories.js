@@ -1,9 +1,11 @@
 import styled from "styled-components";
-import { taxonomy } from "../../data";
-import { useState } from "react";
+import { useContext } from "react";
+
+import { CategoriesContext } from "../CategoriesContext";
 
 const Categories = ({formData, setFormData}) => {
 
+    const { categories } = useContext(CategoriesContext);
 
     const handleChange = (e, depth) => {
         setFormData((prevState) => {
@@ -18,7 +20,7 @@ const Categories = ({formData, setFormData}) => {
                 // if category from current dropdown is in state
                 // then we need to change it with map and assign value of "" to the next dropdown
                 // and remove all child categories after "" (filter)
-                const categories = prevState.categories
+                const newCategories = prevState.categories
                         .filter((category, ind) => ind <= depth + 1)
                         .map((category, ind) => {
                             if (ind === depth) {
@@ -28,13 +30,12 @@ const Categories = ({formData, setFormData}) => {
                             }
                             return category;
                         })
-                return {...prevState, categories}
+                return {...prevState, categories: newCategories}
             }
         });
         
     }
 
-    
     // the function recursively creates Dropdowns with categories
     // it exits when categoriesObj has no nested objects
     // it also stops if no next category selected
@@ -69,7 +70,10 @@ const Categories = ({formData, setFormData}) => {
     return (
         <CategoriesWrapper>
             <h3>Select Categories</h3>
-                {recursiveCategory(taxonomy, 0)}
+            {categories
+                ?   recursiveCategory(categories, 0)
+                : <h3>Loading...</h3>
+            }
         </CategoriesWrapper>
     )
 }

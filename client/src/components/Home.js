@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import SmallItem from "./shared/SmallItem";
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { taxonomy } from "../data";
 
 const Home = () => {
     const [recommendedAds, setRecommendedAds] = useState(null);

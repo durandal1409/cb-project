@@ -49,49 +49,51 @@ const CreateAd = () => {
 
     }
     return (
-        <Form onSubmit={(e) => handleFormSubmit(e, formData)}>
-            <Label>
-                Title
-                <Input 
-                    type="text" 
-                    required
-                    onChange={(e) => handleChange("name", e.target.value)} 
-                />
-            </Label>
-            
-            <Categories formData={formData} setFormData={setFormData} />
-            <Label>
-                Description
-                <Description 
-                    rows="7" 
-                    required
-                    onChange={(e) => handleChange("description", e.target.value)} 
-                />
-            </Label>
-            <PicsUpload 
-                // images={images} 
-                // setImages={setImages}
-                formData={formData}
-                setFormData={setFormData}
-            />
-            <Label>
-                Address
-                <Input 
-                    type="text" 
-                    required
-                    onChange={(e) => handleChange("address", e.target.value)} 
-                />
-            </Label>
-            <Label>
-                Price, $
-                <Input 
-                    type="number" 
-                    required
-                    onChange={(e) => handleChange("price", e.target.value)} 
-                />
-            </Label>
-            <Button type="submit" width={"200px"}>Post ad</Button>
-        </Form>
+        user 
+            ?   <Form onSubmit={(e) => handleFormSubmit(e, formData)}>
+                    <Label>
+                        Title
+                        <Input 
+                            type="text" 
+                            required
+                            onChange={(e) => handleChange("name", e.target.value)} 
+                        />
+                    </Label>
+                    
+                    <Categories formData={formData} setFormData={setFormData} />
+                    <Label>
+                        Description
+                        <Description 
+                            rows="7" 
+                            required
+                            onChange={(e) => handleChange("description", e.target.value)} 
+                        />
+                    </Label>
+                    <PicsUpload 
+                        // images={images} 
+                        // setImages={setImages}
+                        formData={formData}
+                        setFormData={setFormData}
+                    />
+                    <Label>
+                        Address
+                        <Input 
+                            type="text" 
+                            required
+                            onChange={(e) => handleChange("address", e.target.value)} 
+                        />
+                    </Label>
+                    <Label>
+                        Price, $
+                        <Input 
+                            type="number" 
+                            required
+                            onChange={(e) => handleChange("price", e.target.value)} 
+                        />
+                    </Label>
+                    <Button type="submit" width={"200px"}>Post ad</Button>
+                </Form>
+            : <h3>Please, log in.</h3>
     )
 }
 const Form = styled.form`

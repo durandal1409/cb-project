@@ -3,7 +3,6 @@ import { useLoadScript } from "@react-google-maps/api";
 import styled from "styled-components";
 import { GrMapLocation } from "react-icons/gr";
 import { BsListUl } from "react-icons/bs";
-import { smallAdsArr } from "../../data";
 
 import SmallItem from "../shared/SmallItem";
 import Map from "./Map";
@@ -21,11 +20,11 @@ const Search = () => {
             ?   !isLoaded
                     ?   <div>Loading...</div>
                     :   <MapWrapper>
-                            <Filters />
+                            <Filters setFilteredAds={setFilteredAds} />
                             <IconListWrapper>
                                 <BsListUl onClick={() => setMapMode(false)} size={"2em"} />
                             </IconListWrapper>
-                            <Map />
+                            <Map filteredAds={filteredAds}/>
                         </MapWrapper>
             :   <ListWrapper>
                     <Filters setFilteredAds={setFilteredAds} />
