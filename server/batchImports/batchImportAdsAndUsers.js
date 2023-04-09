@@ -12,7 +12,7 @@ const options = {
     useUnifiedTopology: true,
   };
 
-const NEW_ADS_NUM = 100;
+const NEW_ADS_NUM = 1000;
 const NEW_USERS_NUM = 10;
 
 const LAT_BOUNDARIES = [45.50, 45.67];
@@ -43,11 +43,9 @@ const batchImport = async () =>{
                 fname,
                 lname,
                 email,
-                // googleId: "",
                 avatar: faker.internet.avatar(),
-                ads: [
-                    
-                ]
+                ads: [],
+                last_search: ""
             }
             users.push(newUser);
         }

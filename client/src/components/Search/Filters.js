@@ -1,44 +1,48 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
-import { useParams, useSearchParams, Link } from "react-router-dom";
-import { taxonomy } from "../../data";
+import { useState, useEffect, useContext } from "react";
+import { useSearchParams, Link } from "react-router-dom";
+import { useAuth0 } from '@auth0/auth0-react';
+
+import { CategoriesContext } from "../CategoriesContext";
 
 const Filters = ({setFilteredAds}) => {
-    // TODO:
-    // make sure it's possible to go to a category with whitespaces
-
-    const params = useParams();
+    const { user } = useAuth0();
+    const { categories } = useContext(CategoriesContext);
     const [searchParams, setSearchParams] = useSearchParams();
 
-    // making array of chosen categories out of params
-    const paramsArr = params["*"].split("/");
-
-    console.log("url: ", params["*"], searchParams.get("q"));
-
+    // get chosen categories from url
+    // remove "/" at the beginning
+    // change it to array
+    const chosenCategoriesArr = searchParams?.get("categories").slice(1).split("/");
+    
     // function makes lists of nested categories to filter ads
     // it recursively goes through keys of nested objects of categoriesObj
     // making list of nested categories for each category that has been clicked
     // it stops when category has no nested categories
-    const recursiveCategory = (categoriesObj, paramsArr, depth, path) => {
+    const recursiveCategory = (categoriesObj, chosenCategoriesArr, depth, path) => {
         if (Object.keys(categoriesObj).length === 0) {
             return 
         } else {
             return (
                 <UList className={`depth-${depth}`}>
                     {Object.keys(categoriesObj).map(category => {
+                        {/* check if category is among chosen (which means it was clicked and it's in url query params) 
+                        then we need to add 'current' class to elements 
+                        and call a function again to render nested categories*/}
+                        const isChosenCategory = category.toLowerCase() === chosenCategoriesArr[depth];
                         return (
                             <li 
                                 key={`${path}/${category}`}
-                                className={category.toLowerCase() === paramsArr[depth] ? "current" : null}
+                                className={ isChosenCategory ? "current" : null}
                             >
                                 <Anchor 
-                                    to={`${path}/${category.toLowerCase()}?q=${searchParams.get("q")}`}
-                                    className={category.toLowerCase() === paramsArr[depth] ? "current" : null}
+                                    to={`/search?categories=${path}/${category.toLowerCase()}&search=${searchParams.get("search")}`}
+                                    className={isChosenCategory ? "current" : null}
                                 >
                                     {category}
                                 </Anchor>
-                                {category.toLowerCase() === paramsArr[depth] &&
-                                    recursiveCategory(categoriesObj[category], paramsArr, depth + 1, `${path}/${category.toLowerCase()}`)
+                                {isChosenCategory &&
+                                    recursiveCategory(categoriesObj[category], chosenCategoriesArr, depth + 1, `${path}/${category.toLowerCase()}`)
                                 }
                             </li>
                         )
@@ -50,13 +54,31 @@ const Filters = ({setFilteredAds}) => {
     }
 
     useEffect(() => {
-        // setFilteredAds(smallAdsArr);
-    }, []);
+        // fetching ads filtered by search and categories
+        fetch(`/api/ads/search/${user?.sub}?categories=${searchParams?.get("categories")}&search=${searchParams?.get("search")}`)
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.status === 200) {
+                    setFilteredAds(data.data);
+                    console.log("ads: ", data);
+                } else {
+                    // window.alert(data.message);
+                    throw new Error(data.message);
+                }
+            })
+            .catch((error) => {
+                // window.alert(error);
+                throw new Error(error.message);
+            })
+    }, [user, searchParams]);
 
     return (
         <Wrapper>
             <h3>Category</h3>
-            {recursiveCategory(taxonomy, paramsArr, 0, "/search")}
+            {categories 
+                ?   recursiveCategory(categories, chosenCategoriesArr, 0, "")
+                : <h3>Loading...</h3>
+            }
         </Wrapper>
     )
 }

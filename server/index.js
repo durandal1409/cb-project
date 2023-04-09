@@ -8,7 +8,7 @@ const {
   getSearchedAds,
   getRecommended,
   getLatest,
-  getFiltered,
+  // getFiltered,
   getSimilar,
   getAd,
   postAd,
@@ -44,10 +44,10 @@ express()
   .use('/', express.static(__dirname + '/'))
 
   .get("/api/categories", getCategories)
-  .get("/api/ads/search", getSearchedAds)
+  .get("/api/ads/search/:userId", getSearchedAds)
   .get("/api/ads/recommended/:userId", getRecommended)
   .get("/api/ads/latest", getLatest)
-  .get("/api/ads/filtered", getFiltered)
+  // .get("/api/ads/filtered", getFiltered)
   .get("/api/ads/similar/:title", getSimilar)
   .get("/api/ads/:adId", getAd)
   .get("/api/users/:userId", getUserAndAds)

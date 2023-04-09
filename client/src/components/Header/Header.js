@@ -46,7 +46,8 @@ const Header = () => {
                 lname: user.family_name,
                 email: user.email,
                 avatar: user.picture,
-                ads: []
+                ads: [],
+                last_search: ""
             })
         })
             .then(res => res.json())
@@ -72,7 +73,7 @@ const Header = () => {
     }
     const handleFormSubmit = (e, formData) => {
         e.preventDefault();
-        navigate(`/search/${formData.dropdown.toLowerCase()}?q=${formData.input}`)
+        navigate(`/search?categories=/${formData.dropdown?.toLowerCase()}&search=${formData.input}`)
         
         // console.log("form: ", formData);
         // fetch("/api/ads/search", {

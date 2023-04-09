@@ -15,19 +15,61 @@ const adsCollection = "ads";
 const usersCollection = "users";
 
 const getSearchedAds = async (req, res) => {
-    // taking searchphrase out of query
-    const searchPhrase = req.query.q.split("%20").join(" ");
-    // preparing search object
+    const {userId} = req.params;
+    const {categories, search} = req.query;
+    // make categories path string according to db format
+    // (https://www.mongodb.com/docs/manual/tutorial/model-tree-structures-with-materialized-paths/)
+    const path = categories.replaceAll("/", ",") + ",";
+    console.log("CC:  ", path, search);
+    const p = ",kids,bottoms,"
+
+    // prepare search object
     const agg = [
         {
             '$search': {
                 'phrase': {
                     'path': ['name', 'description'],
-                    'query': searchPhrase
+                    'query': search
                 }
             }
         }
     ];
+    // const agg = [
+    //     {
+    //         $search: {
+    //             'phrase': {
+    //                 'path': ['name', 'description'],
+    //                 'query': search
+    //             },
+    //             "regex": {
+    //                 "query": `${path}(.*)`,
+    //                 "path": "path"
+    //             }
+    //         }
+    //     }
+    // ]
+    // const agg = [
+    //     {
+    //         $search:  {
+    //             "compound": {
+    //                 "must": [
+    //                     {
+    //                         'text': {
+    //                             'path': ['name', 'description'],
+    //                             'query': search
+    //                         }
+    //                     }
+    //                     // {
+    //                     //     "regex": {
+    //                     //         "query": `${path}(.*)`,
+    //                     //         "path": "path"
+    //                     //     }
+    //                     // }
+    //                 ]
+    //             }
+    //         }
+    //     }
+    // ]
 
     try {
         const client = new MongoClient(MONGO_URI, options);
@@ -35,13 +77,14 @@ const getSearchedAds = async (req, res) => {
         const db = client.db(dbName);
 
         // add searchPhrase to user document
-        if (req.body.userId) {
-            const upd = await db.collection(usersCollection).updateOne({_id: req.body.userId}, {$set: { "last_search" :  searchPhrase}})
+        if ( userId && search) {
+            const upd = await db.collection(usersCollection).updateOne({_id: userId}, {$set: { "last_search" :  search}})
         }
     
         // find ads according to the search
-        const ads = await db.collection(adsCollection).aggregate(agg).toArray();
-    
+        const ads = await db.collection(adsCollection).aggregate(agg).limit(48).toArray();
+        // const ads = await db.collection(adsCollection).find( { path: /^,tops,/ } )
+        console.log("adsS: ", ads);
         client.close();
         if (ads.length) {
             res.status(200).json({
@@ -138,9 +181,9 @@ const getLatest = async (req, res) => {
         res.status(500).json({ status: 500, message: err.message });
     }
 }
-const getFiltered = async (req, res) => {
+// const getFiltered = async (req, res) => {
     
-}
+// }
 const getSimilar = async (req, res) => {
     // search for words from current ad title
     const { title } = req.params;
@@ -295,7 +338,7 @@ module.exports = {
     getSearchedAds,
     getRecommended,
     getLatest,
-    getFiltered,
+    // getFiltered,
     getSimilar,
     getAd,
     postAd,

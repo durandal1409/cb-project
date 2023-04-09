@@ -42,7 +42,7 @@ const taxonomy = {
     "Women" : {
         "jackets and vests": {
             "parkas": {},
-            "insulated & down": {},
+            "insulated and down": {},
             "vests": {},
             "rain jackets": {},
             "windbreakers": {}
@@ -70,7 +70,7 @@ const taxonomy = {
     "Men" : {
         "jackets and vests": {
             "parkas": {},
-            "insulated & down": {},
+            "insulated and down": {},
             "vests": {},
             "rain jackets": {},
             "windbreakers": {}
@@ -94,7 +94,7 @@ const taxonomy = {
     "Kids" : {
         "jackets and vests": {
             "parkas": {},
-            "insulated & down": {},
+            "insulated and down": {},
             "vests": {},
             "rain jackets": {},
             "windbreakers": {}
@@ -141,7 +141,7 @@ const makeRandomPath = (categoriesObj) => {
         const objKeysArr = Object.keys(categoriesObj);
         const randomKeyNum = Math.floor(Math.random() * objKeysArr.length);
         const randomCategory = Object.keys(categoriesObj)[randomKeyNum];
-        return "," + randomCategory + makeRandomPath(categoriesObj[randomCategory])
+        return "," + randomCategory.toLowerCase() + makeRandomPath(categoriesObj[randomCategory])
     }
 }
 
