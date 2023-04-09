@@ -19,16 +19,18 @@ const getCategories = async (req, res) => {
         await client.connect();
         const db = client.db(dbName);
     
-        const subcategories = await db.collection(categoriesCollection).findOne({type: "clothingSubcategories"});
+        const categories = await db.collection(categoriesCollection)
+            .findOne({type: "taxonomy"}, {_id: 0, data: 1});
     
         client.close();
-        if (subcategories) {
+        if (categories) {
             res.status(200).json({
                 status: 200,
-                data: subcategories.data
+                data: categories.data,
+                message: "Found categories."
             });
         } else {
-            res.status(404).json({ status: 404, message: "Subcategories not found." });
+            res.status(404).json({ status: 404, message: "Categories not found." });
         }
     } catch(err) {
         console.log(err.stack);

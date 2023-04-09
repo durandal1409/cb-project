@@ -1,19 +1,37 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { AiOutlineHeart } from "react-icons/ai";
 import { useAuth0 } from "@auth0/auth0-react";
+
+import { CategoriesContext } from "../CategoriesContext";
 import LoginBtn from "./LoginBtn";
 import UserInHeader from "./UserInHeader";
-
 import Button from "../shared/Button";
 
 const Header = () => {
     const { isLoading, error, user } = useAuth0();
-    const [inputValue, setInputValue] = useState('');
-
+    const [formData, setFormData] = useState({});
+    const { categories, setCategories } = useContext(CategoriesContext);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        fetch("/api/categories")
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 200) {
+                    setCategories(data.data);
+                    console.log(data.message);
+                } else {
+                    console.log(data.message);
+                }
+            })
+            .catch((error) => {
+                window.alert(error);
+            })
+            
+    }, []);
 
     useEffect(() => {
         user && fetch("/api/users", {
@@ -46,8 +64,41 @@ const Header = () => {
     }, [user]);
 
 
-    const handleInputSubmit = (e) => {
+    const handleChange = (key, value) => {
+        setFormData({
+            ...formData,
+            [key]: value
+        })
+    }
+    const handleFormSubmit = (e, formData) => {
         e.preventDefault();
+        navigate(`/search/${formData.dropdown.toLowerCase()}?q=${formData.input}`)
+        
+        // console.log("form: ", formData);
+        // fetch("/api/ads/search", {
+        //     method: "POST",
+        //     headers: {
+        //         "Accept": "application/json",
+        //         "Content-Type": "application/json"
+        //     },
+        //     body: JSON.stringify({
+        //         userId: user?.sub,
+        //         ...formData
+        //     })
+        // })
+        //     .then(res => res.json())
+        //     .then(data => {
+        //         if (data.status === 201) {
+        //             window.alert(data.message);
+        //             navigate("/");
+        //         } else {
+        //             window.alert(data.message)
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         window.alert(error);
+        //     })
+
     }
     const handlePostAdClick = () => {
         if (user) {
@@ -63,15 +114,21 @@ const Header = () => {
                 <LogoWrapper>
                     <LogoText to="/">CoolLogo</LogoText>
                 </LogoWrapper>
-                <Form onSubmit={handleInputSubmit}>
+                <Form onSubmit={(e) => handleFormSubmit(e, formData)}>
                     <Input 
                         type="text" 
                         placeholder="What are you looking for?" 
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
+                        onChange={(e) => handleChange("input", e.target.value)}
                     />
-                    <Dropdown>
+                    <Dropdown onChange={(e) => handleChange("dropdown", e.target.value)}>
                         <option value="">All Categories</option>
+                        {categories && Object.keys(categories).map((category => {
+                            return (
+                                <option key={category} value={category}>
+                                    {category}
+                                </option>
+                            )
+                        }))}
                     </Dropdown>
                     <Button type={"submit"}>Search</Button>
                 </Form>

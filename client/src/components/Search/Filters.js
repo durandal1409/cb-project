@@ -1,17 +1,19 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useParams, useSearchParams, Link } from "react-router-dom";
 import { taxonomy } from "../../data";
 
-const Filters = ({currentCategory, currentSubcategory}) => {
+const Filters = ({setFilteredAds}) => {
     // TODO:
     // make sure it's possible to go to a category with whitespaces
 
     const params = useParams();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     // making array of chosen categories out of params
     const paramsArr = params["*"].split("/");
+
+    console.log("url: ", params["*"], searchParams.get("q"));
 
     // function makes lists of nested categories to filter ads
     // it recursively goes through keys of nested objects of categoriesObj
@@ -30,7 +32,7 @@ const Filters = ({currentCategory, currentSubcategory}) => {
                                 className={category.toLowerCase() === paramsArr[depth] ? "current" : null}
                             >
                                 <Anchor 
-                                    to={`${path}/${category.toLowerCase()}`}
+                                    to={`${path}/${category.toLowerCase()}?q=${searchParams.get("q")}`}
                                     className={category.toLowerCase() === paramsArr[depth] ? "current" : null}
                                 >
                                     {category}
@@ -48,9 +50,9 @@ const Filters = ({currentCategory, currentSubcategory}) => {
     }
 
     useEffect(() => {
-        // setBigCategories(mainCategories);
-        // setSubcategories(smallCategories);
+        // setFilteredAds(smallAdsArr);
     }, []);
+
     return (
         <Wrapper>
             <h3>Category</h3>
@@ -74,6 +76,9 @@ const Anchor = styled(Link)`
     }
     `
 const UList = styled.ul`
+    li {
+        border-radius: 10px;
+    }
     &.depth-0 {
         li {
             padding: 10px;

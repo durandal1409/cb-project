@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useLoadScript } from "@react-google-maps/api";
 import styled from "styled-components";
 import { GrMapLocation } from "react-icons/gr";
@@ -14,9 +14,7 @@ const Search = () => {
     const [filteredAds, setFilteredAds] = useState(null);
     const {isLoaded} = useLoadScript({googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY});
 
-    useEffect(() => {
-        setFilteredAds(smallAdsArr);
-    }, []);
+    
 
     return (
         mapMode
@@ -30,7 +28,7 @@ const Search = () => {
                             <Map />
                         </MapWrapper>
             :   <ListWrapper>
-                    <Filters />
+                    <Filters setFilteredAds={setFilteredAds} />
                     <List>
                         <IconMapWrapper>
                             <GrMapLocation onClick={() => setMapMode(true)} size={"2em"} />

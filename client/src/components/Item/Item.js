@@ -29,7 +29,6 @@ const Item = () => {
             // get seller info
             const sellerRes = await fetch(`/api/users/${itemData.data.userId}`);
             const sellerData = await sellerRes.json();
-            console.log("ddd: ", sellerData);
             if (sellerData.status === 200) {
                 setSellerData(sellerData.data);
             } else {

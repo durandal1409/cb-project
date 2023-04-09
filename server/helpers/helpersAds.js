@@ -119,7 +119,10 @@ const getLatest = async (req, res) => {
         await client.connect();
         const db = client.db(dbName);
     
-        const ads = await db.collection(adsCollection).find().sort({"timestamp": -1}).limit(4).project({ _id : 1, name: 1, price: 1, address: 1, pic: {$first: "$pics"}}).toArray();
+        const ads = await db.collection(adsCollection)
+            .find().sort({"timestamp": -1}).limit(4)
+            .project({ _id : 1, name: 1, price: 1, address: 1, pic: {$first: "$pics"}})
+            .toArray();
 
         client.close();
         if (ads.length) {
