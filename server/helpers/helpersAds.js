@@ -328,10 +328,119 @@ const postAd = async (req, res) => {
     }
 }
 const updateAd = async (req, res) => {
+    const { 
+        _id, 
+        name, 
+        categories,
+        description, 
+        pics, 
+        price, 
+        address } = req.body;
+
+    if (!_id) {
+        res.status(422).json({
+            status: 422, 
+            data: req.body, 
+            message: "Please, provide ad id."
+        })
+        return;
+    }
     
+    try {
+        const client = new MongoClient(MONGO_URI, options);
+        await client.connect();
+        const db = client.db(dbName);
+        // before sending data we need to change categories array to string
+        // according to mongo Materialized Paths (https://www.mongodb.com/docs/manual/tutorial/model-tree-structures-with-materialized-paths/)
+        // like this ["Men", "Top", "Jackets"] --> ",Men,Top,Jackets,"
+        // 1. Check if there are empty stings and remove them
+        let path = categories?.filter(el => el !== "");
+        // 2. Then make it a string and add commas at the beginning and the end
+        path = "," + path.join(",") + ",";
+
+       // update only defined properties and exclude any other info that might be in req.body
+        const updateObj = {
+            ...(name && {name}),
+            ...(price && {price}),
+            ...(description && {description}),
+            ...(pics && {pics}),
+            ...(address && {address}),
+            ...(path && {path})
+        }
+        const adsRes = await db.collection(adsCollection).findOneAndUpdate({_id}, {$set: updateObj}, {returnDocument: "after"});
+        console.log("mm:", adsRes);
+        if (!adsRes.value) {
+            res.status(409).json({
+                status: 409, 
+                data: {_id}, 
+                message: "Ad update failed."
+            })
+        } else {
+            res.status(200).json({
+                status: 200,
+                data: adsRes.value,
+                message: "Ad updated."
+            })
+        }
+        client.close();
+    } catch(err) {
+        console.log(err.stack);
+        res.status(500).json({ status: 500, message: err.message });
+    }
 }
 const deleteAd = async (req, res) => {
+    const { adId, userId } = req.body;
+
+    if (!userId || !adId ) {
+        res.status(422).json({
+            status: 422, 
+            data: req.body, 
+            message: "Please, provide adId and userId."
+        })
+        return;
+    }
     
+    try {
+        const client = new MongoClient(MONGO_URI, options);
+        await client.connect();
+        const db = client.db(dbName);
+
+        // remove ad from user ads property
+        const usersRes = await db.collection(usersCollection).updateOne({_id: userId}, {$pull: {ads: adId}});
+        if (usersRes.matchedCount === 0) {
+            res.status(404).json({
+                status: 404, 
+                data: {userId, adId}, 
+                message: "User not found."
+            })
+        } else if (usersRes.modifiedCount === 0) {
+            res.status(409).json({
+                status: 409, 
+                data: {userId, adId}, 
+                message: "User update failed."
+            })
+        } else {
+            // remove ad from ads collection
+            const adsRes = await db.collection(adsCollection).deleteOne({_id: adId});
+            if (adsRes.deletedCount === 0) {
+                res.status(409).json({
+                    status: 409, 
+                    data: {userId, adId}, 
+                    message: "User updated. But couldn't delete ad from ads collection."
+                })
+            } else {
+                res.status(200).json({
+                    status: 200,
+                    data: {adId},
+                    message: "Ad deleted."
+                })
+            }
+        }
+        client.close();
+    } catch(err) {
+        console.log(err.stack);
+        res.status(500).json({ status: 500, message: err.message });
+    }
 }
 
 module.exports = {

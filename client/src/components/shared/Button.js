@@ -21,11 +21,17 @@ const StyledButton = styled.button`
     border: none;
     color: var(--color-background);
     cursor: pointer;
-    &:hover {
-        background-color: var(--color-button-hover);
-    }
     &.hide {
         display: none;
+    }
+    /* &.update {
+        background-color: #4caf50;
+    } */
+    /* &.delete {
+        background-color: #c62828;
+    } */
+    &:hover {
+        background-color: var(--color-button-hover);
     }
 `
 export default Button;

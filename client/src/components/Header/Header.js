@@ -74,32 +74,6 @@ const Header = () => {
     const handleFormSubmit = (e, formData) => {
         e.preventDefault();
         navigate(`/search?categories=/${formData.dropdown?.toLowerCase()}&search=${formData.input}`)
-        
-        // console.log("form: ", formData);
-        // fetch("/api/ads/search", {
-        //     method: "POST",
-        //     headers: {
-        //         "Accept": "application/json",
-        //         "Content-Type": "application/json"
-        //     },
-        //     body: JSON.stringify({
-        //         userId: user?.sub,
-        //         ...formData
-        //     })
-        // })
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         if (data.status === 201) {
-        //             window.alert(data.message);
-        //             navigate("/");
-        //         } else {
-        //             window.alert(data.message)
-        //         }
-        //     })
-        //     .catch((error) => {
-        //         window.alert(error);
-        //     })
-
     }
     const handlePostAdClick = () => {
         if (user) {

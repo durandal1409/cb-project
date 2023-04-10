@@ -7,6 +7,7 @@ import SmallItem from "../shared/SmallItem";
 import ContactForm from "../shared/ContactForm";
 import Button from "../shared/Button";
 import ProfileForm from "./ProfileForm";
+import CreateAd from "../CreateAd/CreateAd";
 
 const Profile = () => {
     const { userId } = useParams();
@@ -14,6 +15,8 @@ const Profile = () => {
     const [sellerData, setSellerData] = useState(null);
     const [sellerAds, setSellerAds] = useState(null);
     const [showProfileForm, setShowProfileForm] = useState(false);
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(null);
+    const [showUpdateAd, setShowUpdateAd] = useState(null);
 
     // if user wants to see theit own profile
     // useParams will have 'me'
@@ -38,6 +41,71 @@ const Profile = () => {
                 throw new Error(data.message);
             })
     }, [_id]);
+
+    const handleUpdateAd = (adId) => {
+        fetch(`/api/ads/${adId}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 200) {
+                    // changing categories format in fetched data
+                    // for CreateAd component
+                    const adCategories = data.data.path.slice(1,-1).split(",");
+                    setShowUpdateAd({...data.data, categories: adCategories});
+                } else {
+                    // window.alert(data.message)
+                    throw new Error(data.message);
+                }
+            })
+            .catch((error) => {
+                throw new Error(error.message);
+            })
+    }
+    const handleDeleteAd = (adId) => {
+        setShowDeleteConfirmation(adId);
+    }
+    const handleDeleteCancel = (adId) => {
+        setShowDeleteConfirmation(null);
+    }
+    const handleDeleteConfirm = (adId) => {
+        fetch(`/api/ads/`, {
+            method: "DELETE",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                userId: _id,
+                adId: adId
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.status === 200) {
+                    setSellerAds(sellerAds.filter(ad => ad._id !== data.data.adId));
+                } else {
+                    // window.alert(data.message);
+                    throw new Error(data.message);
+                }
+            })
+            .catch((error) => {
+                // window.alert(error);
+                throw new Error(error.message);
+            })
+    }
+
+    const handleAfterUpdate = (ad) => {
+        setSellerAds(() => {
+            const newAds = [...sellerAds];
+            newAds.map((item, ind) => {
+                if (item._id === ad._id) {
+                    newAds[ind] = ad
+                }
+                return item;
+            })
+            return newAds;
+        })
+        setShowUpdateAd(null);
+    }
 
     const handleMessage = (e) => {
         e.preventDefault();
@@ -71,23 +139,73 @@ const Profile = () => {
                 }
             </Left>
             <Right>
-            <h3>Listings</h3>
-            <AdsWrapper>
-                {!sellerAds
-                    ?   sellerData
-                            ?   <h3>{userId === 'me' ? "You have no ads." : "Seller has no ads."}</h3>
-                            :   <h3>Loading...</h3>
-                    :   sellerAds.map(ad => {
-                            return <SmallItem
-                                key={ad._id}
-                                name={ad.name}
-                                price={ad.price}
-                                address={ad.address}
-                                picSrc={ad.pic}
-                                _id={ad._id}
-                            />
-                })}
-            </AdsWrapper>
+                {!showUpdateAd
+                    ?   <>
+                            <h3>Listings</h3>
+                            <AdsWrapper>
+                                {!sellerAds
+                                    ?   sellerData
+                                            ?   <h3>{userId === 'me' ? "You have no ads." : "Seller has no ads."}</h3>
+                                            :   <h3>Loading...</h3>
+                                    :   sellerAds.map(ad => {
+                                            return (
+                                                <MyAdWrapper key={ad._id}>
+                                                {userId === 'me' &&
+                                                    <>
+
+                                                        {showDeleteConfirmation !== ad._id
+                                                        ?   <AdBtnsWrapper>
+                                                                <Button 
+                                                                    handleClick={() => handleUpdateAd(ad._id)}
+                                                                    width="60px"
+                                                                    className="update"
+                                                                >
+                                                                    Update
+                                                                </Button>
+                                                                <Button 
+                                                                    handleClick={() => handleDeleteAd(ad._id)}
+                                                                    width="60px"
+                                                                    className="delete"
+                                                                >
+                                                                    Delete
+                                                                </Button>
+                                                            </AdBtnsWrapper>
+                                                        :   <ConfirmDeleteBtnsWrapper>
+                                                                <Button 
+                                                                    handleClick={() => handleDeleteConfirm(ad._id)}
+                                                                    width="40px"
+                                                                >
+                                                                    Yes
+                                                                </Button>
+                                                                <span>Delete ad?</span>
+                                                                <Button 
+                                                                    handleClick={() => handleDeleteCancel(ad._id)}
+                                                                    width="40px"
+                                                                >
+                                                                    No
+                                                                </Button>
+                                                            </ConfirmDeleteBtnsWrapper>
+                                                        }
+                                                    </>
+                                                }
+                                                    <SmallItem
+                                                        name={ad.name}
+                                                        price={ad.price}
+                                                        address={ad.address}
+                                                        picSrc={ad.pic}
+                                                        _id={ad._id}
+                                                    />
+                                                </MyAdWrapper>
+                                            )
+                                })}
+                            </AdsWrapper>
+
+                        </>
+                    :   <>
+                            <h3>Update ad</h3>
+                            <CreateAd adData={showUpdateAd} handleAfterUpdate={handleAfterUpdate}/>
+                        </>
+                }
             </Right>
         </Wrapper>
     )
@@ -123,6 +241,28 @@ const AdsWrapper = styled.div`
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 10px;
+`
+const MyAdWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+`
+const AdBtnsWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    & .update{
+        border-radius: 7px 0 0 7px;
+        border-right: 1px solid var(--color-background);
+    }
+    & .delete{
+        border-radius: 0 7px 7px 0;
+    }
+`
+const ConfirmDeleteBtnsWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 `
 
 export default Profile;

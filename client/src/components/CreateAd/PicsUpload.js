@@ -1,15 +1,13 @@
 import styled from "styled-components";
-import { useState } from "react";
 import { AdvancedImage } from '@cloudinary/react'
 import { Cloudinary } from '@cloudinary/url-gen';
 import {fill} from "@cloudinary/url-gen/actions/resize";
+import { AiOutlineDelete } from "react-icons/ai";
 
 
 import Button from "../shared/Button";
 
-const PicsUpload = ({images, setImages, formData, setFormData}) => {
-    // TODO:
-    // do I still need images state here and in CreatAd?
+const PicsUpload = ({formData, setFormData}) => {
 
     // Create a Cloudinary instance
     const cld = new Cloudinary({
@@ -36,9 +34,14 @@ const PicsUpload = ({images, setImages, formData, setFormData}) => {
         myWidget.open();
     }
 
+    const handleDeletePic = (picId) => {
+        const updatedPicsArr = formData.pics.filter(pic => pic !== picId)
+        setFormData({...formData, pics: updatedPicsArr});
+    }
+
     return (
         <PicsUploadWrapper>
-            <h3>Upload pictires</h3>
+            <h4>Upload pictures</h4>
             <Button 
                 type="button" 
                 width="200px"
@@ -48,13 +51,17 @@ const PicsUpload = ({images, setImages, formData, setFormData}) => {
             </Button>
             <PicsPreview>
                 {formData.pics.map(picId => {
+                    {/* console.log("pic:  ", picId); */}
                     // Instantiate a CloudinaryImage object for the image with the public ID, 'docs/models'.
                     const myImage = cld.image(picId);
                     myImage.resize(fill().width(170).height(170));
                     return(
-                        <div key={picId}>
+                        <PicWrapper key={picId}>
+                            <button onClick={() => handleDeletePic(picId)}>
+                                <AiOutlineDelete size={'1.5rem'}/>
+                            </button>
                             <AdvancedImage cldImg={myImage} />
-                        </div>
+                        </PicWrapper>
                     )
                 })}
             </PicsPreview>
@@ -70,6 +77,27 @@ const PicsPreview = styled.div`
     flex-wrap: wrap;
     margin-top: 10px;
     gap: 10px;
+`
+const PicWrapper = styled.div`
+    position: relative;
+    button {
+        position: absolute;
+        right: 2px;
+        top: 2px;
+        width: 26px;
+        height: 26px;
+        padding: 0;
+        background-color: var(--color-background);
+        border-radius: 12px;
+        border: none;
+        cursor: pointer;
+        svg {
+        color: var(--color-button);
+        &:hover {
+            color: var(--color-button-hover);
+        }
+    }
+    }
 `
 
 export default PicsUpload;

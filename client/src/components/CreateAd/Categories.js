@@ -69,7 +69,7 @@ const Categories = ({formData, setFormData}) => {
     }
     return (
         <CategoriesWrapper>
-            <h3>Select Categories</h3>
+            <h4>Select Categories</h4>
             {categories
                 ?   recursiveCategory(categories, 0)
                 : <h3>Loading...</h3>

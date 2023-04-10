@@ -13,7 +13,6 @@ const Item = () => {
     const [sellerData, setSellerData] = useState(null);
     const [similarAds, setSimilarAds] = useState(null);
 
-
     const chainingFetches = async () => {
         try {
             // get ad info
@@ -29,7 +28,7 @@ const Item = () => {
             const sellerRes = await fetch(`/api/users/${itemData.data.userId}`);
             const sellerData = await sellerRes.json();
             if (sellerData.status === 200) {
-                setSellerData(sellerData.data);
+                setSellerData(sellerData.data.user);
             } else {
                 window.alert(sellerData.message);
                 throw new Error(sellerData.message);
@@ -50,7 +49,7 @@ const Item = () => {
 
     useEffect(() => {
         chainingFetches();
-    }, []);
+    }, [itemId]);
 
     const handleMessage = (e) => {
         e.preventDefault();
@@ -95,7 +94,7 @@ const Item = () => {
                     {sellerData && 
                     <>
                         <ContactForm handleMessage={handleMessage} sellerName={sellerData.fname}/>
-                        <SellerLink to={`/profile/${sellerData._id}`}>
+                        <SellerLink to={`/user/${sellerData._id}`}>
                             <img src={sellerData.avatar} alt="seller photo"/>
                             <h4>{sellerData.fname} {sellerData.lname}</h4>
                         </SellerLink>

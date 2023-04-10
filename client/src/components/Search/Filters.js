@@ -13,13 +13,15 @@ const Filters = ({setFilteredAds}) => {
     // get chosen categories from url
     // remove "/" at the beginning
     // change it to array
-    const chosenCategoriesArr = searchParams?.get("categories").slice(1).split("/");
+    const chosenCategoriesArr = searchParams?.get("categories")?.slice(1).split("/");
+    console.log("chc: ", chosenCategoriesArr);
     
     // function makes lists of nested categories to filter ads
     // it recursively goes through keys of nested objects of categoriesObj
     // making list of nested categories for each category that has been clicked
     // it stops when category has no nested categories
     const recursiveCategory = (categoriesObj, chosenCategoriesArr, depth, path) => {
+        console.log("c: ", categoriesObj);
         if (Object.keys(categoriesObj).length === 0) {
             return 
         } else {
@@ -29,7 +31,8 @@ const Filters = ({setFilteredAds}) => {
                         {/* check if category is among chosen (which means it was clicked and it's in url query params) 
                         then we need to add 'current' class to elements 
                         and call a function again to render nested categories*/}
-                        const isChosenCategory = category.toLowerCase() === chosenCategoriesArr[depth];
+                        console.log("ca: ", Object.keys(categoriesObj), category, chosenCategoriesArr);
+                        const isChosenCategory = chosenCategoriesArr ? category.toLowerCase() === chosenCategoriesArr[depth] : null;
                         return (
                             <li 
                                 key={`${path}/${category}`}

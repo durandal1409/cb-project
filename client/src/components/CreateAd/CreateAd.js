@@ -7,11 +7,15 @@ import PicsUpload from "./PicsUpload";
 import Categories from "./Categories";
 import Button from "../shared/Button";
 
-const CreateAd = () => {
+const CreateAd = ({adData, handleAfterUpdate}) => {
     const { user } = useAuth0();
     const navigate = useNavigate();
-    const [formData, setFormData] = useState({pics: [], categories: ['']});
+    // if adData props was passed then it's update form
+    // and we fill it with current ad data
+    // otherwise only fill it with arrays for pics and cetegories
+    const [formData, setFormData] = useState(adData ? adData : {pics: [], categories: ['']});
 
+    console.log("fd: ", formData);
     const handleChange = (key, value) => {
         setFormData({
             ...formData,
@@ -21,10 +25,12 @@ const CreateAd = () => {
 
     const handleFormSubmit = (e, formData) => {
         e.preventDefault();
-        
+        // if adData props was passed then we need to update form and patch
+        // otherwise we are creating new ad and need to post
+        const methodName = adData ? "PATCH" : "POST";
         // console.log("form: ", formData);
         fetch("/api/ads", {
-            method: "POST",
+            method: methodName,
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json"
@@ -36,9 +42,11 @@ const CreateAd = () => {
         })
             .then(res => res.json())
             .then(data => {
-                if (data.status === 201) {
+                if (data.status === 201 || data.status === 200) {
                     window.alert(data.message);
-                    navigate("/");
+                    navigate("/user/me");
+                    // if updating ad then need to call handler in Profile after successful update
+                    handleAfterUpdate && handleAfterUpdate(data.data);
                 } else {
                     window.alert(data.message)
                 }
@@ -56,6 +64,7 @@ const CreateAd = () => {
                         <Input 
                             type="text" 
                             required
+                            value={formData.name}
                             onChange={(e) => handleChange("name", e.target.value)} 
                         />
                     </Label>
@@ -66,6 +75,7 @@ const CreateAd = () => {
                         <Description 
                             rows="7" 
                             required
+                            value={formData.description}
                             onChange={(e) => handleChange("description", e.target.value)} 
                         />
                     </Label>
@@ -80,6 +90,7 @@ const CreateAd = () => {
                         <Input 
                             type="text" 
                             required
+                            value={formData.address}
                             onChange={(e) => handleChange("address", e.target.value)} 
                         />
                     </Label>
@@ -88,10 +99,12 @@ const CreateAd = () => {
                         <Input 
                             type="number" 
                             required
+                            value={formData.price}
                             onChange={(e) => handleChange("price", e.target.value)} 
                         />
                     </Label>
-                    <Button type="submit" width={"200px"}>Post ad</Button>
+                    {/* if adData props was passed then it's update form */}
+                    <Button type="submit" width={"200px"}>{adData ? "Update ad" : "Post ad"}</Button>
                 </Form>
             : <h3>Please, log in.</h3>
     )
