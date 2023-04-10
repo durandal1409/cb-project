@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { GoogleMap, Marker, MarkerClusterer, InfoWindow} from "@react-google-maps/api";
+import { smallAdsArr } from "../../data";
 
 import SmallItem from "../shared/SmallItem";
 
@@ -9,9 +10,12 @@ const Map = ({filteredAds}) => {
     const options = useMemo(() => ({disableDefaultUI: true, clickableIcons: false}), []);
     const mapRef = useRef();
     const [selected, setSelected] = useState(null);
-    console.log("sel: ", selected);
+    console.log("selected: ", selected);
+    console.log("filteredAds: ", Number(filteredAds[0].location.coordinates[0]), Number(filteredAds[0].location.coordinates[1]));
 
     const onLoad = useCallback((map) => (mapRef.current = map), []);
+
+    
 
     return (
         <Wrapper>
@@ -23,8 +27,8 @@ const Map = ({filteredAds}) => {
                 onLoad={onLoad}
             >
                 {filteredAds && <MarkerClusterer>
-                    {(clusterer) => filteredAds.map(ad => {
-                        {/* console.log("ad: ", ad); */}
+                    {(clusterer) => smallAdsArr.map(ad => {
+                        console.log("ad: ", ad);
                         return <Marker 
                                     key={ad._id}
                                     position={{lat: Number(ad.location.coordinates[0]), lng: Number(ad.location.coordinates[1])}}
