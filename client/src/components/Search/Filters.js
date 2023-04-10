@@ -14,14 +14,12 @@ const Filters = ({setFilteredAds}) => {
     // remove "/" at the beginning
     // change it to array
     const chosenCategoriesArr = searchParams?.get("categories")?.slice(1).split("/");
-    console.log("chc: ", chosenCategoriesArr);
     
     // function makes lists of nested categories to filter ads
     // it recursively goes through keys of nested objects of categoriesObj
     // making list of nested categories for each category that has been clicked
     // it stops when category has no nested categories
     const recursiveCategory = (categoriesObj, chosenCategoriesArr, depth, path) => {
-        console.log("c: ", categoriesObj);
         if (Object.keys(categoriesObj).length === 0) {
             return 
         } else {
@@ -29,9 +27,8 @@ const Filters = ({setFilteredAds}) => {
                 <UList className={`depth-${depth}`}>
                     {Object.keys(categoriesObj).map(category => {
                         {/* check if category is among chosen (which means it was clicked and it's in url query params) 
-                        then we need to add 'current' class to elements 
+                        then we need to add 'current' class to elements (for styling)
                         and call a function again to render nested categories*/}
-                        console.log("ca: ", Object.keys(categoriesObj), category, chosenCategoriesArr);
                         const isChosenCategory = chosenCategoriesArr ? category.toLowerCase() === chosenCategoriesArr[depth] : null;
                         return (
                             <li 
@@ -63,7 +60,7 @@ const Filters = ({setFilteredAds}) => {
             .then((data) => {
                 if (data.status === 200) {
                     setFilteredAds(data.data);
-                    console.log("ads: ", data);
+                    // console.log("ads: ", data);
                 } else {
                     // window.alert(data.message);
                     throw new Error(data.message);

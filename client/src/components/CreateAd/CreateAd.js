@@ -15,7 +15,7 @@ const CreateAd = ({adData, handleAfterUpdate}) => {
     // otherwise only fill it with arrays for pics and cetegories
     const [formData, setFormData] = useState(adData ? adData : {pics: [], categories: ['']});
 
-    console.log("fd: ", formData);
+    // console.log("fd: ", formData);
     const handleChange = (key, value) => {
         setFormData({
             ...formData,

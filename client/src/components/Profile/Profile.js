@@ -3,10 +3,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 
-import SmallItem from "../shared/SmallItem";
-import ContactForm from "../shared/ContactForm";
-import Button from "../shared/Button";
-import ProfileForm from "./ProfileForm";
+import AdWithControls from "./AdWithControls";
+import ProfileInfo from "./ProfileInfo";
 import CreateAd from "../CreateAd/CreateAd";
 
 const Profile = () => {
@@ -14,9 +12,7 @@ const Profile = () => {
     const { user } = useAuth0();
     const [sellerData, setSellerData] = useState(null);
     const [sellerAds, setSellerAds] = useState(null);
-    const [showProfileForm, setShowProfileForm] = useState(false);
-    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(null);
-    const [showUpdateAd, setShowUpdateAd] = useState(null);
+    const [adToUpdate, setAdToUpdate] = useState(null);
 
     // if user wants to see theit own profile
     // useParams will have 'me'
@@ -42,57 +38,6 @@ const Profile = () => {
             })
     }, [_id]);
 
-    const handleUpdateAd = (adId) => {
-        fetch(`/api/ads/${adId}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 200) {
-                    // changing categories format in fetched data
-                    // for CreateAd component
-                    const adCategories = data.data.path.slice(1,-1).split(",");
-                    setShowUpdateAd({...data.data, categories: adCategories});
-                } else {
-                    // window.alert(data.message)
-                    throw new Error(data.message);
-                }
-            })
-            .catch((error) => {
-                throw new Error(error.message);
-            })
-    }
-    const handleDeleteAd = (adId) => {
-        setShowDeleteConfirmation(adId);
-    }
-    const handleDeleteCancel = (adId) => {
-        setShowDeleteConfirmation(null);
-    }
-    const handleDeleteConfirm = (adId) => {
-        fetch(`/api/ads/`, {
-            method: "DELETE",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                userId: _id,
-                adId: adId
-            }),
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.status === 200) {
-                    setSellerAds(sellerAds.filter(ad => ad._id !== data.data.adId));
-                } else {
-                    // window.alert(data.message);
-                    throw new Error(data.message);
-                }
-            })
-            .catch((error) => {
-                // window.alert(error);
-                throw new Error(error.message);
-            })
-    }
-
     const handleAfterUpdate = (ad) => {
         setSellerAds(() => {
             const newAds = [...sellerAds];
@@ -104,42 +49,17 @@ const Profile = () => {
             })
             return newAds;
         })
-        setShowUpdateAd(null);
+        setAdToUpdate(null);
     }
 
-    const handleMessage = (e) => {
-        e.preventDefault();
-    }
+    
     
     return (
         sellerData &&
         <Wrapper>
-            <Left>
-                {
-                    sellerData
-                        ?   <>
-                                <img src={sellerData.avatar} alt="seller photo"/>
-                                <h4>{sellerData.fname} {sellerData.lname}</h4>
-                                { 
-                                    userId === 'me'
-                                        ?   <>
-                                                <Button 
-                                                    width="200px" 
-                                                    handleClick={() => setShowProfileForm(true)}
-                                                    className={showProfileForm ? "hide" : null}
-                                                >
-                                                    Update my profile
-                                                </Button>
-                                                <ProfileForm user={sellerData} showProfileForm={showProfileForm} setShowProfileForm={setShowProfileForm}/>
-                                            </>
-                                        :   <ContactForm handleMessage={handleMessage}  sellerName={sellerData.fname}/>
-                                }
-                            </>
-                        :   <h3>Loading...</h3>
-                }
-            </Left>
+            <ProfileInfo sellerData={sellerData} userId={userId}/>
             <Right>
-                {!showUpdateAd
+                {!adToUpdate
                     ?   <>
                             <h3>Listings</h3>
                             <AdsWrapper>
@@ -149,61 +69,26 @@ const Profile = () => {
                                             :   <h3>Loading...</h3>
                                     :   sellerAds.map(ad => {
                                             return (
-                                                <MyAdWrapper key={ad._id}>
-                                                {userId === 'me' &&
-                                                    <>
-
-                                                        {showDeleteConfirmation !== ad._id
-                                                        ?   <AdBtnsWrapper>
-                                                                <Button 
-                                                                    handleClick={() => handleUpdateAd(ad._id)}
-                                                                    width="60px"
-                                                                    className="update"
-                                                                >
-                                                                    Update
-                                                                </Button>
-                                                                <Button 
-                                                                    handleClick={() => handleDeleteAd(ad._id)}
-                                                                    width="60px"
-                                                                    className="delete"
-                                                                >
-                                                                    Delete
-                                                                </Button>
-                                                            </AdBtnsWrapper>
-                                                        :   <ConfirmDeleteBtnsWrapper>
-                                                                <Button 
-                                                                    handleClick={() => handleDeleteConfirm(ad._id)}
-                                                                    width="40px"
-                                                                >
-                                                                    Yes
-                                                                </Button>
-                                                                <span>Delete ad?</span>
-                                                                <Button 
-                                                                    handleClick={() => handleDeleteCancel(ad._id)}
-                                                                    width="40px"
-                                                                >
-                                                                    No
-                                                                </Button>
-                                                            </ConfirmDeleteBtnsWrapper>
-                                                        }
-                                                    </>
-                                                }
-                                                    <SmallItem
-                                                        name={ad.name}
-                                                        price={ad.price}
-                                                        address={ad.address}
-                                                        picSrc={ad.pic}
-                                                        _id={ad._id}
-                                                    />
-                                                </MyAdWrapper>
+                                                <AdWithControls
+                                                    key={ad._id}
+                                                    ad={ad}
+                                                    // id from params (for logged in user === 'me')
+                                                    userId={userId}
+                                                    // real id (for logged in user - from OAuth0)
+                                                    _id={_id}
+                                                    sellerAds={sellerAds}
+                                                    setSellerAds={setSellerAds}
+                                                    setAdToUpdate={setAdToUpdate}
+                                                />
                                             )
-                                })}
+                                        })
+                                }
                             </AdsWrapper>
 
                         </>
                     :   <>
                             <h3>Update ad</h3>
-                            <CreateAd adData={showUpdateAd} handleAfterUpdate={handleAfterUpdate}/>
+                            <CreateAd adData={adToUpdate} handleAfterUpdate={handleAfterUpdate}/>
                         </>
                 }
             </Right>
@@ -216,20 +101,6 @@ const Wrapper = styled.div`
     padding-top: 30px;
     display: flex;
     justify-content: space-between;
-`
-const Left = styled.div`
-    width: var(--small-block-width);
-    display: flex;
-    flex-direction: column;
-    img {
-        width: 70px;
-        height: 70px;
-        border-radius: 50%;
-        margin-bottom: 10px;
-    }
-    h4 {
-        margin-bottom: 10px;
-    }
 `
 const Right = styled.div`
     width: var(--big-block-width);

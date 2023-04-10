@@ -9,7 +9,7 @@ const Home = () => {
     const [latestAds, setLatestAds] = useState(null);
     const { user } = useAuth0();
     useEffect(() => {
-        fetch(`/api/ads/recommended/${user?._id}`)
+        fetch(`/api/ads/recommended/${user?.sub}`)
             .then((res) => res.json())
             .then((data) => {
                 if (data.status === 200) {

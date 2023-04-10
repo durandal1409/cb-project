@@ -21,26 +21,27 @@ const getSearchedAds = async (req, res) => {
     // (https://www.mongodb.com/docs/manual/tutorial/model-tree-structures-with-materialized-paths/)
     const path = categories.replaceAll("/", ",") + ",";
     console.log("CC:  ", path, search);
-    const p = ",kids,bottoms,"
 
     // prepare search object
-    const agg = [
-        {
-            '$search': {
-                'phrase': {
-                    'path': ['name', 'description'],
-                    'query': search
-                }
-            }
-        }
-    ];
     // const agg = [
     //     {
-    //         $search: {
+    //         '$search': {
     //             'phrase': {
     //                 'path': ['name', 'description'],
     //                 'query': search
-    //             },
+    //             }
+    //         }
+    //     },
+    //     {
+    //         '$limit': 4
+    //     },
+    //     { 
+    //         $project : { _id : 1, name: 1, price: 1, address: 1, pic: {$first: "$pics"}} 
+    //     }
+    // ];
+    // const agg = [
+    //     {
+    //         $search: {
     //             "regex": {
     //                 "query": `${path}(.*)`,
     //                 "path": "path"
@@ -48,28 +49,34 @@ const getSearchedAds = async (req, res) => {
     //         }
     //     }
     // ]
-    // const agg = [
-    //     {
-    //         $search:  {
-    //             "compound": {
-    //                 "must": [
-    //                     {
-    //                         'text': {
-    //                             'path': ['name', 'description'],
-    //                             'query': search
-    //                         }
-    //                     }
-    //                     // {
-    //                     //     "regex": {
-    //                     //         "query": `${path}(.*)`,
-    //                     //         "path": "path"
-    //                     //     }
-    //                     // }
-    //                 ]
-    //             }
-    //         }
-    //     }
-    // ]
+    const agg = [
+        {
+            $search:  {
+                "compound": {
+                    "must": [
+                        {
+                            'phrase': {
+                                'path': ['name', 'description'],
+                                'query': search
+                            }
+                        },
+                        {
+                            "regex": {
+                                "query": `${path}(.*)`,
+                                "path": "path"
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            '$limit': 12
+        },
+        { 
+            $project : { _id : 1, name: 1, price: 1, address: 1, pic: {$first: "$pics"}, location: 1} 
+        }
+    ]
 
     try {
         const client = new MongoClient(MONGO_URI, options);
@@ -82,9 +89,9 @@ const getSearchedAds = async (req, res) => {
         }
     
         // find ads according to the search
-        const ads = await db.collection(adsCollection).aggregate(agg).limit(48).toArray();
+        const ads = await db.collection(adsCollection).aggregate(agg).toArray();
         // const ads = await db.collection(adsCollection).find( { path: /^,tops,/ } )
-        console.log("adsS: ", ads);
+        console.log("adsS.length: ", ads.length);
         client.close();
         if (ads.length) {
             res.status(200).json({
@@ -100,6 +107,8 @@ const getSearchedAds = async (req, res) => {
     }
 }
 const getRecommended = async (req, res) => {
+    const { userId } = req.params;
+    console.log("user: ", userId);
     // if user is logged in and user ID has been passed
     // return ads according to the last search
     // else return 4 random ads

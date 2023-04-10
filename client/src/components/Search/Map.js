@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { GoogleMap, Marker, MarkerClusterer, InfoWindow} from "@react-google-maps/api";
-import { smallAdsArr } from "../../data";
 
 import SmallItem from "../shared/SmallItem";
 
@@ -23,8 +22,9 @@ const Map = ({filteredAds}) => {
                 options={options}
                 onLoad={onLoad}
             >
-                {ads && <MarkerClusterer>
-                    {(clusterer) => ads.map(ad => {
+                {filteredAds && <MarkerClusterer>
+                    {(clusterer) => filteredAds.map(ad => {
+                        {/* console.log("ad: ", ad); */}
                         return <Marker 
                                     key={ad._id}
                                     position={{lat: Number(ad.location.coordinates[0]), lng: Number(ad.location.coordinates[1])}}
