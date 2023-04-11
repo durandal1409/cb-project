@@ -37,6 +37,10 @@ const cloudinaryPicsArr = [
     "lm9qd0o6vloazrtkdv4t"
 ]
 
+// coordinates boundaries for creating ads in batchImportAdsAndUsers and for postAd in helpersAds
+const LAT_BOUNDARIES = [45.50, 45.67];
+const LNG_BOUNDARIES = [-73.9344, -73.3599];
+
 // categories
 const taxonomy = {
     "Women" : {
@@ -147,6 +151,8 @@ const makeRandomPath = (categoriesObj) => {
 
 module.exports = {
     cloudinaryPicsArr,
+    LAT_BOUNDARIES,
+    LNG_BOUNDARIES,
     taxonomy,
     womenSizes,
     menSizes,

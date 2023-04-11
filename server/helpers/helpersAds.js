@@ -1,6 +1,6 @@
 "use strict";
 const { v4: uuidv4 } = require("uuid");
-const { LAT_BOUNDARIES, LNG_BOUNDARIES} = require("../batchImports/batchImportAdsAndUsers");
+const { LAT_BOUNDARIES, LNG_BOUNDARIES} = require("../batchImports/batchHelpers");
 
 const { MongoClient } = require("mongodb");
 const path = require("path");
@@ -14,6 +14,7 @@ const options = {
 const dbName = "cb-project";
 const adsCollection = "ads";
 const usersCollection = "users";
+console.log("smt");
 
 const getSearchedAds = async (req, res) => {
     const {userId} = req.params;

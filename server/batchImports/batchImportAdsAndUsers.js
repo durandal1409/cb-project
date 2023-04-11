@@ -2,7 +2,7 @@ const { MongoClient } = require("mongodb");
 const { faker } = require('@faker-js/faker/locale/en_CA');
 const { v4: uuidv4 } = require("uuid");
 const path = require("path");
-const { cloudinaryPicsArr, taxonomy, makeRandomPath } = require("./batchHelpers.js");
+const { cloudinaryPicsArr, LAT_BOUNDARIES, LNG_BOUNDARIES, taxonomy, makeRandomPath } = require("./batchHelpers.js");
 
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
 const { MONGO_URI } = process.env;
@@ -10,16 +10,12 @@ const { MONGO_URI } = process.env;
 const options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-  };
+};
 
 const NEW_ADS_NUM = 1000;
 const NEW_USERS_NUM = NEW_ADS_NUM / 10;
 
-const LAT_BOUNDARIES = [45.50, 45.67];
-const LNG_BOUNDARIES = [-73.9344, -73.3599];
 const MAX_PICS_NUM = 6;
-
-const randPath = makeRandomPath(taxonomy);
 
 const batchImport = async () =>{
     const client = new MongoClient(MONGO_URI, options);
@@ -93,5 +89,3 @@ const batchImport = async () =>{
 }
 
 batchImport();
-
-module.exports = { LAT_BOUNDARIES, LNG_BOUNDARIES }
