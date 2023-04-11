@@ -34,7 +34,7 @@ const Profile = () => {
             })
             .catch((error) => {
                 // window.alert(error);
-                throw new Error(data.message);
+                throw new Error(error.message);
             })
     }, [_id]);
 

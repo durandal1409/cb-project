@@ -93,3 +93,5 @@ const batchImport = async () =>{
 }
 
 batchImport();
+
+module.exports = { LAT_BOUNDARIES, LNG_BOUNDARIES }

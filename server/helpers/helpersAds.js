@@ -1,5 +1,6 @@
 "use strict";
 const { v4: uuidv4 } = require("uuid");
+const { LAT_BOUNDARIES, LNG_BOUNDARIES} = require("../batchImports/batchImportAdsAndUsers");
 
 const { MongoClient } = require("mongodb");
 const path = require("path");
@@ -212,42 +213,30 @@ const getLatest = async (req, res) => {
     }
 }
 const getSimilar = async (req, res) => {
-    // search for words from current ad title
-    const { title } = req.params;
-    // preparing search object
+    const {path} = req.params;
     const agg = [
-        {
-            "$search": {
-                // "compound":{
-                //     "should":[{
-                        "moreLikeThis": {
-                            "like": {name: title}
-                        }
-                //     }],
-                //     "mustNot":[{
-                //         "equals": {
-                //             "path": "_id",
-                //             "value": adId
-                //         }
-                //     }]
-                // }
+            {
+                $geoNear: {
+                    near: { type: "Point", coordinates: [ 45.5, -73.6 ] },
+                    spherical: true,
+                    query: { path: ",kids,dresses," },
+                    distanceField: "calcDistance"
+                }
+            },
+            {
+                '$limit': 6
+            },
+            { 
+                $project : { _id : 1, name: 1, price: 1, address: 1, pic: {$first: "$pics"}} 
             }
-        },
-        { 
-            "$limit": 6
-        },
-        { 
-            $project : { _id : 1, name: 1, price: 1, address: 1, pic: {$first: "$pics"}} 
-        }
-    ];
-
+    ]
     try {
         const client = new MongoClient(MONGO_URI, options);
         await client.connect();
         const db = client.db(dbName);
     
         const ads = await db.collection(adsCollection).aggregate(agg).toArray();
-    
+        console.log("ads: ", ads);
         client.close();
         if (ads) {
             res.status(200).json({
@@ -321,6 +310,15 @@ const postAd = async (req, res) => {
         path = "," + path.join(",") + ",";
         // console.log("path: ", path);
 
+        // need to make fake coordinates for ad to show it on the map
+        const fakeLocation = {
+            type: "Point",
+            coordinates: [
+                Math.random() * (LAT_BOUNDARIES[1] - LAT_BOUNDARIES[0]) + LAT_BOUNDARIES[0], 
+                Math.random() * (LNG_BOUNDARIES[1] - LNG_BOUNDARIES[0]) + LNG_BOUNDARIES[0]
+            ]
+        }
+
         // add only what we need for ad, exclude any other info that might be in req.body
         const adObj = {
                 _id: uuidv4(),
@@ -330,7 +328,8 @@ const postAd = async (req, res) => {
                 description, 
                 pics, 
                 price, 
-                address
+                address,
+                location: fakeLocation
             };
         const adsRes = await db.collection(adsCollection).insertOne(adObj);
         if (!adsRes.acknowledged) {

@@ -103,7 +103,8 @@ const addUser = async (req, res) => {
                 lname,
                 email, 
                 avatar, 
-                ads
+                ads,
+                last_search: ""
             };
         const userInsertRes = await db.collection(usersCollection).insertOne(userObj);
         if (!userInsertRes.acknowledged) {

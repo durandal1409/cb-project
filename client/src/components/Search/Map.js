@@ -29,7 +29,7 @@ const Map = ({filteredAds}) => {
             >
                 {tempAds && <MarkerClusterer>
                     {(clusterer) => filteredAds.map(ad => {
-                        {/* console.log("ad: ", ad); */}
+                        console.log("ad: ", ad);
                         return <Marker 
                                     key={ad._id}
                                     position={{lat: Number(ad.location.coordinates[0]), lng: Number(ad.location.coordinates[1])}}

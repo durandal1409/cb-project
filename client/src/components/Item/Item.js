@@ -38,7 +38,7 @@ const Item = () => {
                 throw new Error(sellerData.message);
             }
             //  get similar ads
-            const similarRes = await fetch(`/api/ads/similar/${itemData.data.name}`);
+            const similarRes = await fetch(`/api/ads/similar/${itemData.data.path}`);
             const similarData = await similarRes.json();
             if (similarData.status === 200) {
                 setSimilarAds(similarData.data);
