@@ -14,7 +14,6 @@ const options = {
 const dbName = "cb-project";
 const adsCollection = "ads";
 const usersCollection = "users";
-console.log("smt");
 
 const getSearchedAds = async (req, res) => {
     const {userId} = req.params;
@@ -221,6 +220,7 @@ const getSimilar = async (req, res) => {
                 $geoNear: {
                     near: { type: "Point", coordinates: [ Number(coordinatesArr[0]), Number(coordinatesArr[1]) ] },
                     spherical: true,
+                    minDistance: 1, //to exclude the same ad
                     query: { path: path },
                     distanceField: "calcDistance"
                 }
@@ -238,7 +238,7 @@ const getSimilar = async (req, res) => {
         const db = client.db(dbName);
     
         const ads = await db.collection(adsCollection).aggregate(agg).toArray();
-        // console.log("ads: ", ads);
+        console.log("ads: ", ads);
         client.close();
         if (ads) {
             res.status(200).json({
