@@ -1,12 +1,14 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import ContactForm from "../shared/ContactForm";
 import Button from "../shared/Button";
 import ProfileForm from "./ProfileForm";
+import { UserContext } from "../UserContext";
 
 const ProfileInfo = ({sellerData, userId}) => {
     const [showProfileForm, setShowProfileForm] = useState(false);
+    const { userData } = useContext(UserContext);
 
     const handleMessage = (e) => {
         e.preventDefault();
@@ -17,11 +19,11 @@ const ProfileInfo = ({sellerData, userId}) => {
                 {
                     sellerData
                         ?   <>
-                                <img src={sellerData.avatar} alt="seller photo"/>
-                                <h4>{sellerData.fname} {sellerData.lname}</h4>
                                 { 
                                     userId === 'me'
                                         ?   <>
+                                                <img src={userData.avatar} alt="my photo"/>
+                                                <h4>{userData.fname} {userData.lname}</h4>
                                                 <Button 
                                                     width="200px" 
                                                     handleClick={() => setShowProfileForm(true)}
@@ -31,7 +33,11 @@ const ProfileInfo = ({sellerData, userId}) => {
                                                 </Button>
                                                 <ProfileForm user={sellerData} showProfileForm={showProfileForm} setShowProfileForm={setShowProfileForm}/>
                                             </>
-                                        :   <ContactForm handleMessage={handleMessage}  sellerName={sellerData.fname}/>
+                                        :   <>
+                                                <img src={sellerData.avatar} alt="seller photo"/>
+                                                <h4>{sellerData.fname} {sellerData.lname}</h4>
+                                                <ContactForm handleMessage={handleMessage}  sellerName={sellerData.fname}/>
+                                            </>
                                 }
                             </>
                         :   <h3>Loading...</h3>

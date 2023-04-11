@@ -158,14 +158,8 @@ const updateUser = async (req, res) => {
         await client.connect();
         const db = client.db(dbName);
     
-        const userUpdateRes = await db.collection(usersCollection).updateOne({_id}, {$set: updateObj});
-        if (userUpdateRes.matchedCount === 0) {
-            res.status(404).json({
-                status: 404, 
-                data: {_id}, 
-                message: "User not found."
-            })
-        } else if (userUpdateRes.modifiedCount === 0) {
+        const userUpdateRes = await db.collection(usersCollection).findOneAndUpdate({_id}, {$set: updateObj}, {returnDocument: "after"});
+        if (!userUpdateRes.value) {
             res.status(409).json({
                 status: 409, 
                 data: {_id}, 
@@ -173,8 +167,8 @@ const updateUser = async (req, res) => {
             })
         } else {
             res.status(200).json({
-                status: 200, 
-                data: {_id}, 
+                status: 200,
+                data: userUpdateRes.value,
                 message: "User updated."
             })
         }

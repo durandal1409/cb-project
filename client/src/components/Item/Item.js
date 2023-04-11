@@ -39,7 +39,6 @@ const Item = () => {
                 throw new Error(sellerData.message);
             }
             //  get similar ads
-            console.log("itemdata: ", itemData);
             const similarRes = await fetch(`/api/ads/similar/${itemData.data.path}/${itemData.data.location.coordinates}`);
             const similarData = await similarRes.json();
             if (similarData.status === 200) {

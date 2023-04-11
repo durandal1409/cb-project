@@ -1,11 +1,18 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import Button from "../shared/Button";
+import { UserContext } from "../UserContext";
 
-const ProfileForm = ({user, showProfileForm, setShowProfileForm}) => {
-    const {fname, lname, email, _id} = user;
-    const [formData, setFormData] = useState({fname, lname, email});
+const ProfileForm = ({showProfileForm, setShowProfileForm}) => {
+    const { userData, setUserData } = useContext(UserContext);
+    const [formData, setFormData] = useState(
+        {
+            fname: userData.fname, 
+            lname: userData.lname, 
+            email: userData.email
+        }
+    );
 
     const handleChange = (key, value) => {
         setFormData({
@@ -23,7 +30,7 @@ const ProfileForm = ({user, showProfileForm, setShowProfileForm}) => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                _id,
+                _id: userData._id,
                 ...formData
             })
         })
@@ -31,6 +38,7 @@ const ProfileForm = ({user, showProfileForm, setShowProfileForm}) => {
             .then(data => {
                 if (data.status === 200) {
                     window.alert(data.message);
+                    setUserData({...userData, ...data.data})
                     setShowProfileForm(false);
                 } else {
                     window.alert(data.message)
@@ -42,7 +50,7 @@ const ProfileForm = ({user, showProfileForm, setShowProfileForm}) => {
     }
 
     return (
-        <Form className={showProfileForm ? "show" : null} onSubmit={(e) => handleUpdateProfile(e, formData)}>
+        userData && <Form className={showProfileForm ? "show" : null} onSubmit={(e) => handleUpdateProfile(e, formData)}>
             <Label>
                 First name
                 <Input 
