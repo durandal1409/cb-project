@@ -3,19 +3,19 @@ import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { GoogleMap, Marker, MarkerClusterer, InfoWindow} from "@react-google-maps/api";
 import { smallAdsArr } from "../../data";
 
-import SmallItem from "../shared/SmallItem";
+// import SmallItem from "../shared/SmallItem";
 
 const Map = ({filteredAds}) => {
     const center = useMemo(() => ({lat: 45.5, lng: -73.6}), []);
     const options = useMemo(() => ({disableDefaultUI: true, clickableIcons: false}), []);
     const mapRef = useRef();
     const [selected, setSelected] = useState(null);
-    const [tempAds, setTempAds] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const onLoad = useCallback((map) => (mapRef.current = map), []);
 
     useEffect(() => {
-        setTempAds(smallAdsArr);
+        setLoading(true);
     }, [])
 
     return (
@@ -27,9 +27,9 @@ const Map = ({filteredAds}) => {
                 options={options}
                 onLoad={onLoad}
             >
-                {tempAds && <MarkerClusterer>
+                {loading && <MarkerClusterer>
                     {(clusterer) => filteredAds.map(ad => {
-                        console.log("ad: ", ad);
+                        {/* console.log("ad: ", ad); */}
                         return <Marker 
                                     key={ad._id}
                                     position={{lat: Number(ad.location.coordinates[0]), lng: Number(ad.location.coordinates[1])}}

@@ -6,14 +6,16 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import { CategoriesContext } from "../CategoriesContext";
+import { UserContext } from "../UserContext";
 import LoginBtn from "./LoginBtn";
 import UserInHeader from "./UserInHeader";
 import Button from "../shared/Button";
 
 const Header = () => {
     const { isLoading, error, user } = useAuth0();
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState({input: '', dropdown: ''});
     const { categories, setCategories } = useContext(CategoriesContext);
+    const { setUserData } = useContext(UserContext);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -22,7 +24,7 @@ const Header = () => {
             .then(data => {
                 if (data.status === 200) {
                     setCategories(data.data);
-                    console.log(data.message);
+                    // console.log(data.message);
                 } else {
                     throw new Error(data.message);
                 }
@@ -34,6 +36,7 @@ const Header = () => {
     }, []);
 
     useEffect(() => {
+        console.log("fetch user: ", user?.sub);
         user && fetch("/api/users", {
             method: "POST",
             headers: {
@@ -53,7 +56,11 @@ const Header = () => {
             .then(res => res.json())
             .then(data => {
                 if (data.status === 201 || data.status === 200) {
-                    console.log(data.message);
+                    console.log(data.message, data.data._id === user.sub);
+                    setUserData(data.data);
+                    if (data.status === 201) {
+                        window.alert("Created user.");
+                    }
                 } else {
                     throw new Error(data.message);
                 }

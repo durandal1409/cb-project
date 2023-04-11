@@ -1,15 +1,19 @@
 import { useAuth0 } from '@auth0/auth0-react';
+import { useContext } from 'react';
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+import { UserContext } from "../UserContext";
+
 const User = () => {
-    const { user, logout, isAuthenticated } = useAuth0();
+    const { logout } = useAuth0();
+    const { userData } = useContext(UserContext);
 
     return (
-        isAuthenticated && (
+        userData && (
             <Wrapper>
                 <AnchorName to={"/user/me"}>
-                    {user.given_name}
+                    {userData.fname}
                 </AnchorName>
                 <Dropdown>
                     <li>

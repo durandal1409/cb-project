@@ -12,8 +12,16 @@ const CreateAd = ({adData, handleAfterUpdate}) => {
     const navigate = useNavigate();
     // if adData props was passed then it's update form
     // and we fill it with current ad data
-    // otherwise only fill it with arrays for pics and cetegories
-    const [formData, setFormData] = useState(adData ? adData : {pics: [], categories: ['']});
+    // otherwise only fill it with initial values
+    const initialValuesObj = {
+        name: '', 
+        description: '', 
+        address: '', 
+        price: 0, 
+        pics: [], 
+        categories: ['']
+    }
+    const [formData, setFormData] = useState(adData ? adData : initialValuesObj);
 
     // console.log("fd: ", formData);
     const handleChange = (key, value) => {

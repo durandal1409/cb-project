@@ -84,12 +84,14 @@ const addUser = async (req, res) => {
         await client.connect();
         const db = client.db(dbName);
 
-        // check if user already exists
+        console.log("received id: ", _id);
+
+        // if user already exists return their data
         const userInDb = await db.collection(usersCollection).findOne({_id});
         if (userInDb) {
-            res.status(409).json({
-                status: 409,
-                data: {_id},
+            res.status(200).json({
+                status: 200,
+                data: userInDb,
                 message: "User already exists."
             })
             client.close();
@@ -115,7 +117,7 @@ const addUser = async (req, res) => {
         } else {
             res.status(201).json({
                 status: 201,
-                data: {_id},
+                data: userObj,
                 message: "User created."
             })
         }

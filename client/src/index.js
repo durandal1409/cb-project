@@ -4,6 +4,7 @@ import { Auth0Provider } from '@auth0/auth0-react';
 
 import App from './components/App';
 import { CategoriesProvider } from './components/CategoriesContext';
+import { UserProvider } from './components/UserContext';
 
 const domain = process.env.REACT_APP_AUTH0_DOMAIN;
 const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
@@ -16,9 +17,11 @@ root.render(
       clientId={clientId}
       redirectUri={window.location.origin}
     >
-      <CategoriesProvider>
-        <App />
-      </CategoriesProvider>
+      <UserProvider>
+        <CategoriesProvider>
+          <App />
+        </CategoriesProvider>
+      </UserProvider>
     </Auth0Provider>
   </React.StrictMode>
 );

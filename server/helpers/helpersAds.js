@@ -113,7 +113,7 @@ const getSearchedAds = async (req, res) => {
     
         // find ads according to the search
         const ads = await db.collection(adsCollection).aggregate(agg).toArray();
-        console.log("adsS.length: ", ads.length, ads);
+        console.log("ads.length: ", ads.length, ads);
         client.close();
         if (ads) {
             res.status(200).json({
@@ -214,12 +214,13 @@ const getLatest = async (req, res) => {
 }
 const getSimilar = async (req, res) => {
     const {path} = req.params;
+    console.log("path: ", path);
     const agg = [
             {
                 $geoNear: {
                     near: { type: "Point", coordinates: [ 45.5, -73.6 ] },
                     spherical: true,
-                    query: { path: ",kids,dresses," },
+                    query: { path: path },
                     distanceField: "calcDistance"
                 }
             },
@@ -307,7 +308,7 @@ const postAd = async (req, res) => {
         // 1. Check if there are empty stings and remove them
         let path = categories.filter(el => el !== "");
         // 2. Then make it a string and add commas at the beginning and the end
-        path = "," + path.join(",") + ",";
+        path = "," + path.join(",").toLowerCase() + ",";
         // console.log("path: ", path);
 
         // need to make fake coordinates for ad to show it on the map

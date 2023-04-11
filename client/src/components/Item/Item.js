@@ -38,6 +38,7 @@ const Item = () => {
                 throw new Error(sellerData.message);
             }
             //  get similar ads
+            console.log("itemdata: ", itemData);
             const similarRes = await fetch(`/api/ads/similar/${itemData.data.path}`);
             const similarData = await similarRes.json();
             if (similarData.status === 200) {
@@ -79,7 +80,7 @@ const Item = () => {
                         <p>{adData.address}</p>
                     </Description>
                     <SimilarAds>
-                        <h3>Similar ads</h3>
+                        <h3>Similar ads nearby</h3>
                         <AdsWrapper>
                             {similarAds?.length
                                 ?   <>{similarAds.map(ad => {
