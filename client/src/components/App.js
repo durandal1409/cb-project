@@ -12,7 +12,6 @@ import Profile from "./Profile/Profile";
 import CreateAd from "./CreateAd/CreateAd";
 
 const App = () => {
-  
   return (
     <BrowserRouter>
             <GlobalStyles />

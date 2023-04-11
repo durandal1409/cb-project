@@ -18,6 +18,7 @@ const Item = () => {
     const isLoggedInUserAd = user?.sub === sellerData?._id;
 
     const chainingFetches = async () => {
+        
         try {
             // get ad info
             const itemRes = await fetch(`/api/ads/${itemId}`);
@@ -39,7 +40,7 @@ const Item = () => {
             }
             //  get similar ads
             console.log("itemdata: ", itemData);
-            const similarRes = await fetch(`/api/ads/similar/${itemData.data.path}`);
+            const similarRes = await fetch(`/api/ads/similar/${itemData.data.path}/${itemData.data.location.coordinates}`);
             const similarData = await similarRes.json();
             if (similarData.status === 200) {
                 setSimilarAds(similarData.data);

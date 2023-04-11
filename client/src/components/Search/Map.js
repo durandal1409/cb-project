@@ -1,9 +1,8 @@
 import styled from "styled-components";
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { GoogleMap, Marker, MarkerClusterer, InfoWindow} from "@react-google-maps/api";
-import { smallAdsArr } from "../../data";
 
-// import SmallItem from "../shared/SmallItem";
+import SmallItem from "../shared/SmallItem";
 
 const Map = ({filteredAds}) => {
     const center = useMemo(() => ({lat: 45.5, lng: -73.6}), []);

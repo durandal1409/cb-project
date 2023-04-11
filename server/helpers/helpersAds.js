@@ -213,12 +213,12 @@ const getLatest = async (req, res) => {
     }
 }
 const getSimilar = async (req, res) => {
-    const {path} = req.params;
-    console.log("path: ", path);
+    const {path, coordinates} = req.params;
+    const coordinatesArr = coordinates.split(',');
     const agg = [
             {
                 $geoNear: {
-                    near: { type: "Point", coordinates: [ 45.5, -73.6 ] },
+                    near: { type: "Point", coordinates: [ Number(coordinatesArr[0]), Number(coordinatesArr[1]) ] },
                     spherical: true,
                     query: { path: path },
                     distanceField: "calcDistance"
@@ -237,7 +237,7 @@ const getSimilar = async (req, res) => {
         const db = client.db(dbName);
     
         const ads = await db.collection(adsCollection).aggregate(agg).toArray();
-        console.log("ads: ", ads);
+        // console.log("ads: ", ads);
         client.close();
         if (ads) {
             res.status(200).json({
