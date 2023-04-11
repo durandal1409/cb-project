@@ -19,64 +19,86 @@ const getSearchedAds = async (req, res) => {
     const {categories, search} = req.query;
     // make categories path string according to db format
     // (https://www.mongodb.com/docs/manual/tutorial/model-tree-structures-with-materialized-paths/)
-    const path = categories.replaceAll("/", ",") + ",";
-    console.log("CC:  ", path, search);
-
-    // prepare search object
-    // const agg = [
-    //     {
-    //         '$search': {
-    //             'phrase': {
-    //                 'path': ['name', 'description'],
-    //                 'query': search
-    //             }
-    //         }
-    //     },
-    //     {
-    //         '$limit': 4
-    //     },
-    //     { 
-    //         $project : { _id : 1, name: 1, price: 1, address: 1, pic: {$first: "$pics"}} 
-    //     }
-    // ];
-    // const agg = [
-    //     {
-    //         $search: {
-    //             "regex": {
-    //                 "query": `${path}(.*)`,
-    //                 "path": "path"
-    //             }
-    //         }
-    //     }
-    // ]
-    const agg = [
-        {
-            $search:  {
-                "compound": {
-                    "must": [
-                        {
-                            'phrase': {
-                                'path': ['name', 'description'],
-                                'query': search
-                            }
-                        },
-                        {
-                            "regex": {
-                                "query": `${path}(.*)`,
-                                "path": "path"
-                            }
-                        }
-                    ]
-                }
+    const path = categories === "/undefined" || categories === "/" ? null : categories.replaceAll("/", ",");
+    const searchPhrase = (search === "undefined" || search === "null" || search === "") ? null : search;
+    // console.log("CC:  ", path, searchPhrase, search, categories);
+    const limit = 100;
+    let agg;
+    if (!searchPhrase && !path) {
+        console.log("both")
+        agg = [
+            {
+                '$limit': limit
             }
-        },
-        {
-            '$limit': 12
-        },
-        { 
-            $project : { _id : 1, name: 1, price: 1, address: 1, pic: {$first: "$pics"}, location: 1} 
-        }
-    ]
+        ]
+    } else if (!searchPhrase) {
+        console.log("no-search")
+        console.log("p: ", path.split())
+        agg = [
+            {
+                $search: {
+                    "regex": {
+                        "query": `${path}(.*)`,
+                        "path": "path"
+                    }
+                }
+            },
+            {
+                '$limit': limit
+            },
+            { 
+                $project : { _id : 1, name: 1, price: 1, address: 1, pic: {$first: "$pics"}, location: 1} 
+            }
+        ]
+    } else if (!path) {
+        console.log("no-path")
+        agg = [
+            {
+                $search: {
+                    'phrase': {
+                        'path': ['name', 'description'],
+                        'query': search
+                    }
+                }
+            },
+            {
+                '$limit': limit
+            },
+            { 
+                $project : { _id : 1, name: 1, price: 1, address: 1, pic: {$first: "$pics"}, location: 1} 
+            }
+        ]
+    } else {
+        console.log("all")
+        agg = [
+            {
+                $search:  {
+                    "compound": {
+                        "must": [
+                            {
+                                'phrase': {
+                                    'path': ['name', 'description'],
+                                    'query': search
+                                }
+                            },
+                            {
+                                "regex": {
+                                    "query": `${path}(.*)`,
+                                    "path": "path"
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                '$limit': limit
+            },
+            { 
+                $project : { _id : 1, name: 1, price: 1, address: 1, pic: {$first: "$pics"}, location: 1} 
+            }
+        ]
+    }
 
     try {
         const client = new MongoClient(MONGO_URI, options);
@@ -90,10 +112,9 @@ const getSearchedAds = async (req, res) => {
     
         // find ads according to the search
         const ads = await db.collection(adsCollection).aggregate(agg).toArray();
-        // const ads = await db.collection(adsCollection).find( { path: /^,tops,/ } )
-        console.log("adsS.length: ", ads.length);
+        console.log("adsS.length: ", ads.length, ads);
         client.close();
-        if (ads.length) {
+        if (ads) {
             res.status(200).json({
                 status: 200,
                 data: ads
@@ -190,9 +211,6 @@ const getLatest = async (req, res) => {
         res.status(500).json({ status: 500, message: err.message });
     }
 }
-// const getFiltered = async (req, res) => {
-    
-// }
 const getSimilar = async (req, res) => {
     // search for words from current ad title
     const { title } = req.params;
@@ -231,7 +249,7 @@ const getSimilar = async (req, res) => {
         const ads = await db.collection(adsCollection).aggregate(agg).toArray();
     
         client.close();
-        if (ads.length) {
+        if (ads) {
             res.status(200).json({
                 status: 200,
                 data: ads

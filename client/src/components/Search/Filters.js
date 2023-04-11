@@ -54,6 +54,9 @@ const Filters = ({setFilteredAds}) => {
     }
 
     useEffect(() => {
+        console.log("fetching", );
+        // const categoriesFromUrl = searchParams?.get("categories");
+        // const searchFromUrl = searchParams?.get("search");
         // fetching ads filtered by search and categories
         fetch(`/api/ads/search/${user?.sub}?categories=${searchParams?.get("categories")}&search=${searchParams?.get("search")}`)
             .then((res) => res.json())

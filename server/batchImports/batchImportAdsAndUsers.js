@@ -16,7 +16,7 @@ const NEW_ADS_NUM = 1000;
 const NEW_USERS_NUM = NEW_ADS_NUM / 10;
 
 const LAT_BOUNDARIES = [45.50, 45.67];
-const LNG_BOUNDARIES = [-73.5778, -73.5586];
+const LNG_BOUNDARIES = [-73.9344, -73.3599];
 const MAX_PICS_NUM = 6;
 
 const randPath = makeRandomPath(taxonomy);

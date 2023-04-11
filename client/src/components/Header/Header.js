@@ -24,11 +24,11 @@ const Header = () => {
                     setCategories(data.data);
                     console.log(data.message);
                 } else {
-                    console.log(data.message);
+                    throw new Error(data.message);
                 }
             })
             .catch((error) => {
-                window.alert(error);
+                throw new Error(error.message);
             })
             
     }, []);
@@ -55,11 +55,11 @@ const Header = () => {
                 if (data.status === 201 || data.status === 200) {
                     console.log(data.message);
                 } else {
-                    console.log(data.message);
+                    throw new Error(data.message);
                 }
             })
             .catch((error) => {
-                window.alert(error);
+                throw new Error(error.message);
             })
             
     }, [user]);
@@ -73,6 +73,9 @@ const Header = () => {
     }
     const handleFormSubmit = (e, formData) => {
         e.preventDefault();
+        // if (!formData.input) {
+        //     return
+        // }
         navigate(`/search?categories=/${formData.dropdown?.toLowerCase()}&search=${formData.input}`)
     }
     const handlePostAdClick = () => {
@@ -92,7 +95,8 @@ const Header = () => {
                 <Form onSubmit={(e) => handleFormSubmit(e, formData)}>
                     <Input 
                         type="text" 
-                        placeholder="What are you looking for?" 
+                        placeholder="What are you looking for?"
+                        value={formData.input}
                         onChange={(e) => handleChange("input", e.target.value)}
                     />
                     <Dropdown onChange={(e) => handleChange("dropdown", e.target.value)}>

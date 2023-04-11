@@ -6,29 +6,30 @@ import { smallAdsArr } from "../../data";
 import SmallItem from "../shared/SmallItem";
 
 const Map = ({filteredAds}) => {
-    const center = useMemo(() => ({lat: 45.5, lng: -73.5}), []);
+    const center = useMemo(() => ({lat: 45.5, lng: -73.6}), []);
     const options = useMemo(() => ({disableDefaultUI: true, clickableIcons: false}), []);
     const mapRef = useRef();
     const [selected, setSelected] = useState(null);
-    console.log("selected: ", selected);
-    console.log("filteredAds: ", Number(filteredAds[0].location.coordinates[0]), Number(filteredAds[0].location.coordinates[1]));
+    const [tempAds, setTempAds] = useState(null);
 
     const onLoad = useCallback((map) => (mapRef.current = map), []);
 
-    
+    useEffect(() => {
+        setTempAds(smallAdsArr);
+    }, [])
 
     return (
         <Wrapper>
             <GoogleMap 
-                zoom={10}
+                zoom={11}
                 center={center}
                 mapContainerClassName="map-container"
                 options={options}
                 onLoad={onLoad}
             >
-                {filteredAds && <MarkerClusterer>
-                    {(clusterer) => smallAdsArr.map(ad => {
-                        console.log("ad: ", ad);
+                {tempAds && <MarkerClusterer>
+                    {(clusterer) => filteredAds.map(ad => {
+                        {/* console.log("ad: ", ad); */}
                         return <Marker 
                                     key={ad._id}
                                     position={{lat: Number(ad.location.coordinates[0]), lng: Number(ad.location.coordinates[1])}}
@@ -46,7 +47,8 @@ const Map = ({filteredAds}) => {
                             <SmallItem 
                                 name={selected.name}
                                 price={selected.price}
-                                picSrc={selected.picSrc}
+                                picSrc={selected.pic}
+                                address={selected.address}
                                 _id={selected._id}
                             />
                         </InfoWindow>

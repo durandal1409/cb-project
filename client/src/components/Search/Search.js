@@ -13,8 +13,6 @@ const Search = () => {
     const [filteredAds, setFilteredAds] = useState(null);
     const {isLoaded} = useLoadScript({googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY});
 
-    
-
     return (
         mapMode
             ?   !isLoaded
@@ -33,16 +31,19 @@ const Search = () => {
                             <GrMapLocation onClick={() => setMapMode(true)} size={"2em"} />
                         </IconMapWrapper>
                         <AdsWrapper>
-                            {filteredAds && filteredAds.map(ad => {
-                                return <SmallItem
-                                            key={ad._id}
-                                            name={ad.name}
-                                            price={ad.price}
-                                            address={ad.address}
-                                            picSrc={ad.pic}
-                                            _id={ad._id}
-                                        />
-                            })}
+                            {filteredAds?.length 
+                                ?   filteredAds.map(ad => {
+                                        return <SmallItem
+                                                    key={ad._id}
+                                                    name={ad.name}
+                                                    price={ad.price}
+                                                    address={ad.address}
+                                                    picSrc={ad.pic}
+                                                    _id={ad._id}
+                                                />
+                                    })
+                                : <h3>Sorry, no ads match your query.</h3>
+                            }
                         </AdsWrapper>
                     </List>
 
@@ -63,7 +64,7 @@ const ListWrapper = styled.div`
     padding-top: 30px;
 `
 const AdsWrapper = styled.div`
-    margin-top: 55px;
+    margin-top: 10px;
     width: var(--big-block-width);
     display: flex;
     flex-wrap: wrap;
@@ -73,6 +74,8 @@ const AdsWrapper = styled.div`
     }
 `
 const List = styled.div`
+    display: flex;
+    flex-direction: column;
 `
 const IconListWrapper = styled.div`
     position: absolute;
@@ -95,13 +98,12 @@ const IconListWrapper = styled.div`
     }
 `
 const IconMapWrapper = styled.div`
-    position: fixed;
     margin-left: 10px;
     z-index: 2;
     width: 30px;
     height: 30px;
     padding: 7px 10px;
-    background-color: var(--color-background-dark);
+    background-color: var(--color-background-white);
     border-radius: 5px;
     -webkit-box-shadow: 0px 2px 8px -2px #000000; 
     box-shadow: 0px 2px 8px -2px #000000;

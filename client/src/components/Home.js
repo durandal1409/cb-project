@@ -20,7 +20,7 @@ const Home = () => {
                 }
             })
             .catch((error) => {
-                window.alert(error);
+                throw new Error(error.message);
             })
     }, [user]);
     useEffect(() => {
@@ -35,7 +35,7 @@ const Home = () => {
                 }
             })
             .catch((error) => {
-                window.alert(error);
+                throw new Error(error.message);
             })
     }, []);
 
@@ -43,9 +43,9 @@ const Home = () => {
             <>
             <CategoriesWrapper>
                 <CategoriesInnerWrapper>
-                    <Category to={"/search/men"}>Men</Category>
-                    <Category to={"/search/women"}>Women</Category>
-                    <Category to={"/search/kids"}>Kids</Category>
+                    <Category to={"/search?categories=/men"}>Men</Category>
+                    <Category to={"/search?categories=/women"}>Women</Category>
+                    <Category to={"/search?categories=/kids"}>Kids</Category>
                 </CategoriesInnerWrapper>
             </CategoriesWrapper>
         <HomeWrapper>

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import SmallItem from "../shared/SmallItem";
 import ContactForm from "../shared/ContactForm";
@@ -9,9 +10,12 @@ import PicsCarousel from "./Carousel";
 
 const Item = () => {
     const { itemId } = useParams();
+    const { user } = useAuth0();
     const [adData, setAdData] = useState(null);
     const [sellerData, setSellerData] = useState(null);
     const [similarAds, setSimilarAds] = useState(null);
+
+    const isLoggedInUserAd = user?.sub === sellerData?._id;
 
     const chainingFetches = async () => {
         try {
@@ -21,7 +25,7 @@ const Item = () => {
             if (itemData.status === 200) {
                 setAdData(itemData.data);
             } else {
-                window.alert(itemData.message);
+                // window.alert(itemData.message);
                 throw new Error(itemData.message);
             }
             // get seller info
@@ -30,7 +34,7 @@ const Item = () => {
             if (sellerData.status === 200) {
                 setSellerData(sellerData.data.user);
             } else {
-                window.alert(sellerData.message);
+                // window.alert(sellerData.message);
                 throw new Error(sellerData.message);
             }
             //  get similar ads
@@ -39,11 +43,12 @@ const Item = () => {
             if (similarData.status === 200) {
                 setSimilarAds(similarData.data);
             } else {
-                window.alert(similarData.message);
+                // window.alert(similarData.message);
                 throw new Error(similarData.message);
             }
         } catch(error) {
-            window.alert(error);
+            // window.alert(error);
+            throw new Error(error);
         }
     }
 
@@ -63,7 +68,7 @@ const Item = () => {
             <Main>
                 <Left>
                     <AdTitle>{adData.name}</AdTitle>
-                    <AdActions>Add to my favorites/update/delete</AdActions>
+                    {/* <AdActions>Add to my favorites</AdActions> */}
                     <PicWrapper>
                         <PicsCarousel picsArr={adData.pics}/>
                     </PicWrapper>
@@ -76,29 +81,34 @@ const Item = () => {
                     <SimilarAds>
                         <h3>Similar ads</h3>
                         <AdsWrapper>
-                            {similarAds && similarAds.map(ad => {
-                                return <SmallItem
-                                            key={ad._id}
-                                            name={ad.name}
-                                            price={ad.price}
-                                            address={ad.address}
-                                            picSrc={ad.pic}
-                                            _id={ad._id}
-                                        />
-                            })}
+                            {similarAds?.length
+                                ?   <>{similarAds.map(ad => {
+                                        return <SmallItem
+                                                    key={ad._id}
+                                                    name={ad.name}
+                                                    price={ad.price}
+                                                    address={ad.address}
+                                                    picSrc={ad.pic}
+                                                    _id={ad._id}
+                                                />
+                                    })}</>
+                                :   <h4>Ads not found.</h4>    
+                                    }
                         </AdsWrapper>
                     </SimilarAds>
                 </Left>
                 <Right>
                     <h2>${adData.price}</h2>
-                    {sellerData && 
-                    <>
-                        <ContactForm handleMessage={handleMessage} sellerName={sellerData.fname}/>
-                        <SellerLink to={`/user/${sellerData._id}`}>
-                            <img src={sellerData.avatar} alt="seller photo"/>
-                            <h4>{sellerData.fname} {sellerData.lname}</h4>
-                        </SellerLink>
-                    </>
+                    {sellerData && !isLoggedInUserAd
+                        ?   <>
+                                <ContactForm handleMessage={handleMessage} sellerName={sellerData.fname}/>
+                                <SellerLink to={`/user/${sellerData._id}`}>
+                                    <img src={sellerData.avatar} alt="seller photo"/>
+                                    <h4>{sellerData.fname} {sellerData.lname}</h4>
+                                </SellerLink>
+                            </>
+                        : <></>
+                    
                     }
                 </Right>
             </Main>

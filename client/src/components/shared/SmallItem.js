@@ -35,9 +35,13 @@ const Wrapper = styled(Link)`
     text-decoration: none;
     margin-bottom: 20px;
     transition: 0.3s all;
-    background-color: #fff;
+    background-color: var(--color-background-white);
     &:hover {
-        transform: scale(1.03);
+        /* transform: scale(1.03); */
+        background-color: var(--color-background-dark);
+        h4 {
+            text-decoration: underline;
+        }
     }
     img {
         width: 170px;
