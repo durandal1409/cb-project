@@ -3,12 +3,14 @@ import { AdvancedImage } from '@cloudinary/react'
 import { Cloudinary } from '@cloudinary/url-gen';
 import {fill} from "@cloudinary/url-gen/actions/resize";
 import { AiOutlineDelete } from "react-icons/ai";
-
+import { useState } from "react";
 
 import Button from "../shared/Button";
 
 // this component responsible for uploading pics for the ad via Cloudinary
 const PicsUpload = ({formData, setFormData}) => {
+
+    const [loading, setLoading] = useState(false);
 
     // Create a Cloudinary instance
     const cld = new Cloudinary({
@@ -31,11 +33,16 @@ const PicsUpload = ({formData, setFormData}) => {
                         pics: [...prevState.pics, result.info.public_id]
                     }))
                 }
+                setLoading(false);
             }
         )
         myWidget.open();
     }
 
+    const handlePicUploadClick = () => {
+        setLoading(true);
+        handleOpenWidget();
+    }
     const handleDeletePic = (picId) => {
         const updatedPicsArr = formData.pics.filter(pic => pic !== picId)
         setFormData({...formData, pics: updatedPicsArr});
@@ -44,13 +51,17 @@ const PicsUpload = ({formData, setFormData}) => {
     return (
         <PicsUploadWrapper>
             <h4>Upload pictures</h4>
-            <Button 
-                type="button" 
-                width="200px"
-                handleClick={handleOpenWidget}
-            >
-                Upload
-            </Button>
+            {loading 
+                ?   <h3>Loading...</h3>
+                :   <Button 
+                        type="button" 
+                        width="200px"
+                        handleClick={() => handlePicUploadClick()}
+                    >
+                        Upload
+                    </Button>
+            }
+            
             <PicsPreview>
                 {formData.pics.map(picId => {
                     // Instantiate a CloudinaryImage object for the image 
