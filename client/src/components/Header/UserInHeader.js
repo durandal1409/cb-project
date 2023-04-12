@@ -13,12 +13,12 @@ const User = () => {
     return (
         userData && (
             <Wrapper>
-                <AnchorName to={"/user/me"}>
+                <AnchorName to={`/user/${userData._id}`}>
                     {userData.fname}
                 </AnchorName>
                 <Dropdown>
                     <li>
-                        <AnchorOption to={"/user/me"}>
+                        <AnchorOption to={`/user/${userData._id}`}>
                             My profile
                         </AnchorOption>
                     </li>

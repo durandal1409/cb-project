@@ -1,16 +1,16 @@
 import styled from "styled-components";
-import { useState } from "react";
-import { useAuth0 } from '@auth0/auth0-react';
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import PicsUpload from "./PicsUpload";
 import Categories from "./Categories";
 import Button from "../shared/Button";
+import { UserContext } from "../UserContext";
 
 
 // this is a component for creating and updating ad
 const CreateAd = ({adData, handleAfterUpdate}) => {
-    const { user } = useAuth0();
+    const { userData } = useContext(UserContext);
     const navigate = useNavigate();
     // if adData props was passed then it's update ad form
     // and we fill it with current ad data
@@ -44,7 +44,7 @@ const CreateAd = ({adData, handleAfterUpdate}) => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                userId: user.sub,
+                userId: userData._id,
                 ...formData
             })
         })
@@ -52,7 +52,7 @@ const CreateAd = ({adData, handleAfterUpdate}) => {
             .then(data => {
                 if (data.status === 201 || data.status === 200) {
                     window.alert(data.message);
-                    navigate("/user/me");
+                    navigate(`/user/${userData._id}`);
                     // if updating ad then need to call handler in Profile after successful update
                     handleAfterUpdate && handleAfterUpdate(data.data);
                 } else {
@@ -65,7 +65,7 @@ const CreateAd = ({adData, handleAfterUpdate}) => {
 
     }
     return (
-        user 
+        userData 
             ?   <Form onSubmit={(e) => handleFormSubmit(e, formData)}>
                     <Label>
                         Title

@@ -7,7 +7,7 @@ import ProfileForm from "./ProfileForm";
 import { UserContext } from "../UserContext";
 
 // component for showing logged in user or seller profile info
-const ProfileInfo = ({sellerData, userId}) => {
+const ProfileInfo = ({sellerData, isLoggedInUser}) => {
     // for showing update user info form
     const [showProfileForm, setShowProfileForm] = useState(false);
     const { userData } = useContext(UserContext);
@@ -22,7 +22,7 @@ const ProfileInfo = ({sellerData, userId}) => {
                     sellerData
                         ?   <>
                                 { 
-                                    userId === 'me'
+                                    isLoggedInUser
                                         ?   <>
                                                 <img src={userData.avatar} alt="my photo"/>
                                                 <h4>{userData.fname} {userData.lname}</h4>

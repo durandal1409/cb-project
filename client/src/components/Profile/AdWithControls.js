@@ -6,7 +6,7 @@ import Button from "../shared/Button";
 
 // component showing ad with update and delete options
 // for logged in user
-const AdWithControls = ({ad, userId, _id, setAdToUpdate, sellerAds, setSellerAds}) => {
+const AdWithControls = ({ad, userId, setAdToUpdate, sellerAds, setSellerAds, isLoggedInUser}) => {
     // for showing delete confirmation
     // after user clicked delete ad btn
     const [adToDeleteId, setAdToDeleteId] = useState(null);
@@ -52,8 +52,8 @@ const AdWithControls = ({ad, userId, _id, setAdToUpdate, sellerAds, setSellerAds
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                userId: _id,
-                adId: adId
+                userId,
+                adId
             }),
         })
             .then((res) => res.json())
@@ -72,7 +72,7 @@ const AdWithControls = ({ad, userId, _id, setAdToUpdate, sellerAds, setSellerAds
     
     return (
         <Wrapper>
-            {userId === 'me' &&
+            {isLoggedInUser &&
             <>
                 {!adToDeleteId
                 ?   <AdBtnsWrapper>

@@ -1,30 +1,25 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
 
 import AdWithControls from "./AdWithControls";
 import ProfileInfo from "./ProfileInfo";
 import CreateAd from "../CreateAd/CreateAd";
+import { UserContext } from "../UserContext";
 
 // logged in user or seller profile component
 const Profile = () => {
-    // userId === 'me' if it's logged in user profile
     const { userId } = useParams();
-    const { user } = useAuth0();
+    const { userData } = useContext(UserContext);
     const [sellerData, setSellerData] = useState(null);
     const [sellerAds, setSellerAds] = useState(null);
     // for showing update ad form
     const [adToUpdate, setAdToUpdate] = useState(null);
-
-    // if user wants to see theit own profile
-    // useParams will have 'me'
-    // if it's somebody else profile then useParams will have that seller id
-    const _id = userId === 'me' ? user?.sub : userId;
+    const isLoggedInUser = userId === userData?._id;
 
     useEffect(() => {
         // fetching user data
-        _id && fetch(`/api/users/${_id}`)
+        userId && fetch(`/api/users/${userId}`)
             .then((res) => res.json())
             .then((data) => {
                 if (data.status === 200) {
@@ -37,7 +32,7 @@ const Profile = () => {
             .catch((error) => {
                 throw new Error(error.message);
             })
-    }, [_id]);
+    }, []);
 
     // saving updated ad in state
     const handleAfterUpdate = (ad) => {
@@ -55,11 +50,10 @@ const Profile = () => {
     }
 
     
-    
     return (
         sellerData &&
         <Wrapper>
-            <ProfileInfo sellerData={sellerData} userId={userId}/>
+            <ProfileInfo sellerData={sellerData} isLoggedInUser={isLoggedInUser}/>
             <Right>
                 {!adToUpdate
                     ?   <>
@@ -67,20 +61,18 @@ const Profile = () => {
                             <AdsWrapper>
                                 {!sellerAds
                                     ?   sellerData
-                                            ?   <h3>{userId === 'me' ? "You have no ads." : "Seller has no ads."}</h3>
+                                            ?   <h3>{isLoggedInUser ? "You have no ads." : "Seller has no ads."}</h3>
                                             :   <h3>Loading...</h3>
                                     :   sellerAds.map(ad => {
                                             return (
                                                 <AdWithControls
                                                     key={ad._id}
                                                     ad={ad}
-                                                    // id from params (for logged in user === 'me')
                                                     userId={userId}
-                                                    // real id (for logged in user - from OAuth0)
-                                                    _id={_id}
                                                     sellerAds={sellerAds}
                                                     setSellerAds={setSellerAds}
                                                     setAdToUpdate={setAdToUpdate}
+                                                    isLoggedInUser={isLoggedInUser}
                                                 />
                                             )
                                         })

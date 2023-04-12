@@ -9,7 +9,7 @@ const PicsCarousel = ({picsArr}) => {
             {picsArr.map(pic => {
                 return (
                     <ImgWrapper key={pic}>
-                        <img src={`https://res.cloudinary.com/dgll9gjpk/image/upload/v1680735330/${pic}.jpg`} />
+                        <img src={`https://res.cloudinary.com/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload/v1680735330/${pic}.jpg`} />
                     </ImgWrapper>
                 )
             })}
