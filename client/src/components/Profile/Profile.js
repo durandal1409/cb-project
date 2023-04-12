@@ -32,7 +32,7 @@ const Profile = () => {
             .catch((error) => {
                 throw new Error(error.message);
             })
-    }, []);
+    }, [userId]);
 
     // saving updated ad in state
     const handleAfterUpdate = (ad) => {
