@@ -52,9 +52,9 @@ const CreateAd = ({adData, handleAfterUpdate}) => {
             .then(data => {
                 if (data.status === 201 || data.status === 200) {
                     window.alert(data.message);
-                    navigate(`/user/${userData._id}`);
                     // if updating ad then need to call handler in Profile after successful update
                     handleAfterUpdate && handleAfterUpdate(data.data);
+                    navigate(`/user/${userData._id}`);
                 } else {
                     window.alert(data.message)
                 }

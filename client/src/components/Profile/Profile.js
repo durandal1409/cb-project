@@ -15,6 +15,7 @@ const Profile = () => {
     const [sellerAds, setSellerAds] = useState(null);
     // for showing update ad form
     const [adToUpdate, setAdToUpdate] = useState(null);
+    const [reload, setReload] = useState(false);
     const isLoggedInUser = userId === userData?._id;
 
     useEffect(() => {
@@ -32,20 +33,11 @@ const Profile = () => {
             .catch((error) => {
                 throw new Error(error.message);
             })
-    }, [userId]);
+    }, [userId, reload]);
 
     // saving updated ad in state
     const handleAfterUpdate = (ad) => {
-        setSellerAds(() => {
-            const newAds = [...sellerAds];
-            newAds.map((item, ind) => {
-                if (item._id === ad._id) {
-                    newAds[ind] = ad
-                }
-                return item;
-            })
-            return newAds;
-        })
+        setReload(!reload);
         setAdToUpdate(null);
     }
 
