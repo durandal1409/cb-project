@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Button from "./Button";
 
+// form for sending a messge to a seller
 const ContactForm = ({sellerName,handleMessage}) => {
     return (
         <Form onSubmit={handleMessage}>

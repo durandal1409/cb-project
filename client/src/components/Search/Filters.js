@@ -1,24 +1,29 @@
 import styled from "styled-components";
-import { useState, useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { useAuth0 } from '@auth0/auth0-react';
 
 import { CategoriesContext } from "../CategoriesContext";
 
+// component for selecting clothing categories.
+// It fetches the ads that match selected categories and search phrase.
+// It adds query params to url according to selected categories and search phrase.
 const Filters = ({setFilteredAds}) => {
     const { user } = useAuth0();
+    // clothing categories object
     const { categories } = useContext(CategoriesContext);
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
 
     // get chosen categories from url
     // remove "/" at the beginning
     // change it to array
     const chosenCategoriesArr = searchParams?.get("categories")?.slice(1).split("/");
     
-    // function makes lists of nested categories to filter ads
-    // it recursively goes through keys of nested objects of categoriesObj
-    // making list of nested categories for each category that has been clicked
-    // it stops when category has no nested categories
+    // function makes <ul>s with categories to filter ads.
+    // It goes through keys of passed categories object making <li>.
+    // If category has been clicked the function will call itself
+    // to make an <ul> with nested categories inside <li>.
+    // It stops if such category has no nested categories.
     const recursiveCategory = (categoriesObj, chosenCategoriesArr, depth, path) => {
         if (Object.keys(categoriesObj).length === 0) {
             return 
@@ -36,6 +41,7 @@ const Filters = ({setFilteredAds}) => {
                                 className={ isChosenCategory ? "current" : null}
                             >
                                 <Anchor 
+                                    // adding chosen category to url
                                     to={`/search?categories=${path}/${category.toLowerCase()}&search=${searchParams.get("search")}`}
                                     className={isChosenCategory ? "current" : null}
                                 >
@@ -54,23 +60,17 @@ const Filters = ({setFilteredAds}) => {
     }
 
     useEffect(() => {
-        // console.log("fetching", );
-        // const categoriesFromUrl = searchParams?.get("categories");
-        // const searchFromUrl = searchParams?.get("search");
         // fetching ads filtered by search and categories
         fetch(`/api/ads/search/${user?.sub}?categories=${searchParams?.get("categories")}&search=${searchParams?.get("search")}`)
             .then((res) => res.json())
             .then((data) => {
                 if (data.status === 200) {
                     setFilteredAds(data.data);
-                    // console.log("ads: ", data);
                 } else {
-                    // window.alert(data.message);
                     throw new Error(data.message);
                 }
             })
             .catch((error) => {
-                // window.alert(error);
                 throw new Error(error.message);
             })
     }, [user, searchParams]);

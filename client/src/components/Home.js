@@ -5,7 +5,10 @@ import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const Home = () => {
+    // if user is logged in recomendedAds are chosen according to last search phrase
+    // otherwise it's random ads
     const [recommendedAds, setRecommendedAds] = useState(null);
+    // latest ads according to timestamp field
     const [latestAds, setLatestAds] = useState(null);
     const { user } = useAuth0();
     useEffect(() => {
@@ -15,7 +18,6 @@ const Home = () => {
                 if (data.status === 200) {
                     setRecommendedAds(data.data);
                 } else {
-                    // window.alert(data.message);
                     throw new Error(data.message);
                 }
             })
@@ -30,7 +32,6 @@ const Home = () => {
                 if (data.status === 200) {
                     setLatestAds(data.data);
                 } else {
-                    // window.alert(data.message);
                     throw new Error(data.message);
                 }
             })
@@ -53,7 +54,6 @@ const Home = () => {
             <AdsWrapper>
                 {recommendedAds 
                     ?   recommendedAds.map(ad => {
-                        {/* console.log("recommendedAds: ", recommendedAds); */}
                         return <SmallItem
                                     key={ad._id}
                                     name={ad.name}
@@ -70,7 +70,6 @@ const Home = () => {
             <AdsWrapper>
                 {latestAds
                     ?   latestAds.map(ad => {
-                        {/* console.log("latestAds: ", latestAds); */}
                         return <SmallItem
                                     key={ad._id}
                                     _id={ad._id}

@@ -17,6 +17,7 @@ const NEW_USERS_NUM = NEW_ADS_NUM / 10;
 
 const MAX_PICS_NUM = 6;
 
+// imports created users and ads it db
 const batchImport = async () =>{
     const client = new MongoClient(MONGO_URI, options);
 
@@ -24,7 +25,7 @@ const batchImport = async () =>{
         await client.connect();
         const db = client.db("cb-project");
         
-        // dropping old ads and users collection
+        // deleting all previous documents from ads and users collections
         await db.collection('ads').deleteMany({});
         await db.collection('users').deleteMany({});
 

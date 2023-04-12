@@ -4,8 +4,10 @@ import { useState, useContext } from "react";
 import Button from "../shared/Button";
 import { UserContext } from "../UserContext";
 
+// component for updating logged in user data
 const ProfileForm = ({showProfileForm, setShowProfileForm}) => {
     const { userData, setUserData } = useContext(UserContext);
+    // fill the form with current user data
     const [formData, setFormData] = useState(
         {
             fname: userData.fname, 
@@ -21,6 +23,9 @@ const ProfileForm = ({showProfileForm, setShowProfileForm}) => {
         })
     }
 
+    // patching user data in db
+    // and then changing userData state accordingly
+    // and hiding this form
     const handleUpdateProfile = (e, formData) => {
         e.preventDefault();
         fetch(`/api/users`, {

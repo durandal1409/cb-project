@@ -2,6 +2,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import { Carousel } from 'react-responsive-carousel';
 import styled from "styled-components";
 
+// component for showing ad pics in carousel
 const PicsCarousel = ({picsArr}) => {
     return (
         <Carousel>

@@ -13,6 +13,7 @@ const options = {
 const dbName = "cb-project";
 const categoriesCollection = "categories";
 
+// get clothing categories object
 const getCategories = async (req, res) => {
     try {
         const client = new MongoClient(MONGO_URI, options);

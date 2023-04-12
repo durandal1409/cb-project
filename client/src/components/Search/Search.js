@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useLoadScript } from "@react-google-maps/api";
 import styled from "styled-components";
 import { GrMapLocation } from "react-icons/gr";
@@ -8,7 +8,11 @@ import SmallItem from "../shared/SmallItem";
 import Map from "./Map";
 import Filters from "./Filters";
 
+// component for search page where you can
+// filter ads by category
+// and show them as a list or on a map
 const Search = () => {
+    // for switching between map mode and list mode
     const [mapMode, setMapMode] = useState(false);
     const [filteredAds, setFilteredAds] = useState(null);
     const {isLoaded} = useLoadScript({googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY});

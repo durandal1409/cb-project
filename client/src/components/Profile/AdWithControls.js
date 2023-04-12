@@ -4,9 +4,15 @@ import { useEffect, useState } from "react";
 import SmallItem from "../shared/SmallItem";
 import Button from "../shared/Button";
 
+// component showing ad with update and delete options
+// for logged in user
 const AdWithControls = ({ad, userId, _id, setAdToUpdate, sellerAds, setSellerAds}) => {
+    // for showing delete confirmation
+    // after user clicked delete ad btn
     const [adToDeleteId, setAdToDeleteId] = useState(null);
 
+    // fetching the data of the ad that user wants to update
+    // to fill update ad form with it
     const handleUpdateAd = (adId) => {
         fetch(`/api/ads/${adId}`)
             .then(res => res.json())
@@ -25,12 +31,19 @@ const AdWithControls = ({ad, userId, _id, setAdToUpdate, sellerAds, setSellerAds
                 throw new Error(error.message);
             })
     }
+
+    // need to show confirmation btns
+    // after user clicks delete ad btn
     const handleDeleteAd = (adId) => {
         setAdToDeleteId(adId);
     }
+    // need to hide confirmation btns
+    // after user clicks delete ad btn
     const handleDeleteCancel = () => {
         setAdToDeleteId(null);
     }
+    // fetch delete if user confirms delete ad
+    // and then remove this ad from state
     const handleDeleteConfirm = (adId) => {
         fetch(`/api/ads/`, {
             method: "DELETE",
@@ -46,14 +59,13 @@ const AdWithControls = ({ad, userId, _id, setAdToUpdate, sellerAds, setSellerAds
             .then((res) => res.json())
             .then((data) => {
                 if (data.status === 200) {
+                    // remove deleted ad from state
                     setSellerAds([...sellerAds].filter(ad => ad._id !== data.data.adId));
                 } else {
-                    // window.alert(data.message);
                     throw new Error(data.message);
                 }
             })
             .catch((error) => {
-                // window.alert(error);
                 throw new Error(error.message);
             })
     }

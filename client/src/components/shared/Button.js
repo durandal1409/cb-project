@@ -24,12 +24,6 @@ const StyledButton = styled.button`
     &.hide {
         display: none;
     }
-    /* &.update {
-        background-color: #4caf50;
-    } */
-    /* &.delete {
-        background-color: #c62828;
-    } */
     &:hover {
         background-color: var(--color-button-hover);
     }

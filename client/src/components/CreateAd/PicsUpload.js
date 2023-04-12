@@ -7,6 +7,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 
 import Button from "../shared/Button";
 
+// this component responsible for uploading pics for the ad via Cloudinary
 const PicsUpload = ({formData, setFormData}) => {
 
     // Create a Cloudinary instance
@@ -16,14 +17,15 @@ const PicsUpload = ({formData, setFormData}) => {
         }
     });
 
+    // Create a Cloudinary upload widget and open it
     const handleOpenWidget = () => {
-        // Create a Cloudinary upload widgert and open it
         var myWidget = window.cloudinary.createUploadWidget({
             cloudName: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME, 
             uploadPreset: process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET}, (error, result) => { 
                 if (!error && result && result.event === "success") { 
                     console.log('Done! Here is the image info: ', result.info);
-                    // setImages(prev => [...prev, result.info.public_id])
+                    // save Cloudinary public_id properties array  to state
+                    // and then to db. They will be the sources for img in the ads.
                     setFormData(prevState => ({
                         ...prevState,
                         pics: [...prevState.pics, result.info.public_id]
@@ -51,8 +53,8 @@ const PicsUpload = ({formData, setFormData}) => {
             </Button>
             <PicsPreview>
                 {formData.pics.map(picId => {
-                    {/* console.log("pic:  ", picId); */}
-                    // Instantiate a CloudinaryImage object for the image with the public ID, 'docs/models'.
+                    // Instantiate a CloudinaryImage object for the image 
+                    // with the public_id property from Cloudinary as a source.
                     const myImage = cld.image(picId);
                     myImage.resize(fill().width(170).height(170));
                     return(

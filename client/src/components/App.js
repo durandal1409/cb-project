@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import GlobalStyles from "./GlobalStyles";

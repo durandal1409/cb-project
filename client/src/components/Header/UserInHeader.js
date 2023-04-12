@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 import { UserContext } from "../UserContext";
 
+// component shows logged in user name and a list of options on hover
 const User = () => {
     const { logout } = useAuth0();
     const { userData } = useContext(UserContext);

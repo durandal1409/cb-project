@@ -11,8 +11,7 @@ const options = {
     useUnifiedTopology: true,
   };
 
-
-// This function takes the objects from both companies.json and items.json and sends them to the Mongodb GroupProject database in their respective collection
+// imports filter categories to db
 const batchImport = async () =>{
     const client = new MongoClient(MONGO_URI, options);
 
@@ -45,11 +44,9 @@ const batchImport = async () =>{
 
         client.close();
         
-    }catch(err){
+    } catch(err){
         console.log(err.stack);
     }
 }
 
 batchImport();
-
-module.exports = { taxonomy };

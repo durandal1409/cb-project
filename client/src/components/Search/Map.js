@@ -4,10 +4,13 @@ import { GoogleMap, Marker, MarkerClusterer, InfoWindow} from "@react-google-map
 
 import SmallItem from "../shared/SmallItem";
 
+// component for showing Google Map with ads clusters and markers
 const Map = ({filteredAds}) => {
+    // saving center of the map
     const center = useMemo(() => ({lat: 45.5, lng: -73.6}), []);
     const options = useMemo(() => ({disableDefaultUI: true, clickableIcons: false}), []);
     const mapRef = useRef();
+    // selected ad (user clicked on ad's marker)
     const [selected, setSelected] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -28,7 +31,6 @@ const Map = ({filteredAds}) => {
             >
                 {loading && <MarkerClusterer>
                     {(clusterer) => filteredAds.map(ad => {
-                        {/* console.log("ad: ", ad); */}
                         return <Marker 
                                     key={ad._id}
                                     position={{lat: Number(ad.location.coordinates[0]), lng: Number(ad.location.coordinates[1])}}
@@ -39,6 +41,7 @@ const Map = ({filteredAds}) => {
 
                 </MarkerClusterer>}
                 {selected 
+                    // displaying selected ad info on map
                     ?   <InfoWindow 
                             position={{lat: Number(selected.location.coordinates[0]), lng: Number(selected.location.coordinates[1])}}
                             onCloseClick={() => setSelected(null)}

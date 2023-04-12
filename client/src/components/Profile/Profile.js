@@ -7,11 +7,14 @@ import AdWithControls from "./AdWithControls";
 import ProfileInfo from "./ProfileInfo";
 import CreateAd from "../CreateAd/CreateAd";
 
+// logged in user or seller profile component
 const Profile = () => {
+    // userId === 'me' if it's logged in user profile
     const { userId } = useParams();
     const { user } = useAuth0();
     const [sellerData, setSellerData] = useState(null);
     const [sellerAds, setSellerAds] = useState(null);
+    // for showing update ad form
     const [adToUpdate, setAdToUpdate] = useState(null);
 
     // if user wants to see theit own profile
@@ -28,16 +31,15 @@ const Profile = () => {
                     setSellerData(data.data.user);
                     setSellerAds(data.data.ads);
                 } else {
-                    // window.alert(data.message);
                     throw new Error(data.message);
                 }
             })
             .catch((error) => {
-                // window.alert(error);
                 throw new Error(error.message);
             })
     }, [_id]);
 
+    // saving updated ad in state
     const handleAfterUpdate = (ad) => {
         setSellerAds(() => {
             const newAds = [...sellerAds];

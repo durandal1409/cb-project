@@ -6,7 +6,9 @@ import Button from "../shared/Button";
 import ProfileForm from "./ProfileForm";
 import { UserContext } from "../UserContext";
 
+// component for showing logged in user or seller profile info
 const ProfileInfo = ({sellerData, userId}) => {
+    // for showing update user info form
     const [showProfileForm, setShowProfileForm] = useState(false);
     const { userData } = useContext(UserContext);
 

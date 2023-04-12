@@ -11,10 +11,18 @@ import LoginBtn from "./LoginBtn";
 import UserInHeader from "./UserInHeader";
 import Button from "../shared/Button";
 
+// header component. Always on the page.
+// Responcible for logging in and saving user in UserContext,
+// saving categories object that contains all of the clothing categories 
+// (like 'men', 'top', 't-shirts') in CategoriesContext.
+// It also have a search bar and redirects to a search page when search btn is cicked
 const Header = () => {
     const { isLoading, error, user } = useAuth0();
+    // for search form
     const [formData, setFormData] = useState({input: '', dropdown: ''});
+    // for categories object
     const { categories, setCategories } = useContext(CategoriesContext);
+    // for logged in user data from db
     const { setUserData } = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -24,7 +32,6 @@ const Header = () => {
             .then(data => {
                 if (data.status === 200) {
                     setCategories(data.data);
-                    // console.log(data.message);
                 } else {
                     throw new Error(data.message);
                 }
@@ -35,8 +42,10 @@ const Header = () => {
             
     }, []);
 
+    // after logging try to post new user to db
+    // if user already exists res with 200 and user data
+    // if not, res with 201 and new user data
     useEffect(() => {
-        console.log("fetch user: ", user?.sub);
         user && fetch("/api/users", {
             method: "POST",
             headers: {
@@ -50,17 +59,13 @@ const Header = () => {
                 email: user.email,
                 avatar: user.picture,
                 ads: [],
-                last_search: ""
+                last_search: "" // for saving last search of a user in this field to show recommended ads
             })
         })
             .then(res => res.json())
             .then(data => {
                 if (data.status === 201 || data.status === 200) {
-                    console.log(data.message, data.data._id === user.sub);
                     setUserData(data.data);
-                    if (data.status === 201) {
-                        window.alert("Created user.");
-                    }
                 } else {
                     throw new Error(data.message);
                 }
@@ -80,9 +85,7 @@ const Header = () => {
     }
     const handleFormSubmit = (e, formData) => {
         e.preventDefault();
-        // if (!formData.input) {
-        //     return
-        // }
+        // navigating user to search page with chosen search and categories parameters
         navigate(`/search?categories=/${formData.dropdown?.toLowerCase()}&search=${formData.input}`)
     }
     const handlePostAdClick = () => {

@@ -8,6 +8,7 @@ import SmallItem from "../shared/SmallItem";
 import ContactForm from "../shared/ContactForm";
 import PicsCarousel from "./Carousel";
 
+// component for single ad
 const Item = () => {
     const { itemId } = useParams();
     const { user } = useAuth0();
@@ -17,8 +18,11 @@ const Item = () => {
 
     const isLoggedInUserAd = user?.sub === sellerData?._id;
 
+    // need to fetch current ad data
+    // then take a seller id from it and fetch seller data
+    // and take categories path and coordinates from ad 
+    // to fetch similar ads nearby
     const chainingFetches = async () => {
-        
         try {
             // get ad info
             const itemRes = await fetch(`/api/ads/${itemId}`);
@@ -38,7 +42,7 @@ const Item = () => {
                 // window.alert(sellerData.message);
                 throw new Error(sellerData.message);
             }
-            //  get similar ads
+            //  get similar ads nearby
             const similarRes = await fetch(`/api/ads/similar/${itemData.data.path}/${itemData.data.location.coordinates}`);
             const similarData = await similarRes.json();
             if (similarData.status === 200) {
@@ -48,8 +52,7 @@ const Item = () => {
                 throw new Error(similarData.message);
             }
         } catch(error) {
-            // window.alert(error);
-            throw new Error(error);
+            throw new Error(error.message);
         }
     }
 
@@ -57,6 +60,7 @@ const Item = () => {
         chainingFetches();
     }, [itemId]);
 
+    // for chat with seller
     const handleMessage = (e) => {
         e.preventDefault();
     }
@@ -100,7 +104,7 @@ const Item = () => {
                 </Left>
                 <Right>
                     <h2>${adData.price}</h2>
-                    {sellerData && !isLoggedInUserAd
+                    {sellerData && !isLoggedInUserAd // if it's not logged in user ad then show contact form to text to seller
                         ?   <>
                                 <ContactForm handleMessage={handleMessage} sellerName={sellerData.fname}/>
                                 <SellerLink to={`/user/${sellerData._id}`}>
@@ -179,6 +183,9 @@ const SellerLink = styled(Link)`
         height: 70px;
         border-radius: 50%;
         margin-right: 10px;
+    }
+    h4:hover {
+        text-decoration: underline;
     }
 `
 export default Item;

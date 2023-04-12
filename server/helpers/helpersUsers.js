@@ -84,8 +84,6 @@ const addUser = async (req, res) => {
         await client.connect();
         const db = client.db(dbName);
 
-        console.log("received id: ", _id);
-
         // if user already exists return their data
         const userInDb = await db.collection(usersCollection).findOne({_id});
         if (userInDb) {
@@ -128,7 +126,6 @@ const addUser = async (req, res) => {
     }
 }
 const updateUser = async (req, res) => {
-    console.log("body: ", req.body);
     const { 
         _id, 
         fname, 

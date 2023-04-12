@@ -7,10 +7,12 @@ import PicsUpload from "./PicsUpload";
 import Categories from "./Categories";
 import Button from "../shared/Button";
 
+
+// this is a component for creating and updating ad
 const CreateAd = ({adData, handleAfterUpdate}) => {
     const { user } = useAuth0();
     const navigate = useNavigate();
-    // if adData props was passed then it's update form
+    // if adData props was passed then it's update ad form
     // and we fill it with current ad data
     // otherwise only fill it with initial values
     const initialValuesObj = {
@@ -23,7 +25,6 @@ const CreateAd = ({adData, handleAfterUpdate}) => {
     }
     const [formData, setFormData] = useState(adData ? adData : initialValuesObj);
 
-    // console.log("fd: ", formData);
     const handleChange = (key, value) => {
         setFormData({
             ...formData,
@@ -33,10 +34,9 @@ const CreateAd = ({adData, handleAfterUpdate}) => {
 
     const handleFormSubmit = (e, formData) => {
         e.preventDefault();
-        // if adData props was passed then we need to update form and patch
+        // if adData props was passed then we need to update form with patch request
         // otherwise we are creating new ad and need to post
         const methodName = adData ? "PATCH" : "POST";
-        // console.log("form: ", formData);
         fetch("/api/ads", {
             method: methodName,
             headers: {
@@ -88,8 +88,6 @@ const CreateAd = ({adData, handleAfterUpdate}) => {
                         />
                     </Label>
                     <PicsUpload 
-                        // images={images} 
-                        // setImages={setImages}
                         formData={formData}
                         setFormData={setFormData}
                     />

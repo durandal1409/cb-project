@@ -37,11 +37,12 @@ const cloudinaryPicsArr = [
     "lm9qd0o6vloazrtkdv4t"
 ]
 
-// coordinates boundaries for creating ads in batchImportAdsAndUsers and for postAd in helpersAds
+// coordinates boundaries for creating ads in batchImportAdsAndUsers 
+// and for postAd in helpersAds
 const LAT_BOUNDARIES = [45.50, 45.67];
 const LNG_BOUNDARIES = [-73.9344, -73.3599];
 
-// categories
+// clothing categories object
 const taxonomy = {
     "Women" : {
         "jackets and vests": {
@@ -136,10 +137,8 @@ const colors = ["black", "white", "red", "green", "blue", "yellow", "orange", "b
 
 const makeRandomPath = (categoriesObj) => {
     if (Object.keys(categoriesObj).length === 0) {
-        // console.log("exit");
         return ","
     } else {
-        // console.log("continue");
         // getting random nested category
         // and adding it to the path
         const objKeysArr = Object.keys(categoriesObj);

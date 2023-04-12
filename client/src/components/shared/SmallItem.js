@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 // import {thumbnail} from "@cloudinary/url-gen/actions/resize";
 // import {fill} from "@cloudinary/url-gen/actions/resize";
 
+// small ad component with main ad info
+// (it shows up on almost every page)
 const SmallItem = ({name, price, address, picSrc, _id}) => {
 
     // // Create a Cloudinary instance
@@ -53,7 +55,6 @@ const Wrapper = styled(Link)`
     h4 {
         font-size: 1.2rem;
         padding: 10px;
-        /* background-color: var(--color-tertiary); */
     }
     span {
         font-weight: bold;

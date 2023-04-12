@@ -20,21 +20,20 @@ const getSearchedAds = async (req, res) => {
     const {categories, search} = req.query;
     // make categories path string according to db format
     // (https://www.mongodb.com/docs/manual/tutorial/model-tree-structures-with-materialized-paths/)
+    // and check that path and search holds some values
     const path = categories === "/undefined" || categories === "/" ? null : categories.replaceAll("/", ",");
     const searchPhrase = (search === "undefined" || search === "null" || search === "") ? null : search;
-    // console.log("CC:  ", path, searchPhrase, search, categories);
-    const limit = 100;
+    const limit = 100; //limit for ads number that db returns
     let agg;
     if (!searchPhrase && !path) {
-        console.log("both")
+        // console.log("no-both")
         agg = [
             {
                 '$limit': limit
             }
         ]
     } else if (!searchPhrase) {
-        console.log("no-search")
-        console.log("p: ", path.split())
+        // console.log("no-search")
         agg = [
             {
                 $search: {
@@ -52,7 +51,7 @@ const getSearchedAds = async (req, res) => {
             }
         ]
     } else if (!path) {
-        console.log("no-path")
+        // console.log("no-path")
         agg = [
             {
                 $search: {
@@ -70,7 +69,7 @@ const getSearchedAds = async (req, res) => {
             }
         ]
     } else {
-        console.log("all")
+        // console.log("all")
         agg = [
             {
                 $search:  {
@@ -106,14 +105,13 @@ const getSearchedAds = async (req, res) => {
         await client.connect();
         const db = client.db(dbName);
 
-        // add searchPhrase to user document
+        // add searchPhrase to user document to later show recommended ads
         if ( userId && search) {
             const upd = await db.collection(usersCollection).updateOne({_id: userId}, {$set: { "last_search" :  search}})
         }
     
         // find ads according to the search
         const ads = await db.collection(adsCollection).aggregate(agg).toArray();
-        console.log("ads.length: ", ads.length, ads);
         client.close();
         if (ads) {
             res.status(200).json({
@@ -130,7 +128,6 @@ const getSearchedAds = async (req, res) => {
 }
 const getRecommended = async (req, res) => {
     const { userId } = req.params;
-    console.log("user: ", userId);
     // if user is logged in and user ID has been passed
     // return ads according to the last search
     // else return 4 random ads
@@ -143,7 +140,7 @@ const getRecommended = async (req, res) => {
         let lastSearch;
 
         // looking for the last search phrase of user
-        if (req.params.userId) {
+        if (userId) {
             lastSearch = await db.collection(usersCollection).findOne({_id: req.params.userId}, {projection: {last_search: 1}})
         }
         // making search request with this phrase
@@ -212,6 +209,7 @@ const getLatest = async (req, res) => {
         res.status(500).json({ status: 500, message: err.message });
     }
 }
+// get similar ads nearby
 const getSimilar = async (req, res) => {
     const {path, coordinates} = req.params;
     const coordinatesArr = coordinates.split(',');
@@ -475,7 +473,6 @@ module.exports = {
     getSearchedAds,
     getRecommended,
     getLatest,
-    // getFiltered,
     getSimilar,
     getAd,
     postAd,
