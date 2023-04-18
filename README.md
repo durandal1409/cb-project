@@ -1,7 +1,8 @@
 # Marketplace for local classified ads in the Montreal area (like kijiji.ca).
-### Stack: MERN.
-### API: Google Maps, Cloudinary, OAuth0, Faker.
-### User can:
+## Keep in mind that all of the data was made with faker.js.
+#### Stack: MERN.
+#### API: Google Maps, Cloudinary, OAuth0, Faker.
+#### User can:
 - search for ads using input in header
 - filter ads by categories
 - see recommended, latest, similar ads nearby
