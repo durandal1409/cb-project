@@ -67,8 +67,7 @@ const addUser = async (req, res) => {
         fname, 
         lname,
         email, 
-        avatar, 
-        ads } = req.body;
+        avatar } = req.body;
 
     if (!_id) {
         res.status(422).json({
@@ -102,8 +101,9 @@ const addUser = async (req, res) => {
                 fname, 
                 lname,
                 email, 
-                avatar, 
-                ads,
+                avatar,
+                favourites: [],
+                ads: [],
                 last_search: ""
             };
         const userInsertRes = await db.collection(usersCollection).insertOne(userObj);

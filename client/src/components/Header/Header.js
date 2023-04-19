@@ -26,7 +26,7 @@ const Header = () => {
     const { setUserData } = useContext(UserContext);
     const navigate = useNavigate();
     
-    
+
     useEffect(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/categories`)
             .then(res => res.json())
@@ -58,9 +58,7 @@ const Header = () => {
                 fname: user.given_name,
                 lname: user.family_name,
                 email: user.email,
-                avatar: user.picture,
-                ads: [],
-                last_search: "" // for saving last search of a user in this field to show recommended ads
+                avatar: user.picture
             })
         })
             .then(res => res.json())
