@@ -21,7 +21,8 @@ const {
   updateUser
 } = require("./helpers/helpersUsers");
 
-const PORT = 8000;
+require("dotenv").config();
+const port = process.env.PORT || 8000;
 
 
 
@@ -67,4 +68,4 @@ express()
     });
   })
 
-  .listen(PORT, () => console.info(`Listening on port ${PORT}`));
+  .listen(port, () => console.info(`Listening on port ${port}`));
