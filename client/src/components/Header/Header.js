@@ -26,6 +26,7 @@ const Header = () => {
     const { setUserData } = useContext(UserContext);
     const navigate = useNavigate();
     
+    
     useEffect(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/categories`)
             .then(res => res.json())
