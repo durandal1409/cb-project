@@ -27,7 +27,7 @@ const Header = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch("/api/categories")
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/categories`)
             .then(res => res.json())
             .then(data => {
                 if (data.status === 200) {
@@ -46,7 +46,7 @@ const Header = () => {
     // if user already exists res with 200 and user data
     // if not, res with 201 and new user data
     useEffect(() => {
-        user && fetch("/api/users", {
+        user && fetch(`${process.env.REACT_APP_BASE_URL}/api/users`, {
             method: "POST",
             headers: {
                 "Accept": "application/json",

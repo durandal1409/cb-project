@@ -37,7 +37,7 @@ const CreateAd = ({adData, handleAfterUpdate}) => {
         // if adData props was passed then we need to update form with patch request
         // otherwise we are creating new ad and need to post
         const methodName = adData ? "PATCH" : "POST";
-        fetch("/api/ads", {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/ads`, {
             method: methodName,
             headers: {
                 "Accept": "application/json",

@@ -61,7 +61,7 @@ const Filters = ({setFilteredAds}) => {
 
     useEffect(() => {
         // fetching ads filtered by search and categories
-        fetch(`/api/ads/search/${user?.sub}?categories=${searchParams?.get("categories")}&search=${searchParams?.get("search")}`)
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/ads/search/${user?.sub}?categories=${searchParams?.get("categories")}&search=${searchParams?.get("search")}`)
             .then((res) => res.json())
             .then((data) => {
                 if (data.status === 200) {

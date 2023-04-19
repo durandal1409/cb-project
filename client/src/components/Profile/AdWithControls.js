@@ -14,7 +14,7 @@ const AdWithControls = ({ad, userId, setAdToUpdate, sellerAds, setSellerAds, isL
     // fetching the data of the ad that user wants to update
     // to fill update ad form with it
     const handleUpdateAd = (adId) => {
-        fetch(`/api/ads/${adId}`)
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/ads/${adId}`)
             .then(res => res.json())
             .then(data => {
                 if (data.status === 200) {
@@ -45,7 +45,7 @@ const AdWithControls = ({ad, userId, setAdToUpdate, sellerAds, setSellerAds, isL
     // fetch delete if user confirms delete ad
     // and then remove this ad from state
     const handleDeleteConfirm = (adId) => {
-        fetch(`/api/ads/`, {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/ads/`, {
             method: "DELETE",
             headers: {
                 Accept: "application/json",

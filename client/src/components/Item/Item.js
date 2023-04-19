@@ -25,7 +25,7 @@ const Item = () => {
     const chainingFetches = async () => {
         try {
             // get ad info
-            const itemRes = await fetch(`/api/ads/${itemId}`);
+            const itemRes = await fetch(`${process.env.REACT_APP_BASE_URL}/api/ads/${itemId}`);
             const itemData = await itemRes.json();
             if (itemData.status === 200) {
                 setAdData(itemData.data);
@@ -34,7 +34,7 @@ const Item = () => {
                 throw new Error(itemData.message);
             }
             // get seller info
-            const sellerRes = await fetch(`/api/users/${itemData.data.userId}`);
+            const sellerRes = await fetch(`${process.env.REACT_APP_BASE_URL}/api/users/${itemData.data.userId}`);
             const sellerData = await sellerRes.json();
             if (sellerData.status === 200) {
                 setSellerData(sellerData.data.user);
@@ -43,7 +43,7 @@ const Item = () => {
                 throw new Error(sellerData.message);
             }
             //  get similar ads nearby
-            const similarRes = await fetch(`/api/ads/similar/${itemData.data.path}/${itemData.data.location.coordinates}`);
+            const similarRes = await fetch(`${process.env.REACT_APP_BASE_URL}/api/ads/similar/${itemData.data.path}/${itemData.data.location.coordinates}`);
             const similarData = await similarRes.json();
             if (similarData.status === 200) {
                 setSimilarAds(similarData.data);

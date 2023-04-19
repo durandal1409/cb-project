@@ -12,7 +12,7 @@ const Home = () => {
     const [latestAds, setLatestAds] = useState(null);
     const { user } = useAuth0();
     useEffect(() => {
-        fetch(`/api/ads/recommended/${user?.sub}`)
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/ads/recommended/${user?.sub}`)
             .then((res) => res.json())
             .then((data) => {
                 if (data.status === 200) {
@@ -26,7 +26,7 @@ const Home = () => {
             })
     }, [user]);
     useEffect(() => {
-        fetch(`/api/ads/latest`)
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/ads/latest`)
             .then((res) => res.json())
             .then((data) => {
                 if (data.status === 200) {

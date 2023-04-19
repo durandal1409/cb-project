@@ -20,7 +20,7 @@ const Profile = () => {
 
     useEffect(() => {
         // fetching user data
-        userId && fetch(`/api/users/${userId}`)
+        userId && fetch(`${process.env.REACT_APP_BASE_URL}/api/users/${userId}`)
             .then((res) => res.json())
             .then((data) => {
                 if (data.status === 200) {

@@ -28,7 +28,7 @@ const ProfileForm = ({showProfileForm, setShowProfileForm}) => {
     // and hiding this form
     const handleUpdateProfile = (e, formData) => {
         e.preventDefault();
-        fetch(`/api/users`, {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/users`, {
             method: "PATCH",
             headers: {
                 "Accept": "application/json",
