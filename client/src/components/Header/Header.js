@@ -25,6 +25,7 @@ const Header = () => {
     // for logged in user data from db
     const { setUserData } = useContext(UserContext);
     const navigate = useNavigate();
+    
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/categories`)
