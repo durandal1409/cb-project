@@ -27,9 +27,10 @@ const Header = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch("/api/categories")
+        fetch("https://cb-project-server.vercel.app/api/categories")
             .then(res => res.json())
             .then(data => {
+                console.log("header: ", data);
                 if (data.status === 200) {
                     setCategories(data.data);
                 } else {
@@ -46,7 +47,7 @@ const Header = () => {
     // if user already exists res with 200 and user data
     // if not, res with 201 and new user data
     useEffect(() => {
-        user && fetch("/api/users", {
+        user && fetch("http://localhost:8000/api/users", {
             method: "POST",
             headers: {
                 "Accept": "application/json",
