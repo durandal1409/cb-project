@@ -43,6 +43,7 @@ express()
   .use(express.json())
   .use(express.urlencoded({ extended: false }))
   .use('/', express.static(__dirname + '/'))
+  .use(cors())
 
   .get("/api/categories", getCategories)
   .get("/api/ads/search/:userId", getSearchedAds)
