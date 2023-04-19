@@ -14,7 +14,7 @@ const User = () => {
         userData && (
             <Wrapper>
                 <AnchorName to={`/user/${userData._id}`}>
-                    {userData.fname}
+                    {userData.fname ?? "User"}
                 </AnchorName>
                 <Dropdown>
                     <li>
