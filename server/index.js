@@ -9,7 +9,6 @@ const {
   getSearchedAds,
   getRecommended,
   getLatest,
-  // getFiltered,
   getSimilar,
   getAd,
   postAd,
@@ -19,6 +18,7 @@ const {
 const {
   getUserAndAds,
   addUser,
+  updateUserFavourites,
   updateUser
 } = require("./helpers/helpersUsers");
 
@@ -50,11 +50,11 @@ express()
   .get("/api/ads/search/:userId", getSearchedAds)
   .get("/api/ads/recommended/:userId", getRecommended)
   .get("/api/ads/latest", getLatest)
-  // .get("/api/ads/filtered", getFiltered)
   .get("/api/ads/similar/:path/:coordinates", getSimilar)
   .get("/api/ads/:adId", getAd)
   .get("/api/users/:userId", getUserAndAds)
   .post("/api/users", addUser)
+  .patch("/api/users/:userId/:adId", updateUserFavourites)
   .patch("/api/users", updateUser)
   .post("/api/ads", postAd)
   .patch("/api/ads", updateAd)

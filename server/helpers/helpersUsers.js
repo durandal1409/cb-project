@@ -175,9 +175,71 @@ const updateUser = async (req, res) => {
         res.status(500).json({ status: 500, message: err.message });
     }
 }
+const updateUserFavourites = async (req, res) => {
+    const { userId, adId } = req.params;
+    console.log("u: ", userId, adId);
+
+    if (!userId || !adId) {
+        res.status(422).json({
+            status: 422, 
+            data: {userId, adId},
+            message: "Please, provide user id and ad id."
+        })
+        return;
+    }
+    
+    try {
+        const client = new MongoClient(MONGO_URI, options);
+        await client.connect();
+        const db = client.db(dbName);
+    
+        const userUpdateRes = await db.collection(usersCollection).findOneAndUpdate(
+            {_id: userId},
+            [
+                {
+                    $set: {
+                        favourites: {
+                            $cond: [
+                                {
+                                    $in: [adId, "$favourites"]
+                                },
+                                {
+                                    $setDifference: ["$favourites", [adId]]
+                                },
+                                {
+                                    $concatArrays: ["$favourites", [adId]]
+                                }
+                            ]
+                        }
+                    }
+                }
+            ], 
+            {returnDocument: "after"}
+        );
+        if (!userUpdateRes.value) {
+            res.status(409).json({
+                status: 409, 
+                data: {_id}, 
+                message: "User update failed."
+            })
+        } else {
+            res.status(200).json({
+                status: 200,
+                data: {favourites: userUpdateRes.value.favourites},
+                message: "User's favourite ads array updated."
+            })
+        }
+        client.close();
+    } catch(err) {
+        console.log(err.stack);
+        res.status(500).json({ status: 500, message: err.message });
+    }
+}
+
 
 module.exports = {
     getUserAndAds,
     addUser,
+    updateUserFavourites,
     updateUser
 }
