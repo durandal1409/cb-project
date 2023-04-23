@@ -21,7 +21,8 @@ const App = () => {
                   <Route path="/search/*" element={<Search />} />
                   <Route path="/item/:itemId" element={<Item />} />
                   <Route path="/user/:userId" element={<Profile />} />
-                  <Route path="/user/favourites/:userId" element={<Profile favourites={true}/>} />
+                  <Route path="/profile" element={<Profile my={true}/>} />
+                  <Route path="/favourites" element={<Profile favourites={true}/>} />
                   <Route path="/create-ad" element={<CreateAd />} />
                   <Route path="" element={<h1>404: Oops!</h1>} />
               </Routes>

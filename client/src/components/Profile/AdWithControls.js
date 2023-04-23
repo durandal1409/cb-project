@@ -1,15 +1,17 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
 import SmallItem from "../shared/SmallItem";
 import Button from "../shared/Button";
+import { UserContext } from "../UserContext";
 
 // component showing ad with update and delete options
 // for logged in user
-const AdWithControls = ({ad, userId, setAdToUpdate, sellerAds, setSellerAds, isLoggedInUser}) => {
+const AdWithControls = ({ad, setAdToUpdate, sellerAds, setSellerAds, isLoggedInUser}) => {
     // for showing delete confirmation
     // after user clicked delete ad btn
     const [adToDeleteId, setAdToDeleteId] = useState(null);
+    const { userData } = useContext(UserContext);
 
     // fetching the data of the ad that user wants to update
     // to fill update ad form with it
@@ -52,7 +54,7 @@ const AdWithControls = ({ad, userId, setAdToUpdate, sellerAds, setSellerAds, isL
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                userId,
+                userId: userData._id,
                 adId
             }),
         })

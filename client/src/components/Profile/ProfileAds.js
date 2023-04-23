@@ -1,28 +1,44 @@
 import styled from "styled-components";
+import { useEffect, useState } from "react";
 
 import AdWithControls from "./AdWithControls";
 
-const ProfileAds = ({sellerAds, setSellerAds, isLoggedInUser, favourites}) => {
+const ProfileAds = ({isLoggedInUser, favourites, adsIds, setAdToUpdate}) => {
     
-    // there are 2 scenarios for this component:
-    // 1. if favourites prop === true, then display favourite ads of logged in user
-    // 2. if not favourites and it's not logged in user profile, then
-    //      show ads of this user 
+    const [sellerAds, setSellerAds] = useState(null);
+    
+    useEffect(() => {
+        // 1. prepare url with ads ids as query params
+        const url = new URL(`${process.env.REACT_APP_BASE_URL}/api/ads`);
+        const params = 'id=' + adsIds.join('&id=');
+        url.search = new URLSearchParams(params).toString();
+        // 2. fetching ads
+        adsIds && fetch(url)
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.status === 200) {
+                    setSellerAds(data.data);
+                } else {
+                    throw new Error(data.message);
+                }
+            })
+            .catch((error) => {
+                throw new Error(error.message);
+            })
+    }, [favourites]);
+
     return (
         <>
             <h3>{favourites ? "My favourites" : "Listings"}</h3>
             
             <AdsWrapper>
                 {!sellerAds
-                    ?   sellerData
-                            ?   <h3>{isLoggedInUser ? "You have no ads." : "Seller has no ads."}</h3>
-                            :   <h3>Loading...</h3>
+                    ?   <h3>{isLoggedInUser ? "You have no ads." : "Seller has no ads."}</h3>
                     :   sellerAds.map(ad => {
                             return (
                                 <AdWithControls
                                     key={ad._id}
                                     ad={ad}
-                                    userId={userId}
                                     sellerAds={sellerAds}
                                     setSellerAds={setSellerAds}
                                     setAdToUpdate={setAdToUpdate}
@@ -30,11 +46,6 @@ const ProfileAds = ({sellerAds, setSellerAds, isLoggedInUser, favourites}) => {
                                 />
                             )
                         })
-                }
-                {!sellerData
-                    ?   <h3>Loading...</h3>
-                    :   
-
                 }
             </AdsWrapper>
 

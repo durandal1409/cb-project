@@ -209,6 +209,32 @@ const getLatest = async (req, res) => {
         res.status(500).json({ status: 500, message: err.message });
     }
 }
+const getAdsById = async (req, res) => {
+    const adsIds = Array.isArray(req.query.id) ? req.query.id : [req.query.id];
+    try {
+        const client = new MongoClient(MONGO_URI, options);
+        await client.connect();
+        const db = client.db(dbName);
+    
+        const ads = await db.collection(adsCollection)
+            .find( { _id : { $in : adsIds } } )
+            .project({ _id : 1, name: 1, price: 1, address: 1, pic: {$first: "$pics"}})
+            .toArray();
+
+        client.close();
+        if (ads.length) {
+            res.status(200).json({
+                status: 200,
+                data: ads
+            });
+        } else {
+            res.status(404).json({ status: 404, message: "Ads not found." });
+        }
+    } catch(err) {
+        console.log(err.stack);
+        res.status(500).json({ status: 500, message: err.message });
+    }
+}
 // get similar ads nearby
 const getSimilar = async (req, res) => {
     const {path, coordinates} = req.params;
@@ -473,6 +499,7 @@ module.exports = {
     getSearchedAds,
     getRecommended,
     getLatest,
+    getAdsById,
     getSimilar,
     getAd,
     postAd,

@@ -54,7 +54,7 @@ const CreateAd = ({adData, handleAfterUpdate}) => {
                     window.alert(data.message);
                     // if updating ad then need to call handler in Profile after successful update
                     handleAfterUpdate && handleAfterUpdate(data.data);
-                    navigate(`/user/${userData._id}`);
+                    navigate(`/profile`);
                 } else {
                     window.alert(data.message)
                 }

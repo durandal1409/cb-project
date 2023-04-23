@@ -14,7 +14,7 @@ const dbName = "cb-project";
 const adsCollection = "ads";
 const usersCollection = "users";
 
-const getUserAndAds = async (req, res) => {
+const getUser = async (req, res) => {
     const _id = req.params.userId;
     try {
         const client = new MongoClient(MONGO_URI, options);
@@ -29,31 +29,12 @@ const getUserAndAds = async (req, res) => {
                 data: {_id},
                 message: "User with provided id not found.",
             });
-        } else if (!user.ads.length) {
+        } else {
             res.status(200).json({
                 status: 200,
-                data: {user, ads: null},
-                message: "User has no ads."
+                data: user,
+                message: "User found."
             })
-        } else {
-            // search user ads
-            const userAds = await db.collection(adsCollection)
-                .find( { _id : { $in : user.ads } } )
-                .project({ _id : 1, name: 1, price: 1, address: 1, pic: {$first: "$pics"}})
-                .toArray();
-            if (!userAds) {
-                res.status(404).json({
-                    status: 404,
-                    data: {user, ads: null},
-                    message: "Ads not found."
-                })
-            } else {
-                res.status(200).json({
-                    status: 200,
-                    data: {user, ads: userAds},
-                    message: "User and ads found."
-                })
-            }
         }
         client.close();
     } catch(err) {
@@ -238,7 +219,7 @@ const updateUserFavourites = async (req, res) => {
 
 
 module.exports = {
-    getUserAndAds,
+    getUser,
     addUser,
     updateUserFavourites,
     updateUser

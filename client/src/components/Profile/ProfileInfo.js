@@ -18,31 +18,25 @@ const ProfileInfo = ({sellerData, isLoggedInUser}) => {
 
     return (
             <Wrapper>
-                {
-                    sellerData
+                { 
+                    isLoggedInUser
                         ?   <>
-                                { 
-                                    isLoggedInUser
-                                        ?   <>
-                                                <img src={userData.avatar} alt="my photo"/>
-                                                <h4>{userData.fname} {userData.lname}</h4>
-                                                <Button 
-                                                    width="200px" 
-                                                    handleClick={() => setShowProfileForm(true)}
-                                                    className={showProfileForm ? "hide" : null}
-                                                >
-                                                    Update my profile
-                                                </Button>
-                                                <ProfileForm user={sellerData} showProfileForm={showProfileForm} setShowProfileForm={setShowProfileForm}/>
-                                            </>
-                                        :   <>
-                                                <img src={sellerData.avatar} alt="seller photo"/>
-                                                <h4>{sellerData.fname} {sellerData.lname}</h4>
-                                                <ContactForm handleMessage={handleMessage}  sellerName={sellerData.fname}/>
-                                            </>
-                                }
+                                <img src={userData.avatar} alt="my photo"/>
+                                <h4>{userData.fname} {userData.lname}</h4>
+                                <Button 
+                                    width="200px" 
+                                    handleClick={() => setShowProfileForm(true)}
+                                    className={showProfileForm ? "hide" : null}
+                                >
+                                    Update my profile
+                                </Button>
+                                <ProfileForm user={sellerData} showProfileForm={showProfileForm} setShowProfileForm={setShowProfileForm}/>
                             </>
-                        :   <h3>Loading...</h3>
+                        :   <>
+                                <img src={sellerData.avatar} alt="seller photo"/>
+                                <h4>{sellerData.fname} {sellerData.lname}</h4>
+                                <ContactForm handleMessage={handleMessage}  sellerName={sellerData.fname}/>
+                            </>
                 }
             </Wrapper>
     )
