@@ -145,7 +145,7 @@ const getRecommended = async (req, res) => {
         }
         // making search request with this phrase
         // returning 4 documents
-        if (lastSearch?.last_search) {
+        if (lastSearch?.last_search && lastSearch.last_search !== 'null') {
             const agg = [
                 {
                     '$search': {

@@ -7,15 +7,17 @@ import SmallItem from "../shared/SmallItem";
 const ProfileAds = ({isLoggedInUser, favourites, adsIds, setAdToUpdate}) => {
     
     const [sellerAds, setSellerAds] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     // if it's a logged in user profile and we are showing user ads (not favourites)
     // then display ad controls (delete and update btns, etc.)
     const showControls = isLoggedInUser && !favourites;
     
     useEffect(() => {
+        setLoading(true);
         // 1. prepare url with ads ids as query params
         const url = new URL(`${process.env.REACT_APP_BASE_URL}/api/ads`);
-        const params = 'id=' + adsIds.join('&id=');
+        const params = 'id=' + adsIds?.join('&id=');
         url.search = new URLSearchParams(params).toString();
         // 2. fetching ads
         adsIds && fetch(url)
@@ -27,14 +29,18 @@ const ProfileAds = ({isLoggedInUser, favourites, adsIds, setAdToUpdate}) => {
                     setSellerAds(null);
                     throw new Error(data.message);
                 }
+                setLoading(false);
             })
             .catch((error) => {
+                setLoading(false);
                 throw new Error(error.message);
             })
-    }, [favourites]);
+    }, [favourites, isLoggedInUser, adsIds]);
 
     return (
-        <>
+        loading
+        ?   <h3>Loading...</h3>
+        :   <>
             <h3>{favourites ? "My favourites" : "Listings"}</h3>
             
             <AdsWrapper>

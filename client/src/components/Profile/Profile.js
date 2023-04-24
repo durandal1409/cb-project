@@ -40,7 +40,7 @@ const Profile = ({favourites, my}) => {
             .catch((error) => {
                 throw new Error(error.message);
             })
-    }, [userId, reload, userData]);
+    }, [userId, reload, userData, favourites]);
 
     // saving updated ad in state
     const handleAfterUpdate = (ad) => {
@@ -48,7 +48,6 @@ const Profile = ({favourites, my}) => {
         setAdToUpdate(null);
     }
 
-    
     return (
         sellerData &&
         <Wrapper>
