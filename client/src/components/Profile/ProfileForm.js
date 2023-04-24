@@ -10,9 +10,9 @@ const ProfileForm = ({showProfileForm, setShowProfileForm}) => {
     // fill the form with current user data
     const [formData, setFormData] = useState(
         {
-            fname: userData.fname, 
-            lname: userData.lname, 
-            email: userData.email
+            fname: userData.fname ? userData.fname : '', 
+            lname: userData.lname ? userData.lname : '', 
+            email: userData.email ? userData.email : ''
         }
     );
 

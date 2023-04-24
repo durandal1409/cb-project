@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
+import { UserContext } from "../UserContext";
 
 import SmallItem from "../shared/SmallItem";
 import ContactForm from "../shared/ContactForm";
@@ -11,12 +11,12 @@ import PicsCarousel from "./Carousel";
 // component for single ad
 const Item = () => {
     const { itemId } = useParams();
-    const { user } = useAuth0();
+    const { userData } = useContext(UserContext);
     const [adData, setAdData] = useState(null);
     const [sellerData, setSellerData] = useState(null);
     const [similarAds, setSimilarAds] = useState(null);
 
-    const isLoggedInUserAd = user?.sub === sellerData?._id;
+    const isLoggedInUserAd = userData?._id === sellerData?._id;
 
     // need to fetch current ad data
     // then take a seller id from it and fetch seller data
@@ -37,7 +37,7 @@ const Item = () => {
             const sellerRes = await fetch(`${process.env.REACT_APP_BASE_URL}/api/users/${itemData.data.userId}`);
             const sellerData = await sellerRes.json();
             if (sellerData.status === 200) {
-                setSellerData(sellerData.data.user);
+                setSellerData(sellerData.data);
             } else {
                 // window.alert(sellerData.message);
                 throw new Error(sellerData.message);
@@ -104,16 +104,14 @@ const Item = () => {
                 </Left>
                 <Right>
                     <h2>${adData.price}</h2>
-                    {sellerData && !isLoggedInUserAd // if it's not logged in user ad then show contact form to text to seller
-                        ?   <>
-                                <ContactForm handleMessage={handleMessage} sellerName={sellerData.fname}/>
-                                <SellerLink to={`/user/${sellerData._id}`}>
-                                    <img src={sellerData.avatar} alt="seller photo"/>
-                                    <h4>{sellerData.fname} {sellerData.lname}</h4>
-                                </SellerLink>
-                            </>
-                        : <></>
-                    
+                    {sellerData && !isLoggedInUserAd &&// if it's not logged in user ad then show contact form to text to seller
+                        <>
+                            <ContactForm handleMessage={handleMessage} sellerName={sellerData.fname}/>
+                            <SellerLink to={`/user/${sellerData._id}`}>
+                                <img src={sellerData.avatar} alt="seller photo"/>
+                                <h4>{sellerData.fname} {sellerData.lname}</h4>
+                            </SellerLink>
+                        </>
                     }
                 </Right>
             </Main>

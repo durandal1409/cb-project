@@ -2,10 +2,15 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 
 import AdWithControls from "./AdWithControls";
+import SmallItem from "../shared/SmallItem";
 
 const ProfileAds = ({isLoggedInUser, favourites, adsIds, setAdToUpdate}) => {
     
     const [sellerAds, setSellerAds] = useState(null);
+
+    // if it's a logged in user profile and we are showing user ads (not favourites)
+    // then display ad controls (delete and update btns, etc.)
+    const showControls = isLoggedInUser && !favourites;
     
     useEffect(() => {
         // 1. prepare url with ads ids as query params
@@ -19,6 +24,7 @@ const ProfileAds = ({isLoggedInUser, favourites, adsIds, setAdToUpdate}) => {
                 if (data.status === 200) {
                     setSellerAds(data.data);
                 } else {
+                    setSellerAds(null);
                     throw new Error(data.message);
                 }
             })
@@ -36,14 +42,24 @@ const ProfileAds = ({isLoggedInUser, favourites, adsIds, setAdToUpdate}) => {
                     ?   <h3>{isLoggedInUser ? "You have no ads." : "Seller has no ads."}</h3>
                     :   sellerAds.map(ad => {
                             return (
-                                <AdWithControls
-                                    key={ad._id}
-                                    ad={ad}
-                                    sellerAds={sellerAds}
-                                    setSellerAds={setSellerAds}
-                                    setAdToUpdate={setAdToUpdate}
-                                    isLoggedInUser={isLoggedInUser}
-                                />
+                                showControls
+                                    ?   <AdWithControls
+                                            key={ad._id}
+                                            ad={ad}
+                                            sellerAds={sellerAds}
+                                            setSellerAds={setSellerAds}
+                                            setAdToUpdate={setAdToUpdate}
+                                        />
+                                    :   <SmallItem
+                                            key={ad._id}
+                                            name={ad.name}
+                                            price={ad.price}
+                                            address={ad.address}
+                                            picSrc={ad.pic}
+                                            _id={ad._id}
+                                        />
+                                
+                                
                             )
                         })
                 }

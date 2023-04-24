@@ -6,8 +6,8 @@ import Button from "../shared/Button";
 import { UserContext } from "../UserContext";
 
 // component showing ad with update and delete options
-// for logged in user
-const AdWithControls = ({ad, setAdToUpdate, sellerAds, setSellerAds, isLoggedInUser}) => {
+// for logged in user ads
+const AdWithControls = ({ad, setAdToUpdate, sellerAds, setSellerAds}) => {
     // for showing delete confirmation
     // after user clicked delete ad btn
     const [adToDeleteId, setAdToDeleteId] = useState(null);
@@ -74,8 +74,6 @@ const AdWithControls = ({ad, setAdToUpdate, sellerAds, setSellerAds, isLoggedInU
     
     return (
         <Wrapper>
-            {isLoggedInUser &&
-            <>
                 {!adToDeleteId
                 ?   <AdBtnsWrapper>
                         <Button 
@@ -109,8 +107,7 @@ const AdWithControls = ({ad, setAdToUpdate, sellerAds, setSellerAds, isLoggedInU
                         </Button>
                     </ConfirmDeleteBtnsWrapper>
                 }
-            </>
-        }
+
             <SmallItem
                 name={ad.name}
                 price={ad.price}
