@@ -26,6 +26,10 @@ const SmallItem = ({name, price, address, picSrc, _id}) => {
     const handleLike = (e, adId) => {
         e.preventDefault();
         e.stopPropagation();
+        if (!userData) {
+            window.alert("Please, log in.");
+            return;
+        }
         fetch(`${process.env.REACT_APP_BASE_URL}/api/users/${userData._id}/${_id}`, {
             method: "PATCH",
             headers: {
