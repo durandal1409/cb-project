@@ -160,11 +160,13 @@ const Form = styled.form`
 const Input = styled.input`
     width: 250px;
     border: 1px solid var(--color-button);
+    height: 31px;
     border-radius: 7px 0 0 7px;
 `
 const Dropdown = styled.select`
     width: 150px;
     border: 1px solid var(--color-button);
+    height: 35px;
     margin-right: -7px;
     z-index: 2;
 `
